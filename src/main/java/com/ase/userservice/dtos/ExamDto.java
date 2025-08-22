@@ -18,7 +18,5 @@ public class ExamDto {
   @NotNull
   private int time;
 
-  @NotNull String semester;
-
   private int count;
 }

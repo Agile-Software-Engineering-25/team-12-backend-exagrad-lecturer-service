@@ -56,9 +56,6 @@ public class Exam {
   @Column(name = "time")
   protected int time;
 
-  @Column(name = "semster")
-  protected String semester;
-
   @Column(name = "allowed_resources")
   protected String allowedResources;
 
