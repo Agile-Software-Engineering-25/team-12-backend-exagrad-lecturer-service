@@ -17,8 +17,11 @@ import java.util.Map;
 public class LecturerService {
   private final ObjectMapper objectMapper;
 
-  public List<Exam> fetchExamsByLecturer(String lecturer) {
+  public List<Exam> fetchExamsByLecturer(String lecturer) throws IllegalArgumentException {
     // TODO: change this to a webclient call, when the API is ready
+    if (lecturer.isBlank()){
+      throw new IllegalArgumentException("Lecturer cannot be empty");
+    }
     log.info("The Exam from {} has been requested", lecturer);
     return DummyData.EXAMS;
   }

@@ -19,7 +19,7 @@ public class LecturerController {
   private final LecturerService lecturerService;
 
   @GetMapping("/exams")
-  public ResponseEntity<List<ExamDto>> fetchExams(String lecturer) {
+  public ResponseEntity<List<ExamDto>> fetchExams(String lecturer) throws IllegalArgumentException{
     List<Exam> exams = lecturerService.fetchExamsByLecturer(lecturer);
     return ResponseEntity.ok(lecturerService.convertToExamDto(exams));
   }

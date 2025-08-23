@@ -26,7 +26,6 @@ public class DummyData {
           .room("Room A101")
           .lecturer(new Lecturer())
           .module("Mathe")
-          .semester("SoSe25")
           .build(),
       Exam.builder()
           .name("Physics Midterm")
@@ -43,7 +42,6 @@ public class DummyData {
           .room("Room B202")
           .lecturer(new Lecturer())
           .module("Physics")
-          .semester("SoSe25")
           .build(),
       Exam.builder()
           .name("Computer Science Project")
@@ -60,7 +58,6 @@ public class DummyData {
           .room("Online Submission")
           .lecturer(new Lecturer())
           .module("CS I")
-          .semester("SoSe25")
           .build(),
       Exam.builder()
           .name("Chemistry Lab Exam")
@@ -78,7 +75,6 @@ public class DummyData {
           .room("Online Submission")
           .lecturer(new Lecturer())
           .module("Chemistry")
-          .semester("SoSe25")
           .build(),
       Exam.builder()
           .name("History Essay Exam")
@@ -95,7 +91,6 @@ public class DummyData {
           .room("Room D404")
           .lecturer(new Lecturer())
           .module("History I")
-          .semester("SoSe25")
           .build(),
       Exam.builder()
           .name("History Essay Exam")
@@ -112,7 +107,6 @@ public class DummyData {
           .room("Room D404")
           .lecturer(new Lecturer())
           .module("History I")
-          .semester("SoSe25")
           .build()
   );
 }

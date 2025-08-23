@@ -1,16 +1,18 @@
 package com.ase.userservice.dtos;
 
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Data;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
+@Builder
 public class ExamDto {
   @NotNull
   private String name;
 
   @NotNull
-  private Date date;
+  private LocalDate date;
 
   @NotNull
   private String module;
