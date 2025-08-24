@@ -40,9 +40,9 @@ public class LecturerService {
 
       if (examDtoMap.containsKey(key)) {
         ExamDto existingDto = examDtoMap.get(key);
-        existingDto.setCount(existingDto.getCount() + 1);
+        existingDto.setSubmissions(existingDto.getSubmissions() + 1);
       } else {
-        examDto.setCount(1);
+        examDto.setSubmissions(1);
         examDtoMap.put(key, examDto);
       }
     }

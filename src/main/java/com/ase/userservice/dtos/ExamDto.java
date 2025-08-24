@@ -20,5 +20,5 @@ public class ExamDto {
   @NotNull
   private int time;
 
-  private int count;
+  private int submissions;
 }
