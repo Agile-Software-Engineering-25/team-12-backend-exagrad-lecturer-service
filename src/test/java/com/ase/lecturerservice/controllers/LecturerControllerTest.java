@@ -52,7 +52,7 @@ public class LecturerControllerTest {
         .andExpect(jsonPath("$[0].name").value("Test"))
         .andExpect(jsonPath("$[0].date").value("2015-10-12"))
         .andExpect(jsonPath("$[0].module").value("Test"))
-        .andExpect(jsonPath("$[0].time").value(MockValues.TIME_MIN.getValue()));
+        .andExpect(jsonPath("$[0].time").value(MockValues.TIME_SECONDS.getValue()));
   }
 
   @Test

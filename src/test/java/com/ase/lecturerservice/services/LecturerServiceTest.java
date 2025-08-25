@@ -32,7 +32,10 @@ public class LecturerServiceTest {
         .lastName("Doe")
         .build();
 
-    date = LocalDate.of(MockValues.DATE_YEAR.getValue(), MockValues.DATE_MONTH.getValue(), MockValues.DATE_DAY.getValue());
+    date = LocalDate.of(
+        MockValues.DATE_YEAR.getValue(),
+        MockValues.DATE_MONTH.getValue(),
+        MockValues.DATE_DAY.getValue());
   }
 
   @Test
@@ -58,17 +61,26 @@ public class LecturerServiceTest {
     Exam exam = exams.getFirst();
 
     Assertions.assertThat(exams).isNotEmpty();
-    Assertions.assertThat(exam.getName()).isEqualTo("Mathematics Final Exam");
-    Assertions.assertThat(exam.getGrade()).isEqualTo(MockValues.GRADE.getValue());
-    Assertions.assertThat(exam.getAverageGrade()).isEqualTo(MockValues.AVERAGE_GRADE.getValue());
-    Assertions.assertThat(exam.getTotalPoints()).isEqualTo(MockValues.TOTAL_POINTS.getValue());
-    Assertions.assertThat(exam.getAchievedPoints()).isEqualTo(MockValues.ACHIEVED_POINTS.getValue());
+    Assertions.assertThat(exam.getName())
+        .isEqualTo("Mathematics Final Exam");
+    Assertions.assertThat(exam.getGrade())
+        .isEqualTo(MockValues.GRADE.getValue());
+    Assertions.assertThat(exam.getAverageGrade())
+        .isEqualTo(MockValues.AVERAGE_GRADE.getValue());
+    Assertions.assertThat(exam.getTotalPoints())
+        .isEqualTo(MockValues.TOTAL_POINTS.getValue());
+    Assertions.assertThat(exam.getAchievedPoints())
+        .isEqualTo(MockValues.ACHIEVED_POINTS.getValue());
     Assertions.assertThat(exam.getExamType()).isEqualTo("Written");
     Assertions.assertThat(exam.getDate()).isEqualTo(date);
-    Assertions.assertThat(exam.getTime()).isEqualTo(MockValues.TIME_SECONDS.getValue());
-    Assertions.assertThat(exam.getAllowedResources()).isEqualTo("Calculator, Formula Sheet");
-    Assertions.assertThat(exam.getAttempt()).isEqualTo(MockValues.ATTEMPT.getValue());
-    Assertions.assertThat(exam.getEtcs()).isEqualTo(MockValues.ETCS.getValue());
+    Assertions.assertThat(exam.getTime())
+        .isEqualTo(MockValues.TIME_SECONDS.getValue());
+    Assertions.assertThat(exam.getAllowedResources())
+        .isEqualTo("Calculator, Formula Sheet");
+    Assertions.assertThat(exam.getAttempt())
+        .isEqualTo(MockValues.ATTEMPT.getValue());
+    Assertions.assertThat(exam.getEtcs())
+        .isEqualTo(MockValues.ETCS.getValue());
     Assertions.assertThat(exam.getRoom()).isEqualTo("Room A101");
     Assertions.assertThat(exam.getLecturer()).isEqualTo(lecturer);
     Assertions.assertThat(exam.getModule()).isEqualTo("Mathe");

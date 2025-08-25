@@ -7,7 +7,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class DummyData {
-  static LocalDate date = LocalDate.of(MockValues.DATE_YEAR.getValue(), MockValues.DATE_MONTH.getValue(), MockValues.DATE_DAY.getValue());
+  static LocalDate date = LocalDate.of(
+      MockValues.DATE_YEAR.getValue(),
+      MockValues.DATE_MONTH.getValue(),
+      MockValues.DATE_DAY.getValue());
   public static List<Exam> EXAMS = List.of(
       Exam.builder()
           .name("Mathematics Final Exam")
