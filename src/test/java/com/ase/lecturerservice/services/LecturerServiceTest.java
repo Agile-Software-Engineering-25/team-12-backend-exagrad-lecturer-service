@@ -4,15 +4,14 @@ import com.ase.lecturerservice.dtos.ExamDto;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.user.Lecturer;
 import com.ase.lecturerservice.entities.user.UserType;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
 
 @SpringBootTest
 public class LecturerServiceTest {
@@ -24,32 +23,32 @@ public class LecturerServiceTest {
   @BeforeEach
   public void setUpLecturer() {
     lecturer = Lecturer.builder()
-      .id(UUID.randomUUID())
-      .email("lecturer@example.com")
-      .type(UserType.LECTURER)
-      .firstName("John")
-      .lastName("Doe")
-      .build();
+        .id(UUID.randomUUID())
+        .email("lecturer@example.com")
+        .type(UserType.LECTURER)
+        .firstName("John")
+        .lastName("Doe")
+        .build();
   }
 
   @Test
   void fetchExamsByLecturer_shouldGetExams() {
     DummyData.EXAMS = List.of(Exam.builder()
-      .name("Mathematics Final Exam")
-      .grade(1)
-      .averageGrade(2)
-      .totalPoints(100)
-      .achievedPoints(95)
-      .examType("Written")
-      .date(LocalDate.of(2015, 10, 12))
-      .time(5400)
-      .allowedResources("Calculator, Formula Sheet")
-      .attempt(1)
-      .etcs(5)
-      .room("Room A101")
-      .lecturer(lecturer)
-      .module("Mathe")
-      .build());
+        .name("Mathematics Final Exam")
+        .grade(1)
+        .averageGrade(2)
+        .totalPoints(100)
+        .achievedPoints(95)
+        .examType("Written")
+        .date(LocalDate.of(2015, 10, 12))
+        .time(5400)
+        .allowedResources("Calculator, Formula Sheet")
+        .attempt(1)
+        .etcs(5)
+        .room("Room A101")
+        .lecturer(lecturer)
+        .module("Mathe")
+        .build());
 
     List<Exam> exams = lecturerService.getExamsByLecturer("Test");
     Exam exam = exams.getFirst();
@@ -83,21 +82,21 @@ public class LecturerServiceTest {
   @Test
   void convertToExamDto_shouldConvertExamsToDto() {
     List<Exam> exams = List.of(Exam.builder()
-      .name("Mathematics Final Exam")
-      .grade(1)
-      .averageGrade(2)
-      .totalPoints(100)
-      .achievedPoints(95)
-      .examType("Written")
-      .date(LocalDate.of(2015, 10, 12))
-      .time(5400)
-      .allowedResources("Calculator, Formula Sheet")
-      .attempt(1)
-      .etcs(5)
-      .room("Room A101")
-      .lecturer(lecturer)
-      .module("Mathe")
-      .build());
+        .name("Mathematics Final Exam")
+        .grade(1)
+        .averageGrade(2)
+        .totalPoints(100)
+        .achievedPoints(95)
+        .examType("Written")
+        .date(LocalDate.of(2015, 10, 12))
+        .time(5400)
+        .allowedResources("Calculator, Formula Sheet")
+        .attempt(1)
+        .etcs(5)
+        .room("Room A101")
+        .lecturer(lecturer)
+        .module("Mathe")
+        .build());
 
     List<ExamDto> examDtos = lecturerService.convertToExamDto(exams);
     ExamDto examDto = examDtos.getFirst();
