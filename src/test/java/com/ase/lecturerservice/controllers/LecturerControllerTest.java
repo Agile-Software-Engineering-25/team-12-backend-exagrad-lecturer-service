@@ -22,13 +22,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(LecturerController.class)
 public class LecturerControllerTest {
 
+  private static List<ExamDto> examDtoList;
   @Autowired
   private MockMvc mockMvc;
-
   @MockitoBean
   private LecturerService lecturerService;
-
-  private static List<ExamDto> examDtoList;
 
   @BeforeAll
   public static void setup() {

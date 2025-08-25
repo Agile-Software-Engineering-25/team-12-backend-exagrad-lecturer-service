@@ -17,12 +17,12 @@ import org.hibernate.annotations.UuidGenerator;
 @NoArgsConstructor
 @SuperBuilder
 public abstract class UserEntity {
+  @Column(name = "email", insertable = false, updatable = false)
+  protected String email;
+
   @Id
   @UuidGenerator
   private UUID id;
-
-  @Column(name = "email", insertable = false, updatable = false)
-  protected String email;
 
   @Column(name = "first_name", nullable = false)
   @JsonProperty("first_name")
