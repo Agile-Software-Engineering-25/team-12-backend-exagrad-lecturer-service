@@ -1,5 +1,6 @@
 package com.ase.lecturerservice.controllers;
 
+import com.ase.lecturerservice.MockValues;
 import com.ase.lecturerservice.dtos.ExamDto;
 import com.ase.lecturerservice.services.LecturerService;
 import java.time.LocalDate;
@@ -31,16 +32,18 @@ public class LecturerControllerTest {
 
   @BeforeAll
   public static void setup() {
+    LocalDate date = LocalDate.of(MockValues.DATE_YEAR.getValue(), MockValues.DATE_MONTH.getValue(), MockValues.DATE_DAY.getValue());
+
     examDtoList = List.of(ExamDto.builder()
         .name("Test")
         .module("Test")
-        .date(LocalDate.of(2015, 10, 12))
-        .time(5400)
+        .date(date)
+        .time(MockValues.TIME_SECONDS.getValue())
         .build());
   }
 
   @Test
-  void fetchExams_shouldReturnExamDtos() throws Exception {
+  void fetchExamsShouldReturnExamDtos() throws Exception {
     Mockito.when(lecturerService.getExamsByLecturer("john")).thenReturn(List.of());
     Mockito.when(lecturerService.convertToExamDto(List.of())).thenReturn(examDtoList);
     mockMvc.perform(get("/api/v1/lecturer/exams")
@@ -51,11 +54,11 @@ public class LecturerControllerTest {
         .andExpect(jsonPath("$[0].name").value("Test"))
         .andExpect(jsonPath("$[0].date").value("2015-10-12"))
         .andExpect(jsonPath("$[0].module").value("Test"))
-        .andExpect(jsonPath("$[0].time").value(5400));
+        .andExpect(jsonPath("$[0].time").value(MockValues.TIME_MIN.getValue()));
   }
 
   @Test
-  void fetchExams_shouldThrowException() throws Exception {
+  void fetchExamsShouldThrowException() throws Exception {
     Mockito.when(lecturerService.getExamsByLecturer(""))
         .thenThrow(new IllegalArgumentException("Lecturer cannot be empty"));
 

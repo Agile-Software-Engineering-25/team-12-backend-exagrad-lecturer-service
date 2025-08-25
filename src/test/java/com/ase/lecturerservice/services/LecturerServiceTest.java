@@ -1,5 +1,6 @@
 package com.ase.lecturerservice.services;
 
+import com.ase.lecturerservice.MockValues;
 import com.ase.lecturerservice.dtos.ExamDto;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.user.Lecturer;
@@ -19,6 +20,7 @@ public class LecturerServiceTest {
   private LecturerService lecturerService;
 
   private Lecturer lecturer;
+  private LocalDate date;
 
   @BeforeEach
   public void setUpLecturer() {
@@ -29,22 +31,24 @@ public class LecturerServiceTest {
         .firstName("John")
         .lastName("Doe")
         .build();
+
+    date = LocalDate.of(MockValues.DATE_YEAR.getValue(), MockValues.DATE_MONTH.getValue(), MockValues.DATE_DAY.getValue());
   }
 
   @Test
-  void fetchExamsByLecturer_shouldGetExams() {
+  void fetchExamsByLecturerShouldGetExams() {
     DummyData.EXAMS = List.of(Exam.builder()
         .name("Mathematics Final Exam")
-        .grade(1)
-        .averageGrade(2)
-        .totalPoints(100)
-        .achievedPoints(95)
+        .grade(MockValues.GRADE.getValue())
+        .averageGrade(MockValues.AVERAGE_GRADE.getValue())
+        .totalPoints(MockValues.TOTAL_POINTS.getValue())
+        .achievedPoints(MockValues.ACHIEVED_POINTS.getValue())
         .examType("Written")
-        .date(LocalDate.of(2015, 10, 12))
-        .time(5400)
+        .date(date)
+        .time(MockValues.TIME_SECONDS.getValue())
         .allowedResources("Calculator, Formula Sheet")
-        .attempt(1)
-        .etcs(5)
+        .attempt(MockValues.ATTEMPT.getValue())
+        .etcs(MockValues.ETCS.getValue())
         .room("Room A101")
         .lecturer(lecturer)
         .module("Mathe")
@@ -55,23 +59,23 @@ public class LecturerServiceTest {
 
     Assertions.assertThat(exams).isNotEmpty();
     Assertions.assertThat(exam.getName()).isEqualTo("Mathematics Final Exam");
-    Assertions.assertThat(exam.getGrade()).isEqualTo(1);
-    Assertions.assertThat(exam.getAverageGrade()).isEqualTo(2);
-    Assertions.assertThat(exam.getTotalPoints()).isEqualTo(100);
-    Assertions.assertThat(exam.getAchievedPoints()).isEqualTo(95);
+    Assertions.assertThat(exam.getGrade()).isEqualTo(MockValues.GRADE.getValue());
+    Assertions.assertThat(exam.getAverageGrade()).isEqualTo(MockValues.AVERAGE_GRADE.getValue());
+    Assertions.assertThat(exam.getTotalPoints()).isEqualTo(MockValues.TOTAL_POINTS.getValue());
+    Assertions.assertThat(exam.getAchievedPoints()).isEqualTo(MockValues.ACHIEVED_POINTS.getValue());
     Assertions.assertThat(exam.getExamType()).isEqualTo("Written");
-    Assertions.assertThat(exam.getDate()).isEqualTo(LocalDate.of(2015, 10, 12));
-    Assertions.assertThat(exam.getTime()).isEqualTo(5400);
+    Assertions.assertThat(exam.getDate()).isEqualTo(date);
+    Assertions.assertThat(exam.getTime()).isEqualTo(MockValues.TIME_SECONDS.getValue());
     Assertions.assertThat(exam.getAllowedResources()).isEqualTo("Calculator, Formula Sheet");
-    Assertions.assertThat(exam.getAttempt()).isEqualTo(1);
-    Assertions.assertThat(exam.getEtcs()).isEqualTo(5);
+    Assertions.assertThat(exam.getAttempt()).isEqualTo(MockValues.ATTEMPT.getValue());
+    Assertions.assertThat(exam.getEtcs()).isEqualTo(MockValues.ETCS.getValue());
     Assertions.assertThat(exam.getRoom()).isEqualTo("Room A101");
     Assertions.assertThat(exam.getLecturer()).isEqualTo(lecturer);
     Assertions.assertThat(exam.getModule()).isEqualTo("Mathe");
   }
 
   @Test
-  void fetchExamsByLecturer_shouldNotGetExams() {
+  void fetchExamsByLecturerShouldNotGetExams() {
     DummyData.EXAMS = List.of();
 
     List<Exam> exams = lecturerService.getExamsByLecturer("Test");
@@ -80,19 +84,19 @@ public class LecturerServiceTest {
   }
 
   @Test
-  void convertToExamDto_shouldConvertExamsToDto() {
+  void convertToExamDtoShouldConvertExamsToDto() {
     List<Exam> exams = List.of(Exam.builder()
         .name("Mathematics Final Exam")
-        .grade(1)
-        .averageGrade(2)
-        .totalPoints(100)
-        .achievedPoints(95)
+        .grade(MockValues.GRADE.getValue())
+        .averageGrade(MockValues.AVERAGE_GRADE.getValue())
+        .totalPoints(MockValues.TOTAL_POINTS.getValue())
+        .achievedPoints(MockValues.ACHIEVED_POINTS.getValue())
         .examType("Written")
-        .date(LocalDate.of(2015, 10, 12))
-        .time(5400)
+        .date(date)
+        .time(MockValues.TIME_SECONDS.getValue())
         .allowedResources("Calculator, Formula Sheet")
-        .attempt(1)
-        .etcs(5)
+        .attempt(MockValues.ATTEMPT.getValue())
+        .etcs(MockValues.ETCS.getValue())
         .room("Room A101")
         .lecturer(lecturer)
         .module("Mathe")
@@ -104,13 +108,13 @@ public class LecturerServiceTest {
     Assertions.assertThat(examDtos).isNotEmpty();
     Assertions.assertThat(examDto.getName()).isEqualTo("Mathematics Final Exam");
     Assertions.assertThat(examDto.getModule()).isEqualTo("Mathe");
-    Assertions.assertThat(examDto.getDate()).isEqualTo(LocalDate.of(2015, 10, 12));
-    Assertions.assertThat(examDto.getTime()).isEqualTo(90);
-    Assertions.assertThat(examDto.getSubmissions()).isEqualTo(1);
+    Assertions.assertThat(examDto.getDate()).isEqualTo(date);
+    Assertions.assertThat(examDto.getTime()).isEqualTo(MockValues.TIME_MIN.getValue());
+    Assertions.assertThat(examDto.getSubmissions()).isEqualTo(MockValues.SUBMISSIONS.getValue());
   }
 
   @Test
-  void convertToExamDto_shouldGetEmptyList() {
+  void convertToExamDtoShouldGetEmptyList() {
     List<Exam> exams = List.of();
 
     List<ExamDto> examDtos = lecturerService.convertToExamDto(exams);
