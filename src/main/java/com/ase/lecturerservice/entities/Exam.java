@@ -16,53 +16,53 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Exam {
-    @Id
-    @UuidGenerator
-    protected UUID id;
+  @Id
+  @UuidGenerator
+  protected UUID id;
 
-    @Column(name = "name")
-    protected String name;
+  @Column(name = "name")
+  protected String name;
 
-    @Column(name = "grade")
-    protected int grade;
+  @Column(name = "grade")
+  protected int grade;
 
-    @Column(name = "average_grade")
-    protected int averageGrade;
+  @Column(name = "average_grade")
+  protected int averageGrade;
 
-    @Column(name = "total_points")
-    protected int totalPoints;
+  @Column(name = "total_points")
+  protected int totalPoints;
 
-    @Column(name = "achieved_points")
-    protected int achievedPoints;
+  @Column(name = "achieved_points")
+  protected int achievedPoints;
 
-    @Column(name = "exam_type")
-    protected String examType;
+  @Column(name = "exam_type")
+  protected String examType;
 
-    @Column(name = "date")
-    protected LocalDate date;
+  @Column(name = "date")
+  protected LocalDate date;
 
-    @Column(name = "time")
-    protected int time;
+  @Column(name = "time")
+  protected int time;
 
-    @Column(name = "allowed_resources")
-    protected String allowedResources;
+  @Column(name = "allowed_resources")
+  protected String allowedResources;
 
-    @Column(name = "attempt")
-    protected int attempt;
+  @Column(name = "attempt")
+  protected int attempt;
 
-    @Column(name = "etcs")
-    protected int etcs;
+  @Column(name = "etcs")
+  protected int etcs;
 
-    @Column(name = "room")
-    protected String room;
+  @Column(name = "room")
+  protected String room;
 
-    @Column(name = "module")
-    protected String module;
+  @Column(name = "module")
+  protected String module;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "lecturer_id")
-    protected Lecturer lecturer;
+  @ManyToOne(cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "lecturer_id")
+  protected Lecturer lecturer;
 
-    @ManyToMany(mappedBy = "assignedExams", fetch = FetchType.LAZY)
-    protected List<Student> assignedStudents;
+  @ManyToMany(mappedBy = "assignedExams", fetch = FetchType.LAZY)
+  protected List<Student> assignedStudents;
 }

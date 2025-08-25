@@ -18,22 +18,22 @@ import java.util.UUID;
 @NoArgsConstructor
 @SuperBuilder
 public abstract class UserEntity {
-    @Id
-    @UuidGenerator
-    private UUID id;
+  @Id
+  @UuidGenerator
+  private UUID id;
 
-    @Column(name = "email", insertable = false, updatable = false)
-    protected String email;
+  @Column(name = "email", insertable = false, updatable = false)
+  protected String email;
 
-    @Column(name = "first_name", nullable = false)
-    @JsonProperty("first_name")
-    private String firstName;
+  @Column(name = "first_name", nullable = false)
+  @JsonProperty("first_name")
+  private String firstName;
 
-    @Column(name = "last_name", nullable = false)
-    @JsonProperty("last_name")
-    private String lastName;
+  @Column(name = "last_name", nullable = false)
+  @JsonProperty("last_name")
+  private String lastName;
 
-    @Column(name = "type")
-    @JsonProperty("type")
-    private UserType type;
+  @Column(name = "type")
+  @JsonProperty("type")
+  private UserType type;
 }

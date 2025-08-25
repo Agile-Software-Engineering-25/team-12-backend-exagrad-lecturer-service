@@ -19,40 +19,40 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class LecturerService {
-    private final ObjectMapper objectMapper;
+  private final ObjectMapper objectMapper;
 
-    public List<Exam> getExamsByLecturer(String lecturer)
-            throws HttpStatusCodeException {
-        if (lecturer == null || lecturer.isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Lecturer name is required");
-        }
-
-        // TODO: change this to a webclient call, when the API is ready
-        log.info("The Exam from {} has been requested", lecturer);
-        return DummyData.EXAMS;
+  public List<Exam> getExamsByLecturer(String lecturer)
+    throws HttpStatusCodeException {
+    if (lecturer == null || lecturer.isBlank()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+        "Lecturer name is required");
     }
 
-    public List<ExamDto> convertToExamDto(List<Exam> exams) {
-        if (exams == null) {
-            return List.of();
-        }
+    // TODO: change this to a webclient call, when the API is ready
+    log.info("The Exam from {} has been requested", lecturer);
+    return DummyData.EXAMS;
+  }
 
-        Map<String, ExamDto> examDtoMap = exams.stream()
-                .map(exam -> {
-                    ExamDto dto = objectMapper.convertValue(exam, ExamDto.class);
-                    dto.setTime(dto.getTime() / 60);
-                    dto.setSubmissions(1);
-                    return Map.entry(exam.getName(), dto);
-                })
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (existing, incoming) -> {
-                            existing.setSubmissions(existing.getSubmissions() + 1);
-                            return existing;
-                        }));
-
-        return new ArrayList<>(examDtoMap.values());
+  public List<ExamDto> convertToExamDto(List<Exam> exams) {
+    if (exams == null) {
+      return List.of();
     }
+
+    Map<String, ExamDto> examDtoMap = exams.stream()
+      .map(exam -> {
+        ExamDto dto = objectMapper.convertValue(exam, ExamDto.class);
+        dto.setTime(dto.getTime() / 60);
+        dto.setSubmissions(1);
+        return Map.entry(exam.getName(), dto);
+      })
+      .collect(Collectors.toMap(
+        Map.Entry::getKey,
+        Map.Entry::getValue,
+        (existing, incoming) -> {
+          existing.setSubmissions(existing.getSubmissions() + 1);
+          return existing;
+        }));
+
+    return new ArrayList<>(examDtoMap.values());
+  }
 }

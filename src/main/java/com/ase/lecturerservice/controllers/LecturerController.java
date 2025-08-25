@@ -19,12 +19,12 @@ import static com.ase.lecturerservice.controllers.BaseController.BASE_PATH;
 @RequiredArgsConstructor
 public class LecturerController {
 
-    private final LecturerService lecturerService;
+  private final LecturerService lecturerService;
 
-    @GetMapping("/exams")
-    public ResponseEntity<List<ExamDto>> getExams(
-            @RequestParam String lecturer) throws IllegalArgumentException {
-        List<Exam> exams = lecturerService.getExamsByLecturer(lecturer);
-        return ResponseEntity.ok(lecturerService.convertToExamDto(exams));
-    }
+  @GetMapping("/exams")
+  public ResponseEntity<List<ExamDto>> getExams(
+    @RequestParam String lecturer) throws IllegalArgumentException {
+    List<Exam> exams = lecturerService.getExamsByLecturer(lecturer);
+    return ResponseEntity.ok(lecturerService.convertToExamDto(exams));
+  }
 }

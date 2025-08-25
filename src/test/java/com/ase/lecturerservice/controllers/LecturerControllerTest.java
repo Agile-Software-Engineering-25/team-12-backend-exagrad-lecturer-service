@@ -32,11 +32,11 @@ public class LecturerControllerTest {
   @BeforeAll
   public static void setup() {
     examDtoList = List.of(ExamDto.builder()
-        .name("Test")
-        .module("Test")
-        .date(LocalDate.of(2015,10,12))
-        .time(5400)
-        .build());
+      .name("Test")
+      .module("Test")
+      .date(LocalDate.of(2015, 10, 12))
+      .time(5400)
+      .build());
   }
 
   @Test
@@ -44,25 +44,25 @@ public class LecturerControllerTest {
     Mockito.when(lecturerService.getExamsByLecturer("john")).thenReturn(List.of());
     Mockito.when(lecturerService.convertToExamDto(List.of())).thenReturn(examDtoList);
     mockMvc.perform(get("/api/v1/lecturer/exams")
-            .param("lecturer","john")
-            .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].name").value("Test"))
-        .andExpect(jsonPath("$[0].date").value("2015-10-12"))
-        .andExpect(jsonPath("$[0].module").value("Test"))
-        .andExpect(jsonPath("$[0].time").value(5400));
+        .param("lecturer", "john")
+        .contentType(MediaType.APPLICATION_JSON))
+      .andDo(print())
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$[0].name").value("Test"))
+      .andExpect(jsonPath("$[0].date").value("2015-10-12"))
+      .andExpect(jsonPath("$[0].module").value("Test"))
+      .andExpect(jsonPath("$[0].time").value(5400));
   }
 
   @Test
-  void fetchExams_shouldThrowException() throws Exception{
+  void fetchExams_shouldThrowException() throws Exception {
     Mockito.when(lecturerService.getExamsByLecturer(""))
-        .thenThrow(new IllegalArgumentException("Lecturer cannot be empty"));
+      .thenThrow(new IllegalArgumentException("Lecturer cannot be empty"));
 
     mockMvc.perform(get("/api/v1/lecturer/exams")
-            .param("lecturer","")
-            .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isBadRequest())
-        .andExpect(content().string("Lecturer cannot be empty"));
+        .param("lecturer", "")
+        .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isBadRequest())
+      .andExpect(content().string("Lecturer cannot be empty"));
   }
 }

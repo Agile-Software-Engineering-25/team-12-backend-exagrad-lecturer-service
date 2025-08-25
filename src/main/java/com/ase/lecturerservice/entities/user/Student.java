@@ -14,8 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @SuperBuilder
 public class Student extends UserEntity {
-    protected final UserType type = UserType.STUDENT;
+  protected final UserType type = UserType.STUDENT;
 
-    @ManyToMany
-    protected List<Exam> assignedExams;
+  @ManyToMany
+  protected List<Exam> assignedExams;
 }
