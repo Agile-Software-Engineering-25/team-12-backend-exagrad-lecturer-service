@@ -1,7 +1,7 @@
-package com.ase.userservice.controllers;
+package com.ase.lecturerservice.controllers;
 
-import com.ase.userservice.dtos.ExamDto;
-import com.ase.userservice.services.LecturerService;
+import com.ase.lecturerservice.dtos.ExamDto;
+import com.ase.lecturerservice.services.LecturerService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -41,7 +41,7 @@ public class LecturerControllerTest {
 
   @Test
   void fetchExams_shouldReturnExamDtos() throws Exception {
-    Mockito.when(lecturerService.fetchExamsByLecturer("john")).thenReturn(List.of());
+    Mockito.when(lecturerService.getExamsByLecturer("john")).thenReturn(List.of());
     Mockito.when(lecturerService.convertToExamDto(List.of())).thenReturn(examDtoList);
     mockMvc.perform(get("/api/v1/lecturer/exams")
             .param("lecturer","john")
@@ -56,7 +56,7 @@ public class LecturerControllerTest {
 
   @Test
   void fetchExams_shouldThrowException() throws Exception{
-    Mockito.when(lecturerService.fetchExamsByLecturer(""))
+    Mockito.when(lecturerService.getExamsByLecturer(""))
         .thenThrow(new IllegalArgumentException("Lecturer cannot be empty"));
 
     mockMvc.perform(get("/api/v1/lecturer/exams")

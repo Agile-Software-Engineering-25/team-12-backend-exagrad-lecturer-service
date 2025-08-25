@@ -1,9 +1,9 @@
-package com.ase.userservice.services;
+package com.ase.lecturerservice.services;
 
-import com.ase.userservice.dtos.ExamDto;
-import com.ase.userservice.entities.Exam;
-import com.ase.userservice.entities.user.Lecturer;
-import com.ase.userservice.entities.user.UserType;
+import com.ase.lecturerservice.dtos.ExamDto;
+import com.ase.lecturerservice.entities.Exam;
+import com.ase.lecturerservice.entities.user.Lecturer;
+import com.ase.lecturerservice.entities.user.UserType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,7 +49,7 @@ public class LecturerServiceTest {
         .module("Mathe")
         .build());
 
-    List<Exam> exams = lecturerService.fetchExamsByLecturer("Test");
+    List<Exam> exams = lecturerService.getExamsByLecturer("Test");
     Exam exam = exams.getFirst();
 
     Assertions.assertThat(exams).isNotEmpty();
@@ -73,7 +73,7 @@ public class LecturerServiceTest {
   void fetchExamsByLecturer_shouldNotGetExams() {
     DummyData.EXAMS = List.of();
 
-    List<Exam> exams = lecturerService.fetchExamsByLecturer("Test");
+    List<Exam> exams = lecturerService.getExamsByLecturer("Test");
 
     Assertions.assertThat(exams).isEmpty();
   }
@@ -105,7 +105,7 @@ public class LecturerServiceTest {
     Assertions.assertThat(examDto.getModule()).isEqualTo("Mathe");
     Assertions.assertThat(examDto.getDate()).isEqualTo(LocalDate.of(2015, 10, 12));
     Assertions.assertThat(examDto.getTime()).isEqualTo(90);
-    Assertions.assertThat(examDto.getCount()).isEqualTo(1);
+    Assertions.assertThat(examDto.getSubmissions()).isEqualTo(1);
   }
 
   @Test
