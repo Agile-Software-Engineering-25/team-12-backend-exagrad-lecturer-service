@@ -1,7 +1,7 @@
 package com.ase.lecturerservice.dtos;
 
-import com.sun.istack.NotNull;
 import java.time.LocalDate;
+import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Data;
 

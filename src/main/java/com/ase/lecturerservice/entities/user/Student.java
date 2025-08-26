@@ -1,8 +1,8 @@
 package com.ase.lecturerservice.entities.user;
 
+import java.util.List;
 import com.ase.lecturerservice.entities.Exam;
 import jakarta.persistence.ManyToMany;
-import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

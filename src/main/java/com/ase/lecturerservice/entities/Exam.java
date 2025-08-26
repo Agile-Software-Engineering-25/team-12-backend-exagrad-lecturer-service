@@ -1,5 +1,9 @@
 package com.ase.lecturerservice.entities;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
+import org.hibernate.annotations.UuidGenerator;
 import com.ase.lecturerservice.entities.user.Lecturer;
 import com.ase.lecturerservice.entities.user.Student;
 import jakarta.persistence.CascadeType;
@@ -9,15 +13,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.UuidGenerator;
 
 @Setter
 @Getter

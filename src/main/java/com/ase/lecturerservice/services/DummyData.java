@@ -1,10 +1,10 @@
 package com.ase.lecturerservice.services;
 
+import java.time.LocalDate;
+import java.util.List;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.user.Lecturer;
 import com.ase.lecturerservice.mockvalues.MockValues;
-import java.time.LocalDate;
-import java.util.List;
 
 public class DummyData {
   static LocalDate date = LocalDate.of(
