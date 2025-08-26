@@ -20,6 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 public class LecturerService {
   private final ObjectMapper objectMapper;
 
+  private static final int SECONDS_PER_MINUTE = 60;
+
   public List<Exam> getExamsByLecturer(String lecturer)
       throws HttpStatusCodeException {
     if (lecturer == null || lecturer.isBlank()) {
@@ -32,7 +34,6 @@ public class LecturerService {
     return DummyData.EXAMS;
   }
 
-  @SuppressWarnings("checkstyle:MagicNumber")
   public List<ExamDto> convertToExamDto(List<Exam> exams) {
     if (exams == null) {
       return List.of();
@@ -41,7 +42,7 @@ public class LecturerService {
     Map<String, ExamDto> examDtoMap = exams.stream()
         .map(exam -> {
           ExamDto dto = objectMapper.convertValue(exam, ExamDto.class);
-          dto.setTime(dto.getTime() / 60); // convert seconds to minutes
+          dto.setTime(dto.getTime() / SECONDS_PER_MINUTE);
           dto.setSubmissions(1);
           return Map.entry(exam.getName(), dto);
         })
