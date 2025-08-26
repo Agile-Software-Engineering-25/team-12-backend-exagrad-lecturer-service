@@ -1,18 +1,18 @@
 package com.ase.lecturerservice.services;
 
-import com.ase.lecturerservice.dtos.ExamDto;
-import com.ase.lecturerservice.entities.Exam;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.server.ResponseStatusException;
+import com.ase.lecturerservice.dtos.ExamDto;
+import com.ase.lecturerservice.entities.Exam;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -32,6 +32,7 @@ public class LecturerService {
     return DummyData.EXAMS;
   }
 
+  @SuppressWarnings("checkstyle:MagicNumber")
   public List<ExamDto> convertToExamDto(List<Exam> exams) {
     if (exams == null) {
       return List.of();
@@ -40,7 +41,7 @@ public class LecturerService {
     Map<String, ExamDto> examDtoMap = exams.stream()
         .map(exam -> {
           ExamDto dto = objectMapper.convertValue(exam, ExamDto.class);
-          dto.setTime(dto.getTime() / 60);
+          dto.setTime(dto.getTime() / 60); // convert seconds to minutes
           dto.setSubmissions(1);
           return Map.entry(exam.getName(), dto);
         })

@@ -1,8 +1,10 @@
 package com.ase.lecturerservice.controllers;
 
-import com.ase.lecturerservice.MockValues;
-import com.ase.lecturerservice.dtos.ExamDto;
-import com.ase.lecturerservice.services.LecturerService;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,11 +15,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.ase.lecturerservice.MockValues;
+import com.ase.lecturerservice.dtos.ExamDto;
+import com.ase.lecturerservice.services.LecturerService;
 
 @WebMvcTest(LecturerController.class)
 public class LecturerControllerTest {
@@ -30,7 +30,10 @@ public class LecturerControllerTest {
 
   @BeforeAll
   public static void setup() {
-    LocalDate date = LocalDate.of(MockValues.DATE_YEAR.getValue(), MockValues.DATE_MONTH.getValue(), MockValues.DATE_DAY.getValue());
+    LocalDate date = LocalDate.of(
+        MockValues.DATE_YEAR.getValue(),
+        MockValues.DATE_MONTH.getValue(),
+        MockValues.DATE_DAY.getValue());
 
     examDtoList = List.of(ExamDto.builder()
         .name("Test")

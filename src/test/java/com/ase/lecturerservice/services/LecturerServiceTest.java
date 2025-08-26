@@ -1,10 +1,5 @@
 package com.ase.lecturerservice.services;
 
-import com.ase.lecturerservice.MockValues;
-import com.ase.lecturerservice.dtos.ExamDto;
-import com.ase.lecturerservice.entities.Exam;
-import com.ase.lecturerservice.entities.user.Lecturer;
-import com.ase.lecturerservice.entities.user.UserType;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -13,6 +8,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import com.ase.lecturerservice.MockValues;
+import com.ase.lecturerservice.dtos.ExamDto;
+import com.ase.lecturerservice.entities.Exam;
+import com.ase.lecturerservice.entities.user.Lecturer;
+import com.ase.lecturerservice.entities.user.UserType;
 
 @SpringBootTest
 public class LecturerServiceTest {
@@ -118,11 +118,16 @@ public class LecturerServiceTest {
     ExamDto examDto = examDtos.getFirst();
 
     Assertions.assertThat(examDtos).isNotEmpty();
-    Assertions.assertThat(examDto.getName()).isEqualTo("Mathematics Final Exam");
-    Assertions.assertThat(examDto.getModule()).isEqualTo("Mathe");
-    Assertions.assertThat(examDto.getDate()).isEqualTo(date);
-    Assertions.assertThat(examDto.getTime()).isEqualTo(MockValues.TIME_MIN.getValue());
-    Assertions.assertThat(examDto.getSubmissions()).isEqualTo(MockValues.SUBMISSIONS.getValue());
+    Assertions.assertThat(examDto.getName()).
+        isEqualTo("Mathematics Final Exam");
+    Assertions.assertThat(examDto.getModule()).
+        isEqualTo("Mathe");
+    Assertions.assertThat(examDto.getDate()).
+        isEqualTo(date);
+    Assertions.assertThat(examDto.getTime()).
+        isEqualTo(MockValues.TIME_MIN.getValue());
+    Assertions.assertThat(examDto.getSubmissions()).
+        isEqualTo(MockValues.SUBMISSIONS.getValue());
   }
 
   @Test
