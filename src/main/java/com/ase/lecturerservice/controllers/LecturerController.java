@@ -21,21 +21,16 @@ public class LecturerController {
   private final LecturerService lecturerService;
 
   @GetMapping("/exams")
-  public ResponseEntity<List<ExamDto>> getExams(
-      @RequestParam String lecturer) throws IllegalArgumentException {
+  public ResponseEntity<List<ExamDto>> getExams(@RequestParam String lecturer)
+      throws IllegalArgumentException {
     List<Exam> exams = lecturerService.getExamsByLecturer(lecturer);
 
-    List<ExamDto> examDtoList = exams.stream()
-        .map(lecturerService::convertToExamDto)
-        .collect(Collectors.groupingBy(ExamDto::getName))
-        .values()
-        .stream()
-        .map(dtos -> {
+    List<ExamDto> examDtoList = exams.stream().map(lecturerService::convertToExamDto)
+        .collect(Collectors.groupingBy(ExamDto::getName)).values().stream().map(dtos -> {
           ExamDto merged = dtos.getFirst();
           merged.setSubmissionsCount(dtos.size());
           return merged;
-        })
-        .collect(Collectors.toList());
+        }).collect(Collectors.toList());
 
     return ResponseEntity.ok(examDtoList);
   }
