@@ -1,9 +1,6 @@
 package com.ase.lecturerservice.services;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -34,26 +31,11 @@ public class LecturerService {
     return DummyData.EXAMS;
   }
 
-  public List<ExamDto> convertToExamDto(List<Exam> exams) {
-    if (exams == null) {
-      return List.of();
-    }
+  public ExamDto convertToExamDto(Exam exam) {
+    ExamDto examDto = objectMapper.convertValue(exam, ExamDto.class);
+    examDto.setTime(examDto.getTime() / SECONDS_PER_MINUTE);
+    examDto.setSubmissionsCount(1);
 
-    Map<String, ExamDto> examDtoMap = exams.stream()
-        .map(exam -> {
-          ExamDto dto = objectMapper.convertValue(exam, ExamDto.class);
-          dto.setTime(dto.getTime() / SECONDS_PER_MINUTE);
-          dto.setSubmissions(1);
-          return Map.entry(exam.getName(), dto);
-        })
-        .collect(Collectors.toMap(
-            Map.Entry::getKey,
-            Map.Entry::getValue,
-            (existing, incoming) -> {
-              existing.setSubmissions(existing.getSubmissions() + 1);
-              return existing;
-            }));
-
-    return new ArrayList<>(examDtoMap.values());
+    return (examDto);
   }
 }

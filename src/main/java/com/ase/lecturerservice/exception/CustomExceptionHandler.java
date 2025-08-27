@@ -9,13 +9,14 @@ import lombok.extern.slf4j.Slf4j;
 @ControllerAdvice
 public class CustomExceptionHandler {
   @ExceptionHandler(IllegalArgumentException.class)
-  public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException iae) {
-    return ResponseEntity.badRequest().body(iae.getMessage());
+  public ResponseEntity<String> handleIllegalArgumentException(
+      IllegalArgumentException illegalArgumentException) {
+    return ResponseEntity.badRequest().body(illegalArgumentException.getMessage());
   }
 
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<String> internalErrorHandler(Exception e) {
-    log.error(e.getMessage());
+  public ResponseEntity<String> internalErrorHandler(Exception exception) {
+    log.error(exception.getMessage());
     return ResponseEntity.internalServerError().body("Internal Server Error");
   }
 }
