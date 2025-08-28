@@ -34,7 +34,6 @@ public class LecturerService {
   public ExamDto convertToExamDto(Exam exam) {
     ExamDto examDto = objectMapper.convertValue(exam, ExamDto.class);
     examDto.setTime(examDto.getTime() / SECONDS_PER_MINUTE);
-    examDto.setSubmissionsCount(1);
 
     return (examDto);
   }

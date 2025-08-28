@@ -25,12 +25,9 @@ public class LecturerController {
       throws IllegalArgumentException {
     List<Exam> exams = lecturerService.getExamsByLecturer(lecturer);
 
-    List<ExamDto> examDtoList = exams.stream().map(lecturerService::convertToExamDto)
-        .collect(Collectors.groupingBy(ExamDto::getName)).values().stream().map(dtos -> {
-          ExamDto merged = dtos.getFirst();
-          merged.setSubmissionsCount(dtos.size());
-          return merged;
-        }).collect(Collectors.toList());
+    List<ExamDto> examDtoList = exams.stream()
+        .map(lecturerService::convertToExamDto)
+        .collect(Collectors.toList());
 
     return ResponseEntity.ok(examDtoList);
   }

@@ -17,7 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Exam {
-  protected UUID id;
+  protected UUID uuid;
 
   protected String name;
 

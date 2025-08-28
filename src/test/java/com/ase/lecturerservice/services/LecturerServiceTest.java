@@ -40,7 +40,9 @@ public class LecturerServiceTest {
 
   @Test
   void fetchExamsByLecturerShouldGetExams() {
+    UUID uuid = UUID.randomUUID();
     DummyData.EXAMS = List.of(Exam.builder()
+        .uuid(uuid)
         .name("Mathematics Final Exam")
         .grade(MockValues.GRADE.getValue())
         .averageGrade(MockValues.AVERAGE_GRADE.getValue())
@@ -61,6 +63,8 @@ public class LecturerServiceTest {
     Exam exam = exams.getFirst();
 
     Assertions.assertThat(exams).isNotEmpty();
+    Assertions.assertThat(exam.getUuid())
+        .isEqualTo(uuid);
     Assertions.assertThat(exam.getName())
         .isEqualTo("Mathematics Final Exam");
     Assertions.assertThat(exam.getGrade())
@@ -97,7 +101,7 @@ public class LecturerServiceTest {
 
   @Test
   void convertToExamDtoShouldConvertExamsToDto() {
-    List<Exam> exams = List.of(Exam.builder()
+    Exam exam = Exam.builder()
         .name("Mathematics Final Exam")
         .grade(MockValues.GRADE.getValue())
         .averageGrade(MockValues.AVERAGE_GRADE.getValue())
@@ -112,12 +116,10 @@ public class LecturerServiceTest {
         .room("Room A101")
         .lecturer(lecturer)
         .module("Mathe")
-        .build());
+        .build();
 
-    List<ExamDto> examDtos = lecturerService.convertToExamDto(exams);
-    ExamDto examDto = examDtos.getFirst();
+    ExamDto examDto = lecturerService.convertToExamDto(exam);
 
-    Assertions.assertThat(examDtos).isNotEmpty();
     Assertions.assertThat(examDto.getName()).
         isEqualTo("Mathematics Final Exam");
     Assertions.assertThat(examDto.getModule()).
@@ -126,16 +128,7 @@ public class LecturerServiceTest {
         isEqualTo(date);
     Assertions.assertThat(examDto.getTime()).
         isEqualTo(MockValues.TIME_MIN.getValue());
-    Assertions.assertThat(examDto.getSubmissions()).
+    Assertions.assertThat(examDto.getSubmissionsCount()).
         isEqualTo(MockValues.SUBMISSIONS.getValue());
-  }
-
-  @Test
-  void convertToExamDtoShouldGetEmptyList() {
-    List<Exam> exams = List.of();
-
-    List<ExamDto> examDtos = lecturerService.convertToExamDto(exams);
-
-    Assertions.assertThat(examDtos).isEmpty();
   }
 }

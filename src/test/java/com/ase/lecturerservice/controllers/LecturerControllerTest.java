@@ -17,12 +17,14 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import com.ase.lecturerservice.MockValues;
 import com.ase.lecturerservice.dtos.ExamDto;
+import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.services.LecturerService;
 
 @WebMvcTest(LecturerController.class)
 public class LecturerControllerTest {
 
-  private static List<ExamDto> examDtoList;
+  private static ExamDto examDto;
+
   @Autowired
   private MockMvc mockMvc;
   @MockitoBean
@@ -35,18 +37,18 @@ public class LecturerControllerTest {
         MockValues.DATE_MONTH.getValue(),
         MockValues.DATE_DAY.getValue());
 
-    examDtoList = List.of(ExamDto.builder()
+    examDto = ExamDto.builder()
         .name("Test")
         .module("Test")
         .date(date)
         .time(MockValues.TIME_SECONDS.getValue())
-        .build());
+        .build();
   }
 
   @Test
   void fetchExamsShouldReturnExamDtos() throws Exception {
     Mockito.when(lecturerService.getExamsByLecturer("john")).thenReturn(List.of());
-    Mockito.when(lecturerService.convertToExamDto(List.of())).thenReturn(examDtoList);
+    Mockito.when(lecturerService.convertToExamDto(new Exam())).thenReturn(examDto);
     mockMvc.perform(get("/api/v1/lecturer/exams")
             .param("lecturer", "john")
             .contentType(MediaType.APPLICATION_JSON))
