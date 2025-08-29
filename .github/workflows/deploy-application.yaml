@@ -2,9 +2,13 @@ name: deploy-to-k8s
 
 on:
   push:
+    branches:
+      - main
+      - deployment
+  workflow_dispatch:
 
 jobs:
-  test-action:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -17,4 +21,4 @@ jobs:
         uses: Agile-Software-Engineering-25/deploy-to-k8s@v1
         with:
           kubeconfig: ${{ secrets.KUBECONFIG }}
-          namespace: ${{ variables.KUBECONFIG }}
+          namespace: ${{ variables.NAMESPACE }}
