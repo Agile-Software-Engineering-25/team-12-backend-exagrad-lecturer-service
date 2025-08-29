@@ -3,8 +3,7 @@ name: deploy-to-k8s
 on:
   push:
     branches:
-      - main
-      - deployment
+      - "**"
   workflow_dispatch:
 
 jobs:
