@@ -13,11 +13,18 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v5
 
-      - name: Upload image
+      - name: Build & Publish Docker image
+        id: build
         uses: Agile-Software-Engineering-25/build-and-publish-image@v1.0.0
+        with:
+          # optional: set extra tags if needed
+          extra_tags: ${{ github.sha }}
 
       - name: Deploy to Namespace
-        uses: Agile-Software-Engineering-25/deploy-to-k8s@v1.0.0
+        uses: Agile-Software-Engineering-25/deploy-to-k8s@feature/make-image-tag-adjustable
         with:
           kubeconfig: ${{ secrets.KUBECONFIG }}
-          namespace: ${{ secrets.NAMESPACE }}
+          namespace: ${{ vars.K8S_NAMESPACE }}
+          deployment: grading-service
+          image: ghcr.io/agile-software-engineering-25/team-12-backend-exagrad-lecturer-service
+          tag: ${{ github.sha }}

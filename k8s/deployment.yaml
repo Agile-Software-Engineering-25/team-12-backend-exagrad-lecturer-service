@@ -31,40 +31,23 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
-      imagePullSecrets:
-        - name: <pull-secret-name> # e.g. ghrc-secret for GHCR
       containers:
         - name: app
-          image: ghcr.io/agile-software-engineering-25/grading-service:latest
+          image: ghcr.io/agile-software-engineering-25/team-12-backend-exagrad-lecturer-service:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 8080
           env:
-            - name: SERVER_SERVLET_CONTEXT_PATH
-              value: "/grading-service" # App will live under /<team>
-
-            # Tell Spring to respect X-Forwarded-* from Traefik
-            - name: SERVER_FORWARD_HEADERS_STRATEGY
-              value: "framework"
-
-            # Reasonable JVM sizing for containers (tune per app)
-            - name: JAVA_TOOL_OPTIONS
-              value: "-XX:MaxRAMPercentage=75 -XX:InitialRAMPercentage=50 -Djava.security.egd=file:/dev/./urandom"
-
-            # Expose only necessary actuator endpoints; prometheus requires micrometer-registry-prometheus
-            - name: MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE
-              value: "health,prometheus"
-            - name: MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED
-              value: "true" # Adds /actuator/health/liveness & /readiness
-
             # Enable graceful shutdown at app level (align with terminationGracePeriodSeconds)
+            - name: SERVER_SERVLET_CONTEXT_PATH
+              value: "/ex-grad/grading-service"
             - name: SERVER_SHUTDOWN
               value: "graceful"
 
           readinessProbe:
             httpGet:
-              path: /ase-12/actuator/health/readiness
+              path: /ex-grad/grading-service/actuator/health/readiness
               port: 8080
             initialDelaySeconds: 10
             periodSeconds: 5
@@ -72,7 +55,7 @@ spec:
             timeoutSeconds: 1
           livenessProbe:
             httpGet:
-              path: /ase-12/actuator/health/liveness
+              path: /ex-grad/grading-service/actuator/health/liveness
               port: 8080
             initialDelaySeconds: 20
             periodSeconds: 10
@@ -80,7 +63,7 @@ spec:
             timeoutSeconds: 1
           startupProbe:
             httpGet:
-              path: /ase-12/actuator/health
+              path: /ex-grad/grading-service/actuator/health
               port: 8080
             periodSeconds: 5
             failureThreshold: 30
@@ -97,12 +80,16 @@ spec:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true # Immutable root FS → mount /tmp as writable
             capabilities:
-              drop: ["ALL"]
+              drop: [ "ALL" ]
 
           volumeMounts:
+            - name: data
+              mountPath: /app/data
             - name: tmp
               mountPath: /tmp
 
       volumes:
         - name: tmp
-          emptyDir: {}
+          emptyDir: { }
+        - name: data
+          emptyDir: { }

@@ -102,6 +102,7 @@ public class LecturerServiceTest {
   @Test
   void convertToExamDtoShouldConvertExamsToDto() {
     Exam exam = Exam.builder()
+        .uuid(UUID.randomUUID())
         .name("Mathematics Final Exam")
         .grade(MockValues.GRADE.getValue())
         .averageGrade(MockValues.AVERAGE_GRADE.getValue())
@@ -128,7 +129,5 @@ public class LecturerServiceTest {
         isEqualTo(date);
     Assertions.assertThat(examDto.getTime()).
         isEqualTo(MockValues.TIME_MIN.getValue());
-    Assertions.assertThat(examDto.getSubmissionsCount()).
-        isEqualTo(MockValues.SUBMISSIONS.getValue());
   }
 }

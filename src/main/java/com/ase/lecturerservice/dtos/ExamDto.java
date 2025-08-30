@@ -2,26 +2,25 @@ package com.ase.lecturerservice.dtos;
 
 import java.time.LocalDate;
 import java.util.UUID;
-import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 @Builder
 public class ExamDto {
-  @NotNull
+  @NonNull
   private UUID uuid;
 
-  @NotNull
+  @NonNull
   private String name;
 
-  @NotNull
+  @NonNull
   private LocalDate date;
 
-  @NotNull
+  @NonNull
   private String module;
 
-  @NotNull
   private int time;
 
   private int submissionsCount;

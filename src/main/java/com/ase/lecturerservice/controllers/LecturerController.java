@@ -12,7 +12,9 @@ import com.ase.lecturerservice.dtos.ExamDto;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.services.LecturerService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping(BASE_PATH + "/lecturer")
 @RequiredArgsConstructor
@@ -24,7 +26,6 @@ public class LecturerController {
   public ResponseEntity<List<ExamDto>> getExams(@RequestParam String lecturer)
       throws IllegalArgumentException {
     List<Exam> exams = lecturerService.getExamsByLecturer(lecturer);
-
     List<ExamDto> examDtoList = exams.stream()
         .map(lecturerService::convertToExamDto)
         .collect(Collectors.toList());
