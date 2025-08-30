@@ -21,7 +21,7 @@ jobs:
           extra_tags: ${{ github.sha }}
 
       - name: Deploy to Namespace
-        uses: Agile-Software-Engineering-25/deploy-to-k8s@feature/make-image-tag-adjustable
+        uses: Agile-Software-Engineering-25/deploy-to-k8s@v1.0.0
         with:
           kubeconfig: ${{ secrets.KUBECONFIG }}
           namespace: ${{ vars.K8S_NAMESPACE }}
