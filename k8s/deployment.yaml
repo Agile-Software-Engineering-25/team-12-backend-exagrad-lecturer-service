@@ -41,13 +41,13 @@ spec:
           env:
             # Enable graceful shutdown at app level (align with terminationGracePeriodSeconds)
             - name: SERVER_SERVLET_CONTEXT_PATH
-              value: "/ex-grad/grading-service"
+              value: "/exa-grad/grading-service"
             - name: SERVER_SHUTDOWN
               value: "graceful"
 
           readinessProbe:
             httpGet:
-              path: /ex-grad/grading-service/actuator/health/readiness
+              path: /exa-grad/grading-service/actuator/health/readiness
               port: 8080
             initialDelaySeconds: 10
             periodSeconds: 5
@@ -55,7 +55,7 @@ spec:
             timeoutSeconds: 1
           livenessProbe:
             httpGet:
-              path: /ex-grad/grading-service/actuator/health/liveness
+              path: /exa-grad/grading-service/actuator/health/liveness
               port: 8080
             initialDelaySeconds: 20
             periodSeconds: 10
@@ -63,7 +63,7 @@ spec:
             timeoutSeconds: 1
           startupProbe:
             httpGet:
-              path: /ex-grad/grading-service/actuator/health
+              path: /exa-grad/grading-service/actuator/health
               port: 8080
             periodSeconds: 5
             failureThreshold: 30

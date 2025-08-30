@@ -14,7 +14,7 @@ spec:
     - host: sau-portal.de
       http:
         paths:
-          - path: /ex-grad/grading-service # Public URL prefix for this service
+          - path: /exa-grad/grading-service # Public URL prefix for this service
             pathType: Prefix
             backend:
               service:
