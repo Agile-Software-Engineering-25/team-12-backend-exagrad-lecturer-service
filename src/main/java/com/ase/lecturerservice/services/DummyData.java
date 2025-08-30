@@ -79,7 +79,6 @@ public class DummyData {
           .attempt(MockValues.ATTEMPT.getValue())
           .etcs(MockValues.ETCS.getValue())
           .room("Lab C303")
-          .room("Online Submission")
           .lecturer(new Lecturer())
           .module("Chemistry")
           .build(),
