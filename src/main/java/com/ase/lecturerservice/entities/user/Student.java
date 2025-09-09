@@ -1,14 +1,15 @@
 package com.ase.lecturerservice.entities.user;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@AllArgsConstructor
 @SuperBuilder
 public class Student extends UserEntity {
+  protected final String matricalNumber;
   protected final UserType type = UserType.STUDENT;
 }

@@ -2,6 +2,7 @@ package com.ase.lecturerservice.dtos;
 
 import java.time.LocalDate;
 import java.util.UUID;
+import com.ase.lecturerservice.entities.ExamType;
 import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +24,9 @@ public class ExamDto {
 
   @NotNull
   private int time;
+
+  @NotNull
+  private ExamType examType;
 
   private int submissionsCount;
 }

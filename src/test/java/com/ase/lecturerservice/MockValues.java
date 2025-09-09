@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum MockValues {
   GRADE(1),
-  SUBMISSIONS(1),
+  SUBMISSIONS(0),
   AVERAGE_GRADE(2),
   TOTAL_POINTS(100),
   ACHIEVED_POINTS(95),

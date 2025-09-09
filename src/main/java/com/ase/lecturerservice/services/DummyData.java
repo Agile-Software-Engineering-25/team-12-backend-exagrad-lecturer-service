@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import com.ase.lecturerservice.entities.Exam;
+import com.ase.lecturerservice.entities.ExamType;
 import com.ase.lecturerservice.entities.user.Lecturer;
+import com.ase.lecturerservice.entities.user.Student;
 import com.ase.lecturerservice.mockvalues.MockValues;
 
 public class DummyData {
@@ -12,6 +14,14 @@ public class DummyData {
       MockValues.DATE_YEAR.getValue(),
       MockValues.DATE_MONTH.getValue(),
       MockValues.DATE_DAY.getValue());
+
+  static List<Student> studentList = List.of(
+      Student.builder().id(UUID.randomUUID()).matricalNumber("D725").build(),
+      Student.builder().id(UUID.randomUUID()).matricalNumber("D755").build(),
+      Student.builder().id(UUID.randomUUID()).matricalNumber("D735").build(),
+      Student.builder().id(UUID.randomUUID()).matricalNumber("D729").build(),
+      Student.builder().id(UUID.randomUUID()).matricalNumber("D726").build()
+  );
 
   public static List<Exam> EXAMS = List.of(
       Exam.builder()
@@ -21,7 +31,7 @@ public class DummyData {
           .averageGrade(MockValues.AVERAGE_GRADE.getValue())
           .totalPoints(MockValues.TOTAL_POINTS.getValue())
           .achievedPoints(MockValues.ACHIEVED_POINTS.getValue())
-          .examType("Written")
+          .examType(ExamType.PRESENTATION)
           .date(date)
           .time(MockValues.TIME_SECONDS.getValue())
           .allowedResources("Calculator, Formula Sheet")
@@ -30,6 +40,7 @@ public class DummyData {
           .room("Room A101")
           .lecturer(new Lecturer())
           .module("Mathe")
+          .assignedStudents(studentList)
           .build(),
       Exam.builder()
           .uuid(UUID.randomUUID())
@@ -38,7 +49,7 @@ public class DummyData {
           .averageGrade(MockValues.AVERAGE_GRADE.getValue())
           .totalPoints(MockValues.TOTAL_POINTS.getValue())
           .achievedPoints(MockValues.ACHIEVED_POINTS.getValue())
-          .examType("Oral")
+          .examType(ExamType.TEST)
           .date(date)
           .time(MockValues.TIME_SECONDS.getValue())
           .allowedResources("None")
@@ -47,6 +58,7 @@ public class DummyData {
           .room("Room B202")
           .lecturer(new Lecturer())
           .module("Physics")
+          .assignedStudents(studentList)
           .build(),
       Exam.builder()
           .uuid(UUID.randomUUID())
@@ -55,7 +67,7 @@ public class DummyData {
           .averageGrade(MockValues.AVERAGE_GRADE.getValue())
           .totalPoints(MockValues.TOTAL_POINTS.getValue())
           .achievedPoints(MockValues.ACHIEVED_POINTS.getValue())
-          .examType("Project")
+          .examType(ExamType.TEST)
           .date(date)
           .time(MockValues.TIME_SECONDS.getValue())
           .allowedResources("Laptop, IDE")
@@ -64,6 +76,7 @@ public class DummyData {
           .room("Online Submission")
           .lecturer(new Lecturer())
           .module("CS I")
+          .assignedStudents(studentList)
           .build(),
       Exam.builder()
           .uuid(UUID.randomUUID())
@@ -72,7 +85,7 @@ public class DummyData {
           .averageGrade(MockValues.AVERAGE_GRADE.getValue())
           .totalPoints(MockValues.TOTAL_POINTS.getValue())
           .achievedPoints(MockValues.ACHIEVED_POINTS.getValue())
-          .examType("Practical")
+          .examType(ExamType.TEST)
           .date(date)
           .time(MockValues.TIME_SECONDS.getValue())
           .allowedResources("Lab Equipment, Safety Manual")
@@ -82,6 +95,7 @@ public class DummyData {
           .room("Online Submission")
           .lecturer(new Lecturer())
           .module("Chemistry")
+          .assignedStudents(studentList)
           .build(),
       Exam.builder()
           .uuid(UUID.randomUUID())
@@ -90,7 +104,7 @@ public class DummyData {
           .averageGrade(MockValues.AVERAGE_GRADE.getValue())
           .totalPoints(MockValues.TOTAL_POINTS.getValue())
           .achievedPoints(MockValues.ACHIEVED_POINTS.getValue())
-          .examType("Essay")
+          .examType(ExamType.PRESENTATION)
           .date(date)
           .time(MockValues.TIME_SECONDS.getValue())
           .allowedResources("Notes, Textbook")
@@ -98,6 +112,7 @@ public class DummyData {
           .etcs(MockValues.ETCS.getValue())
           .room("Room D404")
           .lecturer(new Lecturer())
+          .assignedStudents(studentList)
           .module("History I")
           .build()
   );

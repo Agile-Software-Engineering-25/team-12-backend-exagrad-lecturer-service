@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.ase.lecturerservice.MockValues;
 import com.ase.lecturerservice.dtos.ExamDto;
 import com.ase.lecturerservice.entities.Exam;
+import com.ase.lecturerservice.entities.ExamType;
 import com.ase.lecturerservice.entities.user.Lecturer;
 import com.ase.lecturerservice.entities.user.UserType;
 
@@ -48,7 +49,7 @@ public class LecturerServiceTest {
         .averageGrade(MockValues.AVERAGE_GRADE.getValue())
         .totalPoints(MockValues.TOTAL_POINTS.getValue())
         .achievedPoints(MockValues.ACHIEVED_POINTS.getValue())
-        .examType("Written")
+        .examType(ExamType.TEST)
         .date(date)
         .time(MockValues.TIME_SECONDS.getValue())
         .allowedResources("Calculator, Formula Sheet")
@@ -75,7 +76,7 @@ public class LecturerServiceTest {
         .isEqualTo(MockValues.TOTAL_POINTS.getValue());
     Assertions.assertThat(exam.getAchievedPoints())
         .isEqualTo(MockValues.ACHIEVED_POINTS.getValue());
-    Assertions.assertThat(exam.getExamType()).isEqualTo("Written");
+    Assertions.assertThat(exam.getExamType()).isEqualTo(ExamType.TEST);
     Assertions.assertThat(exam.getDate()).isEqualTo(date);
     Assertions.assertThat(exam.getTime())
         .isEqualTo(MockValues.TIME_SECONDS.getValue());
@@ -101,13 +102,16 @@ public class LecturerServiceTest {
 
   @Test
   void convertToExamDtoShouldConvertExamsToDto() {
+    UUID uuid = UUID.randomUUID();
+
     Exam exam = Exam.builder()
+        .uuid(uuid)
         .name("Mathematics Final Exam")
         .grade(MockValues.GRADE.getValue())
         .averageGrade(MockValues.AVERAGE_GRADE.getValue())
         .totalPoints(MockValues.TOTAL_POINTS.getValue())
         .achievedPoints(MockValues.ACHIEVED_POINTS.getValue())
-        .examType("Written")
+        .examType(ExamType.PRESENTATION)
         .date(date)
         .time(MockValues.TIME_SECONDS.getValue())
         .allowedResources("Calculator, Formula Sheet")
@@ -120,12 +124,15 @@ public class LecturerServiceTest {
 
     ExamDto examDto = lecturerService.convertToExamDto(exam);
 
+    Assertions.assertThat(examDto.getUuid()).isEqualTo(uuid);
     Assertions.assertThat(examDto.getName()).
         isEqualTo("Mathematics Final Exam");
     Assertions.assertThat(examDto.getModule()).
         isEqualTo("Mathe");
     Assertions.assertThat(examDto.getDate()).
         isEqualTo(date);
+    Assertions.assertThat(examDto.getExamType()).
+        isEqualTo(ExamType.PRESENTATION);
     Assertions.assertThat(examDto.getTime()).
         isEqualTo(MockValues.TIME_MIN.getValue());
     Assertions.assertThat(examDto.getSubmissionsCount()).

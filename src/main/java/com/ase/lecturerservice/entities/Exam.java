@@ -29,7 +29,7 @@ public class Exam {
 
   protected int achievedPoints;
 
-  protected String examType;
+  protected ExamType examType;
 
   protected LocalDate date;
 

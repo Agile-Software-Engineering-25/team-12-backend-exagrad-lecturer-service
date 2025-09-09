@@ -1,6 +1,8 @@
 package com.ase.lecturerservice.services;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -36,5 +38,11 @@ public class LecturerService {
     examDto.setTime(examDto.getTime() / SECONDS_PER_MINUTE);
 
     return (examDto);
+  }
+
+  public List<Exam> getExamWithoutSubmissions(UUID examUuid) {
+    return DummyData.EXAMS.stream()
+        .filter(exam -> exam.getUuid().equals(examUuid))
+        .collect(Collectors.toList());
   }
 }
