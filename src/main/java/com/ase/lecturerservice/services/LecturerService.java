@@ -9,6 +9,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.server.ResponseStatusException;
 import com.ase.lecturerservice.dtos.ExamDto;
 import com.ase.lecturerservice.entities.Exam;
+import com.ase.lecturerservice.entities.Grade;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,9 +41,15 @@ public class LecturerService {
     return (examDto);
   }
 
-  public List<Exam> getExamWithoutSubmissions(UUID examUuid) {
+  public List<Exam> getExamDataWithoutSubmissions(UUID examUuid) {
     return DummyData.EXAMS.stream()
         .filter(exam -> exam.getUuid().equals(examUuid))
+        .collect(Collectors.toList());
+  }
+
+  public List<Grade> getGradedExam(UUID studentUuid) {
+    return DummyData.GRADE.stream()
+        .filter(grades -> grades.getStudentUuid().equals(studentUuid))
         .collect(Collectors.toList());
   }
 }

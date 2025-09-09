@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.ase.lecturerservice.dtos.ExamDto;
+import com.ase.lecturerservice.dtos.GradeDto;
 import com.ase.lecturerservice.dtos.SubmissionDto;
 import com.ase.lecturerservice.entities.Exam;
+import com.ase.lecturerservice.entities.Grade;
 import com.ase.lecturerservice.services.LecturerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -37,13 +39,21 @@ public class LecturerController {
     return ResponseEntity.ok(examDtoList);
   }
 
-  @GetMapping("/exam/{examUuid}")
-  public ResponseEntity<List<SubmissionDto>> getSubmissions(@PathVariable UUID examUuid) {
-    List<Exam> exams = lecturerService.getExamWithoutSubmissions(examUuid);
+  @GetMapping("/exam/{examUuid}/submissions")
+  public ResponseEntity<List<SubmissionDto>> getExamData(@PathVariable UUID examUuid) {
+    List<Exam> exams = lecturerService.getExamDataWithoutSubmissions(examUuid);
 
     List<SubmissionDto> submissionDtoList = exams.stream()
         .map(exam -> objectMapper.convertValue(exam, SubmissionDto.class))
         .collect(Collectors.toList());
     return ResponseEntity.ok(submissionDtoList);
+  }
+
+  @GetMapping("/exam/{studentUuid}/grades")
+  public ResponseEntity<List<GradeDto>> getGradeDto(@PathVariable UUID studentUuid) {
+    List<Grade> gradedExams = lecturerService.getGradedExam(studentUuid);
+    return ResponseEntity.ok(gradedExams.stream()
+        .map(gradedExam -> objectMapper.convertValue(gradedExam, GradeDto.class))
+        .collect(Collectors.toList()));
   }
 }

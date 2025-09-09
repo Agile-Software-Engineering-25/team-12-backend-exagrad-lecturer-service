@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.UUID;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.ExamType;
+import com.ase.lecturerservice.entities.FileReference;
+import com.ase.lecturerservice.entities.Grade;
 import com.ase.lecturerservice.entities.user.Lecturer;
 import com.ase.lecturerservice.entities.user.Student;
 import com.ase.lecturerservice.mockvalues.MockValues;
@@ -21,6 +23,17 @@ public class DummyData {
       Student.builder().id(UUID.randomUUID()).matricalNumber("D735").build(),
       Student.builder().id(UUID.randomUUID()).matricalNumber("D729").build(),
       Student.builder().id(UUID.randomUUID()).matricalNumber("D726").build()
+  );
+
+  static List<FileReference> fileReferencesList = List.of(
+      FileReference.builder()
+          .fileUuid(UUID.randomUUID())
+          .filename("dummy_file")
+          .build(),
+      FileReference.builder()
+          .fileUuid(UUID.randomUUID())
+          .filename("dummy_file2")
+          .build()
   );
 
   public static List<Exam> EXAMS = List.of(
@@ -114,6 +127,42 @@ public class DummyData {
           .lecturer(new Lecturer())
           .assignedStudents(studentList)
           .module("History I")
+          .build()
+  );
+
+  public static List<Grade> GRADE = List.of(
+      Grade.builder()
+          .uuid(UUID.randomUUID())
+          .date(LocalDate.of(2025, 9, 1))
+          .lecturerUuid(UUID.randomUUID())
+          .studentUuid(UUID.randomUUID())
+          .submissionUuid(UUID.randomUUID())
+          .comment("Excellent work on the assignment.")
+          .fileReference(fileReferencesList)
+          .points(90)
+          .grade(1.3f)
+          .build(),
+      Grade.builder()
+          .uuid(UUID.randomUUID())
+          .date(LocalDate.of(2025, 8, 20))
+          .lecturerUuid(UUID.randomUUID())
+          .studentUuid(UUID.randomUUID())
+          .submissionUuid(UUID.randomUUID())
+          .comment("Great effort! Check feedback in files.")
+          .fileReference(fileReferencesList)
+          .points(75)
+          .grade(2.0f)
+          .build(),
+      Grade.builder()
+          .uuid(UUID.randomUUID())
+          .date(LocalDate.of(2025, 7, 10))
+          .lecturerUuid(UUID.randomUUID())
+          .studentUuid(UUID.randomUUID())
+          .submissionUuid(UUID.randomUUID())
+          .comment("Incomplete submission. Please review guidelines.")
+          .fileReference(fileReferencesList) // Empty list
+          .points(30)
+          .grade(5.0f)
           .build()
   );
 }
