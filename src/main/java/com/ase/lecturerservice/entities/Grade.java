@@ -30,6 +30,9 @@ public class Grade {
   @Column(name = "graded_at")
   protected LocalDate date;
 
+  @Column(name = "graded_exam")
+  protected UUID examUuid;
+
   @Column(name = "graded_by")
   protected UUID lecturerUuid;
 

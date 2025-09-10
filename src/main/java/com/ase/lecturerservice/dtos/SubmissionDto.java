@@ -1,20 +1,21 @@
 package com.ase.lecturerservice.dtos;
 
 import java.util.List;
-import java.util.UUID;
-import com.sun.istack.NotNull;
+import com.ase.lecturerservice.entities.user.Student;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
 public class SubmissionDto {
-  @NotNull
-  private UUID uuid;
-
-  @NotNull
-  private List<UUID> studentUuid;
-
-  @NotNull
+  @JsonProperty("totalPoints")
   private int totalPoints;
+
+  @JsonProperty("student")
+  private List<Student> student;
+
+  @JsonProperty("grade")
+  private List<GradeDto> grade;
+
 }

@@ -2,7 +2,6 @@ package com.ase.lecturerservice.services;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -18,9 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 public class LecturerService {
-  private final ObjectMapper objectMapper;
-
   private static final int SECONDS_PER_MINUTE = 60;
+  private final ObjectMapper objectMapper;
 
   public List<Exam> getExamsByLecturer(String lecturer)
       throws HttpStatusCodeException {
@@ -41,15 +39,20 @@ public class LecturerService {
     return (examDto);
   }
 
-  public List<Exam> getExamDataWithoutSubmissions(UUID examUuid) {
+  //TODO: Changed this to webclient, when exam entity is ready
+  public Exam getExamData(UUID examUuid) throws Exception {
     return DummyData.EXAMS.stream()
         .filter(exam -> exam.getUuid().equals(examUuid))
-        .collect(Collectors.toList());
+        .findFirst()
+        .orElseThrow(() -> new Exception("Exam not found"));
   }
 
-  public List<Grade> getGradedExam(UUID studentUuid) {
+  // TODO: Adjust this when saving data is implemented
+  public Grade getGradedExam(UUID studentUuid, UUID examUuid){
     return DummyData.GRADE.stream()
-        .filter(grades -> grades.getStudentUuid().equals(studentUuid))
-        .collect(Collectors.toList());
+        .filter(grade -> grade.getStudentUuid().equals(studentUuid)
+            && grade.getExamUuid().equals(examUuid))
+        .findFirst()
+        .orElse(null);
   }
 }
