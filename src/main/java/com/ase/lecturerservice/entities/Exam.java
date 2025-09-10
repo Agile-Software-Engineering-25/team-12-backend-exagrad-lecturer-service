@@ -21,9 +21,9 @@ public class Exam {
 
   protected String name;
 
-  protected int grade;
+  protected float grade;
 
-  protected int averageGrade;
+  protected float averageGrade;
 
   protected int totalPoints;
 
