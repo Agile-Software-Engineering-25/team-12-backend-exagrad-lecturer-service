@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(BASE_PATH + "/lecturer")
 @RequiredArgsConstructor
 public class LecturerController {
+
   private final ObjectMapper objectMapper;
 
   private final LecturerService lecturerService;
