@@ -51,7 +51,7 @@ public class MockValues {
     ETCS(5),
     DATE_YEAR(2015),
     DATE_MONTH(10),
-    DATE_DAY(12);
+    DATE_DAY(25);
 
     private final int value;
 
