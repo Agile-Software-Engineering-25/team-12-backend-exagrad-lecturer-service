@@ -61,7 +61,7 @@ public class DummyData {
           .assignedStudents(studentList)
           .build(),
       Exam.builder()
-          .uuid(MockValues.UuidMocks.EXAM_UUID.getValue())
+          .uuid(MockValues.UuidMocks.EXAM_UUID2.getValue())
           .name("Physics Midterm")
           .grade(MockValues.FloatMocks.GRADE.getValue())
           .averageGrade(MockValues.FloatMocks.AVERAGE_GRADE.getValue())
@@ -79,7 +79,7 @@ public class DummyData {
           .assignedStudents(studentList)
           .build(),
       Exam.builder()
-          .uuid(MockValues.UuidMocks.EXAM_UUID.getValue())
+          .uuid(MockValues.UuidMocks.EXAM_UUID3.getValue())
           .name("Computer Science Project")
           .grade(MockValues.FloatMocks.GRADE.getValue())
           .averageGrade(MockValues.FloatMocks.AVERAGE_GRADE.getValue())
@@ -97,7 +97,7 @@ public class DummyData {
           .assignedStudents(studentList)
           .build(),
       Exam.builder()
-          .uuid(MockValues.UuidMocks.EXAM_UUID.getValue())
+          .uuid(MockValues.UuidMocks.EXAM_UUID4.getValue())
           .name("Chemistry Lab Exam")
           .grade(MockValues.FloatMocks.GRADE.getValue())
           .averageGrade(MockValues.FloatMocks.AVERAGE_GRADE.getValue())
@@ -116,7 +116,7 @@ public class DummyData {
           .assignedStudents(studentList)
           .build(),
       Exam.builder()
-          .uuid(MockValues.UuidMocks.EXAM_UUID.getValue())
+          .uuid(MockValues.UuidMocks.EXAM_UUID5.getValue())
           .name("History Essay Exam")
           .grade(MockValues.FloatMocks.GRADE.getValue())
           .averageGrade(MockValues.FloatMocks.AVERAGE_GRADE.getValue())

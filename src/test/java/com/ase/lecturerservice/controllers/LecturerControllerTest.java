@@ -50,7 +50,7 @@ public class LecturerControllerTest {
         .name("Test")
         .module("Test")
         .date(date)
-        .time(MockValues.IntMocks.TIME_SECONDS.getValue())
+        .time(MockValues.IntMocks.TIME_MIN.getValue())
         .examType(ExamType.TEST)
         .build();
 
@@ -102,7 +102,7 @@ public class LecturerControllerTest {
         .andExpect(jsonPath("$[0].name").value("Test"))
         .andExpect(jsonPath("$[0].date").value("2015-10-12"))
         .andExpect(jsonPath("$[0].module").value("Test"))
-        .andExpect(jsonPath("$[0].time").value(MockValues.IntMocks.TIME_SECONDS.getValue()))
+        .andExpect(jsonPath("$[0].time").value(MockValues.IntMocks.TIME_MIN.getValue()))
         .andExpect(jsonPath("$[0].examType").value(ExamType.TEST.toString()));
   }
 
@@ -164,7 +164,7 @@ public class LecturerControllerTest {
 
     when(lecturerService.getExamData(examUuid)).thenReturn(exam);
     when(lecturerService.getGradedExam(student1.getId(), examUuid)).thenReturn(grade);
-    when(lecturerService.getGradedExam(student2.getId(), examUuid)).thenReturn(null); // This should be filtered out
+    when(lecturerService.getGradedExam(student2.getId(), examUuid)).thenReturn(null);
 
     mockMvc.perform(get("/api/v1/lecturer/exam/{examUuid}/data", examUuid))
         .andExpect(status().isOk())

@@ -41,15 +41,14 @@ public class LecturerServiceTest {
 
   @Test
   void fetchExamsByLecturerShouldGetExams() {
-    UUID uuid = UUID.randomUUID();
     DummyData.EXAMS = List.of(Exam.builder()
-        .uuid(uuid)
+        .uuid(MockValues.UuidMocks.EXAM_UUID.getValue())
         .name("Mathematics Final Exam")
         .grade(MockValues.FloatMocks.GRADE.getValue())
         .averageGrade(MockValues.FloatMocks.AVERAGE_GRADE.getValue())
         .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
         .achievedPoints(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
-        .examType(ExamType.TEST)
+        .examType(ExamType.PRESENTATION)
         .date(date)
         .time(MockValues.IntMocks.TIME_SECONDS.getValue())
         .allowedResources("Calculator, Formula Sheet")
@@ -65,7 +64,7 @@ public class LecturerServiceTest {
 
     Assertions.assertThat(exams).isNotEmpty();
     Assertions.assertThat(exam.getUuid())
-        .isEqualTo(uuid);
+        .isEqualTo(MockValues.UuidMocks.EXAM_UUID.getValue());
     Assertions.assertThat(exam.getName())
         .isEqualTo("Mathematics Final Exam");
     Assertions.assertThat(exam.getGrade())
@@ -76,7 +75,7 @@ public class LecturerServiceTest {
         .isEqualTo(MockValues.IntMocks.TOTAL_POINTS.getValue());
     Assertions.assertThat(exam.getAchievedPoints())
         .isEqualTo(MockValues.IntMocks.ACHIEVED_POINTS.getValue());
-    Assertions.assertThat(exam.getExamType()).isEqualTo(ExamType.TEST);
+    Assertions.assertThat(exam.getExamType()).isEqualTo(ExamType.PRESENTATION);
     Assertions.assertThat(exam.getDate()).isEqualTo(date);
     Assertions.assertThat(exam.getTime())
         .isEqualTo(MockValues.IntMocks.TIME_SECONDS.getValue());
@@ -102,10 +101,8 @@ public class LecturerServiceTest {
 
   @Test
   void convertToExamDtoShouldConvertExamsToDto() {
-    UUID uuid = UUID.randomUUID();
-
     Exam exam = Exam.builder()
-        .uuid(uuid)
+        .uuid(MockValues.UuidMocks.EXAM_UUID.getValue())
         .name("Mathematics Final Exam")
         .grade(MockValues.FloatMocks.GRADE.getValue())
         .averageGrade(MockValues.FloatMocks.AVERAGE_GRADE.getValue())
@@ -124,7 +121,8 @@ public class LecturerServiceTest {
 
     ExamDto examDto = lecturerService.convertToExamDto(exam);
 
-    Assertions.assertThat(examDto.getUuid()).isEqualTo(uuid);
+    Assertions.assertThat(examDto.getUuid())
+        .isEqualTo(MockValues.UuidMocks.EXAM_UUID.getValue());
     Assertions.assertThat(examDto.getName()).
         isEqualTo("Mathematics Final Exam");
     Assertions.assertThat(examDto.getModule()).
