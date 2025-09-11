@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class Student extends UserEntity {
 
-  protected String matricalNumber;
+  private String matricalNumber;
 
-  protected UserType type = UserType.STUDENT;
+  private UserType type = UserType.STUDENT;
 }

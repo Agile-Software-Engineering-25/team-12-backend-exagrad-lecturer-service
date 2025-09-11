@@ -32,11 +32,11 @@ public class DummyData {
 
   static List<FileReference> fileReferencesList = List.of(
       FileReference.builder()
-          .fileUuid(UUID.randomUUID())
+          .fileUuid(UUID.randomUUID().toString())
           .filename("dummy_file")
           .build(),
       FileReference.builder()
-          .fileUuid(UUID.randomUUID())
+          .fileUuid(UUID.randomUUID().toString())
           .filename("dummy_file2")
           .build()
   );
@@ -138,10 +138,10 @@ public class DummyData {
   public static List<Grade> GRADE = List.of(
       Grade.builder()
           .uuid(MockValues.UuidMocks.GRADE_UUID.getValue())
-          .date(date)
-          .lecturerUuid(UUID.randomUUID())
+          .gradedAt(date)
+          .lecturerUuid(UUID.randomUUID().toString())
           .studentUuid(MockValues.UuidMocks.STUDENT_UUID.getValue())
-          .submissionUuid(UUID.randomUUID())
+          .submissionUuid(UUID.randomUUID().toString())
           .examUuid(MockValues.UuidMocks.EXAM_UUID.getValue())
           .comment("Excellent work on the assignment.")
           .fileReference(fileReferencesList)
@@ -150,10 +150,10 @@ public class DummyData {
           .build(),
       Grade.builder()
           .uuid(MockValues.UuidMocks.GRADE_UUID2.getValue())
-          .date(date)
-          .lecturerUuid(UUID.randomUUID())
+          .gradedAt(date)
+          .lecturerUuid(UUID.randomUUID().toString())
           .studentUuid(MockValues.UuidMocks.STUDENT_UUID2.getValue())
-          .submissionUuid(UUID.randomUUID())
+          .submissionUuid(UUID.randomUUID().toString())
           .examUuid(MockValues.UuidMocks.EXAM_UUID.getValue())
           .comment("Great effort! Check feedback in files.")
           .fileReference(fileReferencesList)
@@ -162,10 +162,10 @@ public class DummyData {
           .build(),
       Grade.builder()
           .uuid(MockValues.UuidMocks.GRADE_UUID3.getValue())
-          .date(date)
-          .lecturerUuid(UUID.randomUUID())
+          .gradedAt(date)
+          .lecturerUuid(UUID.randomUUID().toString())
           .studentUuid(MockValues.UuidMocks.STUDENT_UUID3.getValue())
-          .submissionUuid(UUID.randomUUID())
+          .submissionUuid(UUID.randomUUID().toString())
           .examUuid(MockValues.UuidMocks.EXAM_UUID.getValue())
           .comment("Incomplete submission. Please review guidelines.")
           .fileReference(fileReferencesList)

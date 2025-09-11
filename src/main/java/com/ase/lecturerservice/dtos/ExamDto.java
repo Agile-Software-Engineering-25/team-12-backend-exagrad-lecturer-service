@@ -1,8 +1,10 @@
 package com.ase.lecturerservice.dtos;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 import com.ase.lecturerservice.entities.ExamType;
+import com.ase.lecturerservice.entities.user.Student;
 import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Data;
@@ -28,5 +30,6 @@ public class ExamDto {
   @NotNull
   private ExamType examType;
 
-  private int submissionsCount;
+  @NotNull
+  private List<Student> assignedStudents;
 }

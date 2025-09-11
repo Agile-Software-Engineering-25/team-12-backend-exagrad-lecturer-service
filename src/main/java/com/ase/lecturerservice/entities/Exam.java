@@ -17,35 +17,31 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Exam {
-  protected UUID uuid;
+  private String uuid;
 
-  protected String name;
+  private String name;
 
-  protected float grade;
+  private int totalPoints;
 
-  protected float averageGrade;
+  private int achievedPoints;
 
-  protected int totalPoints;
+  private ExamType examType;
 
-  protected int achievedPoints;
+  private LocalDate date;
 
-  protected ExamType examType;
+  private int time;
 
-  protected LocalDate date;
+  private String allowedResources;
 
-  protected int time;
+  private int attempt;
 
-  protected String allowedResources;
+  private int etcs;
 
-  protected int attempt;
+  private String room;
 
-  protected int etcs;
+  private String module;
 
-  protected String room;
+  private Lecturer lecturer;
 
-  protected String module;
-
-  protected Lecturer lecturer;
-
-  protected List<Student> assignedStudents;
+  private List<Student> assignedStudents;
 }

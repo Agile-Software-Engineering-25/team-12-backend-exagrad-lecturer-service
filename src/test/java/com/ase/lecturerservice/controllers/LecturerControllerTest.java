@@ -25,7 +25,6 @@ import com.ase.lecturerservice.entities.ExamType;
 import com.ase.lecturerservice.entities.Grade;
 import com.ase.lecturerservice.entities.user.Lecturer;
 import com.ase.lecturerservice.entities.user.Student;
-import com.ase.lecturerservice.services.LecturerService;
 
 @WebMvcTest(LecturerController.class)
 public class LecturerControllerTest {
@@ -35,6 +34,7 @@ public class LecturerControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
+
   @MockitoBean
   private LecturerService lecturerService;
 
@@ -56,8 +56,8 @@ public class LecturerControllerTest {
 
     grade = Grade.builder()
         .uuid(MockValues.UuidMocks.GRADE_UUID.getValue())
-        .date(date)
-        .lecturerUuid(UUID.randomUUID())
+        .gradedAt(date)
+        .lecturerUuid(UUID.randomUUID().toString())
         .studentUuid(MockValues.UuidMocks.STUDENT_UUID.getValue())
         .submissionUuid(UUID.randomUUID())
         .examUuid(MockValues.UuidMocks.EXAM_UUID.getValue())

@@ -2,7 +2,8 @@ package com.ase.lecturerservice.entities;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import org.hibernate.annotations.UuidGenerator;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -24,37 +25,37 @@ import lombok.Setter;
 @Entity
 public class Grade {
   @Id
-  @UuidGenerator
-  protected  UUID uuid;
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private String uuid;
 
   @Column(name = "graded_at")
-  protected LocalDate date;
+  private LocalDate gradedAt;
 
   @Column(name = "graded_exam")
-  protected UUID examUuid;
+  private String examUuid;
 
   @Column(name = "graded_by")
-  protected UUID lecturerUuid;
+  private String lecturerUuid;
 
   @Column(name = "grade_for")
-  protected UUID studentUuid;
+  private String studentUuid;
 
   @Column(name = "graded_submission")
-  protected UUID submissionUuid;
+  private String submissionUuid;
 
   @Column(name = "comment")
-  protected String comment;
+  private String comment;
 
   @ElementCollection
   @CollectionTable(
       name = "grade_file_references",
       joinColumns = @JoinColumn(name = "grade_id")
   )
-  protected List<FileReference> fileReference;
+  private List<FileReference> fileReference;
 
   @Column(name = "points")
-  protected int points;
+  private int points;
 
   @Column(name = "grade")
-  protected float grade;
+  private float grade;
 }

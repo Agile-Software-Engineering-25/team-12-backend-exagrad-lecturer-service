@@ -18,7 +18,7 @@ public abstract class UserEntity {
   protected String email;
 
   @UuidGenerator
-  private UUID id;
+  private String id;
 
   @JsonProperty("first_name")
   private String firstName;
