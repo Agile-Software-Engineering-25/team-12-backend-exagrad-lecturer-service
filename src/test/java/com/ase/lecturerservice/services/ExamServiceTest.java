@@ -55,7 +55,7 @@ public class ExamServiceTest {
         .module("Mathe")
         .build());
 
-    List<Exam> exams = examService.getExamsByLecturer("Test");
+    List<Exam> exams = examService.getExamsByLecturer(lecturer.getUuid());
     Exam exam = exams.getFirst();
 
     Assertions.assertThat(exams).isNotEmpty();

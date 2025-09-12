@@ -74,7 +74,7 @@ public class ExamControllerTest {
   void fetchExamsShouldReturnExamDtos() throws Exception {
     when(examService.getExamsByLecturer("Tom")).thenReturn(List.of(exam));
 
-    mockMvc.perform(get("/api/v1/exams/{lecturerUuid}", "Tom")
+    mockMvc.perform(get("/api/v1/exams?lecturerUuid={lecturerUuid}", "Tom")
             .contentType(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isOk())
@@ -83,7 +83,7 @@ public class ExamControllerTest {
         .andExpect(jsonPath("$[0].name").value("Test"))
         .andExpect(jsonPath("$[0].date").value("2015-10-25"))
         .andExpect(jsonPath("$[0].module").value("Test"))
-        .andExpect(jsonPath("$[0].time").value(MockValues.IntMocks.TIME_MIN.getValue()))
+        .andExpect(jsonPath("$[0].time").value(MockValues.IntMocks.TIME_SECONDS.getValue()))
         .andExpect(jsonPath("$[0].examType").value(ExamType.EXAM.toString()))
         .andExpect(jsonPath("$[0].assignedStudents").isNotEmpty());
   }
@@ -93,7 +93,7 @@ public class ExamControllerTest {
     when(examService.getExamsByLecturer(" "))
         .thenThrow(new IllegalArgumentException("Lecturer cannot be empty"));
 
-    mockMvc.perform(get("/api/v1/exams/{lecturerUuid}", " ")
+    mockMvc.perform(get("/api/v1/exams?lecturerUuid={lecturerUuid}", " ")
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isBadRequest())
         .andExpect(content().string("Lecturer cannot be empty"));

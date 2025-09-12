@@ -56,7 +56,7 @@ public class FeedbackControllerTest {
     when(feedbackService.getFeedbackExam(studentUuid, examUuid))
         .thenReturn(feedback);
 
-    mockMvc.perform(get("/api/v1/grades/")
+    mockMvc.perform(get("/api/v1/feedback")
             .param("studentUuid", studentUuid)
             .param("examUuid", examUuid)
             .contentType(MediaType.APPLICATION_JSON))
