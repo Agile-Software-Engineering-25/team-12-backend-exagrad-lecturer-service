@@ -21,7 +21,11 @@ public class MockValues {
 
     GRADE_UUID("ea3f2b67-5ed0-4d89-bc2c-28533a210ae2"),
     GRADE_UUID2("27d211f8-e45e-4f5a-b264-e7b4f51e8f95"),
-    GRADE_UUID3("cc28b1f6-3b5b-44e1-963f-0793b742a6d4");
+    GRADE_UUID3("cc28b1f6-3b5b-44e1-963f-0793b742a6d4"),
+    GRADE_UUID4("23428b1f6-3b5b-44e1-963f-0793b742a53"),
+    GRADE_UUID5("5318b1fs6-3b5b-46e1-963f-079dw742a53"),
+    GRADE_UUID6("5318b1fs6-a6ds-46e1-963f-079dw742a53"),
+    GRADE_UUID7("ac28b1f6-3b5b-44e1-963f-9033b742a6d4");
 
 
     private final String value;
