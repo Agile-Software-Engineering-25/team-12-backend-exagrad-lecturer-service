@@ -22,8 +22,6 @@ public class Exam {
 
   private int totalPoints;
 
-  private int achievedPoints;
-
   private ExamType examType;
 
   private LocalDate date;

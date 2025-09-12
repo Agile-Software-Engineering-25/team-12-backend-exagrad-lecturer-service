@@ -44,7 +44,6 @@ public class ExamServiceTest {
         .uuid(MockValues.UuidMocks.EXAM_UUID.getValue())
         .name("Mathematics Final Exam")
         .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
-        .achievedPoints(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
         .examType(ExamType.PRESENTATION)
         .date(date)
         .time(MockValues.IntMocks.TIME_SECONDS.getValue())
@@ -66,8 +65,6 @@ public class ExamServiceTest {
         .isEqualTo("Mathematics Final Exam");
     Assertions.assertThat(exam.getTotalPoints())
         .isEqualTo(MockValues.IntMocks.TOTAL_POINTS.getValue());
-    Assertions.assertThat(exam.getAchievedPoints())
-        .isEqualTo(MockValues.IntMocks.ACHIEVED_POINTS.getValue());
     Assertions.assertThat(exam.getExamType()).isEqualTo(ExamType.PRESENTATION);
     Assertions.assertThat(exam.getDate()).isEqualTo(date);
     Assertions.assertThat(exam.getTime())

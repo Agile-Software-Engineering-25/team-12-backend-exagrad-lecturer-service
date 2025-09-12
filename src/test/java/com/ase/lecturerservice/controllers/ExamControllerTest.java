@@ -57,7 +57,6 @@ public class ExamControllerTest {
         .uuid(MockValues.UuidMocks.EXAM_UUID.getValue())
         .name("Test")
         .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
-        .achievedPoints(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
         .examType(ExamType.EXAM)
         .date(date)
         .time(MockValues.IntMocks.TIME_SECONDS.getValue())
