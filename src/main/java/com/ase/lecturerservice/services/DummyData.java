@@ -8,7 +8,6 @@ import com.ase.lecturerservice.entities.ExamType;
 import com.ase.lecturerservice.entities.Feedback;
 import com.ase.lecturerservice.entities.FileReference;
 import com.ase.lecturerservice.entities.Submission;
-import com.ase.lecturerservice.entities.user.Lecturer;
 import com.ase.lecturerservice.entities.user.Student;
 import com.ase.lecturerservice.mockvalues.MockValues;
 

@@ -31,6 +31,8 @@ public class FeedbackService {
   }
 
   public Exam getExam(String uuid) {
-    return DummyData.EXAMS.stream().filter(exam -> exam.getUuid().equals(uuid)).findFirst().orElse(null);
+    return DummyData.EXAMS.stream()
+        .filter(exam -> exam.getUuid().equals(uuid))
+        .findFirst().orElse(null);
   }
 }

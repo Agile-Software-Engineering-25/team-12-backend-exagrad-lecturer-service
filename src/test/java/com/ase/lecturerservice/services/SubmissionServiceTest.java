@@ -48,7 +48,8 @@ public class SubmissionServiceTest {
     List<Submission> submissions = submissionService.getSubmissionsForExam(examId);
 
     Assertions.assertThat(submissions).isNotEmpty();
-    Assertions.assertThat(submissions).allMatch(submission -> submission.getExamId().equals(examId));
+    Assertions.assertThat(submissions)
+        .allMatch(submission -> submission.getExamId().equals(examId));
   }
 
   @Test
@@ -58,7 +59,8 @@ public class SubmissionServiceTest {
     List<Submission> submissions = submissionService.getSubmissionsForStudent(studentId);
 
     Assertions.assertThat(submissions).isNotEmpty();
-    Assertions.assertThat(submissions).allMatch(submission -> submission.getStudentId().equals(studentId));
+    Assertions.assertThat(submissions)
+        .allMatch(submission -> submission.getStudentId().equals(studentId));
   }
 
   @Test
@@ -81,14 +83,15 @@ public class SubmissionServiceTest {
 
     DummyData.EXAMS = List.of(exam);
 
-    List<Submission> submissions = submissionService.getAllAccessibleSubmissionsForLecturer(lecturer.getUuid());
+    List<Submission> submissions = submissionService
+        .getAllAccessibleSubmissionsForLecturer(lecturer.getUuid());
 
     Assertions.assertThat(submissions).isNotEmpty();
     // All submissions should be for exams belonging to this lecturer
     Assertions.assertThat(submissions).allMatch(submission ->
         DummyData.EXAMS.stream()
-            .anyMatch(ex -> ex.getUuid().equals(submission.getExamId()) &&
-                ex.getLecturerUuid().equals(lecturer.getUuid()))
+            .anyMatch(ex -> ex.getUuid().equals(submission.getExamId())
+                && ex.getLecturerUuid().equals(lecturer.getUuid()))
     );
   }
 
@@ -96,7 +99,8 @@ public class SubmissionServiceTest {
   void getAllAccessibleSubmissionsForLecturerShouldReturnEmptyListForUnknownLecturer() {
     String unknownLecturerUuid = "unknown-lecturer-uuid";
 
-    List<Submission> submissions = submissionService.getAllAccessibleSubmissionsForLecturer(unknownLecturerUuid);
+    List<Submission> submissions = submissionService
+        .getAllAccessibleSubmissionsForLecturer(unknownLecturerUuid);
 
     Assertions.assertThat(submissions).isEmpty();
   }

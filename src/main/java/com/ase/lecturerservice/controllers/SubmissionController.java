@@ -19,7 +19,11 @@ public class SubmissionController {
   private final SubmissionService submissionService;
 
   @GetMapping("/for-lecturer/{lecturerUuid}")
-  public ResponseEntity<List<Submission>> getRelevantSubmissions(@PathVariable String lecturerUuid) {
-    return ResponseEntity.ok(submissionService.getAllAccessibleSubmissionsForLecturer(lecturerUuid));
+  public ResponseEntity<List<Submission>> getRelevantSubmissions(
+      @PathVariable String lecturerUuid
+  ) {
+    return ResponseEntity.ok(
+        submissionService.getAllAccessibleSubmissionsForLecturer(lecturerUuid)
+    );
   }
 }
