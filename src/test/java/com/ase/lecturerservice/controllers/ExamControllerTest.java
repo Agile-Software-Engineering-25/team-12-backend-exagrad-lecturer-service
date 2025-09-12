@@ -20,7 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.ase.lecturerservice.MockValues;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.ExamType;
-import com.ase.lecturerservice.entities.user.Lecturer;
 import com.ase.lecturerservice.entities.user.Student;
 import com.ase.lecturerservice.services.ExamService;
 
@@ -64,7 +63,7 @@ public class ExamControllerTest {
         .attempt(MockValues.IntMocks.ATTEMPT.getValue())
         .etcs(MockValues.IntMocks.ETCS.getValue())
         .room("Room A101")
-        .lecturer(new Lecturer())
+        .lecturerUuid(MockValues.UuidMocks.LECTURER_UUID.getValue())
         .module("Test")
         .assignedStudents(STUDENT_LIST)
         .build();

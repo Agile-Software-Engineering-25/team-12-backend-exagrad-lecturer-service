@@ -25,7 +25,14 @@ public class MockValues {
     GRADE_UUID4("23428b1f6-3b5b-44e1-963f-0793b742a53"),
     GRADE_UUID5("5318b1fs6-3b5b-46e1-963f-079dw742a53"),
     GRADE_UUID6("5318b1fs6-a6ds-46e1-963f-079dw742a53"),
-    GRADE_UUID7("ac28b1f6-3b5b-44e1-963f-9033b742a6d4");
+    GRADE_UUID7("ac28b1f6-3b5b-44e1-963f-9033b742a6d4"),
+
+    LECTURER_UUID("12345678-62hj-jhj2-h23j-901234567890"),
+    LECTURER_UUID2("3f8a9c12-7b4e-4d21-9c8a-2e6b7d9f1a23"),
+    LECTURER_UUID3("c1d2e3f4-5a6b-4c7d-8e9f-0a1b2c3d4e5f"),
+    LECTURER_UUID4("a0b1c2d3-e4f5-4a67-8b9c-d0e1f2a3b4c5"),
+    LECTURER_UUID5("9d8c7b6a-5e4f-4a3b-9c8d-7e6f5a4b3c2d"),
+    LECTURER_UUID6("f0e1d2c3-b4a5-49c6-8d7e-6f5a4b3c2d1e");
 
 
     private final String value;

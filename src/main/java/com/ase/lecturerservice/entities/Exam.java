@@ -2,7 +2,6 @@ package com.ase.lecturerservice.entities;
 
 import java.time.LocalDate;
 import java.util.List;
-import com.ase.lecturerservice.entities.user.Lecturer;
 import com.ase.lecturerservice.entities.user.Student;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,7 +37,7 @@ public class Exam {
 
   private String module;
 
-  private Lecturer lecturer;
+  private String lecturerUuid;
 
   private List<Student> assignedStudents;
 }

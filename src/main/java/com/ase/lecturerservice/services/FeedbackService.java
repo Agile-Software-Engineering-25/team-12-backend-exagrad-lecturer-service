@@ -25,7 +25,7 @@ public class FeedbackService {
   public List<Feedback> getFeedbackForLecturer(String lecturerUuid) {
     return DummyData.Feedbacks.stream().filter(feedback ->
         Optional.ofNullable(getExam(feedback.getExamUuid()))
-            .map(value -> value.getLecturer().getUuid().equals(lecturerUuid))
+            .map(exam -> exam.getLecturerUuid().equals(lecturerUuid))
             .orElse(false)
     ).toList();
   }

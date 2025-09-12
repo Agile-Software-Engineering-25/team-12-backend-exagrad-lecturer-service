@@ -21,6 +21,8 @@ public class ExamService {
 
     // TODO: change this to a webclient call, when the API is ready
     log.info("The Exams from {} has been requested", lecturerUuid);
-    return DummyData.EXAMS.stream().filter(exam -> exam.getLecturer().getUuid().equals(lecturerUuid)).toList();
+    return DummyData.EXAMS.stream()
+        .filter(exam -> exam.getLecturerUuid().equals(lecturerUuid))
+        .toList();
   }
 }

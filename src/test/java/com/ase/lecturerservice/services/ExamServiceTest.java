@@ -25,7 +25,7 @@ public class ExamServiceTest {
   @BeforeEach
   public void setUpLecturer() {
     lecturer = Lecturer.builder()
-        .uuid(UUID.randomUUID().toString())
+        .uuid(MockValues.UuidMocks.LECTURER_UUID.getValue())
         .email("lecturer@example.com")
         .type(UserType.LECTURER)
         .firstName("John")
@@ -51,7 +51,7 @@ public class ExamServiceTest {
         .attempt(MockValues.IntMocks.ATTEMPT.getValue())
         .etcs(MockValues.IntMocks.ETCS.getValue())
         .room("Room A101")
-        .lecturer(lecturer)
+        .lecturerUuid(MockValues.UuidMocks.LECTURER_UUID.getValue())
         .module("Mathe")
         .build());
 
@@ -76,7 +76,7 @@ public class ExamServiceTest {
     Assertions.assertThat(exam.getEtcs())
         .isEqualTo(MockValues.IntMocks.ETCS.getValue());
     Assertions.assertThat(exam.getRoom()).isEqualTo("Room A101");
-    Assertions.assertThat(exam.getLecturer()).isEqualTo(lecturer);
+    Assertions.assertThat(exam.getLecturerUuid()).isEqualTo(lecturer.getUuid());
     Assertions.assertThat(exam.getModule()).isEqualTo("Mathe");
   }
 

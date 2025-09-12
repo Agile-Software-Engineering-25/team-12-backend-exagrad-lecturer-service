@@ -49,7 +49,7 @@ public class DummyData {
           .attempt(MockValues.IntMocks.ATTEMPT.getValue())
           .etcs(MockValues.IntMocks.ETCS.getValue())
           .room("Room A101")
-          .lecturer(new Lecturer())
+          .lecturerUuid(MockValues.UuidMocks.LECTURER_UUID.getValue())
           .module("Mathe")
           .assignedStudents(studentList)
           .build(),
@@ -64,7 +64,7 @@ public class DummyData {
           .attempt(MockValues.IntMocks.ATTEMPT.getValue())
           .etcs(MockValues.IntMocks.ETCS.getValue())
           .room("Room B202")
-          .lecturer(new Lecturer())
+          .lecturerUuid(MockValues.UuidMocks.LECTURER_UUID.getValue())
           .module("Physics")
           .assignedStudents(studentList2)
           .build(),
@@ -79,7 +79,7 @@ public class DummyData {
           .attempt(MockValues.IntMocks.ATTEMPT.getValue())
           .etcs(MockValues.IntMocks.ETCS.getValue())
           .room("Online Submission")
-          .lecturer(new Lecturer())
+          .lecturerUuid(MockValues.UuidMocks.LECTURER_UUID2.getValue())
           .module("CS I")
           .assignedStudents(studentList)
           .build(),
@@ -94,7 +94,7 @@ public class DummyData {
           .attempt(MockValues.IntMocks.ATTEMPT.getValue())
           .etcs(MockValues.IntMocks.ETCS.getValue())
           .room("Online Submission")
-          .lecturer(new Lecturer())
+          .lecturerUuid(MockValues.UuidMocks.LECTURER_UUID2.getValue())
           .module("Chemistry")
           .assignedStudents(studentList2)
           .build(),
@@ -109,7 +109,7 @@ public class DummyData {
           .attempt(MockValues.IntMocks.ATTEMPT.getValue())
           .etcs(MockValues.IntMocks.ETCS.getValue())
           .room("Room C303")
-          .lecturer(new Lecturer())
+          .lecturerUuid(MockValues.UuidMocks.LECTURER_UUID2.getValue())
           .assignedStudents(studentList2)
           .module("History I")
           .build()
