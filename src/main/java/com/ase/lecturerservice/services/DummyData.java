@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.UUID;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.ExamType;
+import com.ase.lecturerservice.entities.Feedback;
 import com.ase.lecturerservice.entities.FileReference;
-import com.ase.lecturerservice.entities.Grade;
 import com.ase.lecturerservice.entities.user.Lecturer;
 import com.ase.lecturerservice.entities.user.Student;
 import com.ase.lecturerservice.mockvalues.MockValues;
@@ -124,8 +124,8 @@ public class DummyData {
           .filename("dummy_file2")
           .build()
   );
-  public static List<Grade> GRADE = List.of(
-      Grade.builder()
+  public static List<Feedback> Feedbacks = List.of(
+      Feedback.builder()
           .uuid(MockValues.UuidMocks.GRADE_UUID.getValue())
           .gradedAt(date)
           .lecturerUuid(UUID.randomUUID().toString())
@@ -137,7 +137,7 @@ public class DummyData {
           .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
           .grade(MockValues.FloatMocks.GRADE.getValue())
           .build(),
-      Grade.builder()
+      Feedback.builder()
           .uuid(MockValues.UuidMocks.GRADE_UUID2.getValue())
           .gradedAt(date)
           .lecturerUuid(UUID.randomUUID().toString())
@@ -149,7 +149,7 @@ public class DummyData {
           .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
           .grade(MockValues.FloatMocks.GRADE.getValue())
           .build(),
-      Grade.builder()
+      Feedback.builder()
           .uuid(MockValues.UuidMocks.GRADE_UUID3.getValue())
           .gradedAt(date)
           .lecturerUuid(UUID.randomUUID().toString())
@@ -161,7 +161,7 @@ public class DummyData {
           .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
           .grade(MockValues.FloatMocks.GRADE.getValue())
           .build(),
-      Grade.builder()
+      Feedback.builder()
           .uuid(MockValues.UuidMocks.GRADE_UUID4.getValue())
           .gradedAt(date)
           .lecturerUuid(UUID.randomUUID().toString())
@@ -173,7 +173,7 @@ public class DummyData {
           .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
           .grade(MockValues.FloatMocks.GRADE.getValue())
           .build(),
-      Grade.builder()
+      Feedback.builder()
           .uuid(MockValues.UuidMocks.GRADE_UUID5.getValue())
           .gradedAt(date)
           .lecturerUuid(UUID.randomUUID().toString())
@@ -185,7 +185,7 @@ public class DummyData {
           .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
           .grade(MockValues.FloatMocks.GRADE.getValue())
           .build(),
-      Grade.builder()
+      Feedback.builder()
           .uuid(MockValues.UuidMocks.GRADE_UUID6.getValue())
           .gradedAt(date)
           .lecturerUuid(UUID.randomUUID().toString())
@@ -197,7 +197,7 @@ public class DummyData {
           .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
           .grade(MockValues.FloatMocks.GRADE.getValue())
           .build(),
-      Grade.builder()
+      Feedback.builder()
           .uuid(MockValues.UuidMocks.GRADE_UUID7.getValue())
           .gradedAt(date)
           .lecturerUuid(UUID.randomUUID().toString())

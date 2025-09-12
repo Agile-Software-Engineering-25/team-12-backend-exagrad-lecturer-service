@@ -23,7 +23,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Grade {
+public class Feedback {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String uuid;

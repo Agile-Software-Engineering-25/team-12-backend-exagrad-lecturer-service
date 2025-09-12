@@ -6,19 +6,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.ase.lecturerservice.entities.Grade;
-import com.ase.lecturerservice.services.GradeService;
+import com.ase.lecturerservice.entities.Feedback;
+import com.ase.lecturerservice.services.FeedbackService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping(BASE_PATH + "/grades")
 @RequiredArgsConstructor
-public class GradeController {
-  private final GradeService gradeService;
+public class FeedbackController {
+  private final FeedbackService feedbackService;
 
-  @GetMapping("/")
-  public ResponseEntity<Grade> getGradeFromExam(
+  @GetMapping
+  public ResponseEntity<Feedback> getFeedbackFromExam(
       @RequestParam String examUuid, @RequestParam String studentUuid) {
-    return ResponseEntity.ok(gradeService.getGradedExam(studentUuid, examUuid));
+    return ResponseEntity.ok(feedbackService.getFeedbackExam(studentUuid, examUuid));
   }
 }
