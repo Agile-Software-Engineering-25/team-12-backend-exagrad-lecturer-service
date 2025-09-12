@@ -7,6 +7,7 @@ import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.ExamType;
 import com.ase.lecturerservice.entities.Feedback;
 import com.ase.lecturerservice.entities.FileReference;
+import com.ase.lecturerservice.entities.Submission;
 import com.ase.lecturerservice.entities.user.Lecturer;
 import com.ase.lecturerservice.entities.user.Student;
 import com.ase.lecturerservice.mockvalues.MockValues;
@@ -92,7 +93,6 @@ public class DummyData {
           .allowedResources("Lab Equipment, Safety Manual")
           .attempt(MockValues.IntMocks.ATTEMPT.getValue())
           .etcs(MockValues.IntMocks.ETCS.getValue())
-          .room("Lab C303")
           .room("Online Submission")
           .lecturer(new Lecturer())
           .module("Chemistry")
@@ -108,12 +108,66 @@ public class DummyData {
           .allowedResources("Notes, Textbook")
           .attempt(MockValues.IntMocks.ATTEMPT.getValue())
           .etcs(MockValues.IntMocks.ETCS.getValue())
-          .room("")
+          .room("Room C303")
           .lecturer(new Lecturer())
           .assignedStudents(studentList2)
           .module("History I")
           .build()
   );
+
+  public static List<Submission> SUBMISSIONS = List.of(
+      Submission.builder()
+          .studentId(MockValues.UuidMocks.STUDENT_UUID.getValue())
+          .examId(MockValues.UuidMocks.EXAM_UUID.getValue())
+          .submissionDate("2025-09-01T10:30:00Z")
+          .fileUpload(FileReference.builder()
+              .fileUuid(UUID.randomUUID().toString())
+              .filename("submission1.pdf")
+              .downloadLink("https://example.com/submission1.pdf")
+              .build())
+          .build(),
+      Submission.builder()
+          .studentId(MockValues.UuidMocks.STUDENT_UUID2.getValue())
+          .examId(MockValues.UuidMocks.EXAM_UUID.getValue())
+          .submissionDate("2025-09-01T11:10:00Z")
+          .fileUpload(FileReference.builder()
+              .fileUuid(UUID.randomUUID().toString())
+              .filename("submission2.pdf")
+              .downloadLink("https://example.com/submission2.pdf")
+              .build())
+          .build(),
+      Submission.builder()
+          .studentId(MockValues.UuidMocks.STUDENT_UUID3.getValue())
+          .examId(MockValues.UuidMocks.EXAM_UUID2.getValue())
+          .submissionDate("2025-09-02T09:15:00Z")
+          .fileUpload(FileReference.builder()
+              .fileUuid(UUID.randomUUID().toString())
+              .filename("physics_midterm_attempt1.zip")
+              .downloadLink("https://example.com/physics_midterm_attempt1.zip")
+              .build())
+          .build(),
+      Submission.builder()
+          .studentId(MockValues.UuidMocks.STUDENT_UUID.getValue())
+          .examId(MockValues.UuidMocks.EXAM_UUID6.getValue())
+          .submissionDate("2025-09-03T14:45:00Z")
+          .fileUpload(FileReference.builder()
+              .fileUuid(UUID.randomUUID().toString())
+              .filename("software_project_demo.mp4")
+              .downloadLink("https://example.com/software_project_demo.mp4")
+              .build())
+          .build(),
+      Submission.builder()
+          .studentId(MockValues.UuidMocks.STUDENT_UUID2.getValue())
+          .examId(MockValues.UuidMocks.EXAM_UUID4.getValue())
+          .submissionDate("2025-09-04T08:05:00Z")
+          .fileUpload(FileReference.builder()
+              .fileUuid(UUID.randomUUID().toString())
+              .filename("chemistry_lab_report.docx")
+              .downloadLink("https://example.com/chemistry_lab_report.docx")
+              .build())
+          .build()
+  );
+
   static List<FileReference> fileReferencesList = List.of(
       FileReference.builder()
           .fileUuid(UUID.randomUUID().toString())
