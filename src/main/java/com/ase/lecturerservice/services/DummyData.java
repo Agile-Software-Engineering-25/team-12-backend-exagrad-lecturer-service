@@ -18,16 +18,23 @@ public class DummyData {
       MockValues.IntMocks.DATE_DAY.getValue());
 
   static List<Student> studentList = List.of(
-      Student.builder().id(
-          MockValues.UuidMocks.STUDENT_UUID.getValue()).matricalNumber("D725").build(),
-      Student.builder().id(
-          MockValues.UuidMocks.STUDENT_UUID2.getValue()).matricalNumber("D755").build(),
-      Student.builder().id(
-          MockValues.UuidMocks.STUDENT_UUID3.getValue()).matricalNumber("D735").build(),
-      Student.builder().id(
-          MockValues.UuidMocks.STUDENT_UUID4.getValue()).matricalNumber("D729").build(),
-      Student.builder().id(
-          MockValues.UuidMocks.STUDENT_UUID5.getValue()).matricalNumber("D726").build()
+      Student.builder().uuid(
+          MockValues.UuidMocks.STUDENT_UUID.getValue()).matriculationNumber("D725").build(),
+      Student.builder().uuid(
+          MockValues.UuidMocks.STUDENT_UUID2.getValue()).matriculationNumber("D755").build(),
+      Student.builder().uuid(
+          MockValues.UuidMocks.STUDENT_UUID3.getValue()).matriculationNumber("D735").build(),
+      Student.builder().uuid(
+          MockValues.UuidMocks.STUDENT_UUID4.getValue()).matriculationNumber("D729").build(),
+      Student.builder().uuid(
+          MockValues.UuidMocks.STUDENT_UUID5.getValue()).matriculationNumber("D726").build()
+  );
+
+  static List<Student> studentList2 = List.of(
+      Student.builder().uuid(
+          MockValues.UuidMocks.STUDENT_UUID.getValue()).matriculationNumber("D725").build(),
+      Student.builder().uuid(
+          MockValues.UuidMocks.STUDENT_UUID2.getValue()).matriculationNumber("D755").build()
   );
 
   static List<FileReference> fileReferencesList = List.of(
@@ -45,8 +52,6 @@ public class DummyData {
       Exam.builder()
           .uuid(MockValues.UuidMocks.EXAM_UUID.getValue())
           .name("Mathematics Final Exam")
-          .grade(MockValues.FloatMocks.GRADE.getValue())
-          .averageGrade(MockValues.FloatMocks.AVERAGE_GRADE.getValue())
           .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
           .achievedPoints(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
           .examType(ExamType.PRESENTATION)
@@ -63,8 +68,6 @@ public class DummyData {
       Exam.builder()
           .uuid(MockValues.UuidMocks.EXAM_UUID2.getValue())
           .name("Physics Midterm")
-          .grade(MockValues.FloatMocks.GRADE.getValue())
-          .averageGrade(MockValues.FloatMocks.AVERAGE_GRADE.getValue())
           .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
           .achievedPoints(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
           .examType(ExamType.TEST)
@@ -81,8 +84,6 @@ public class DummyData {
       Exam.builder()
           .uuid(MockValues.UuidMocks.EXAM_UUID3.getValue())
           .name("Computer Science Project")
-          .grade(MockValues.FloatMocks.GRADE.getValue())
-          .averageGrade(MockValues.FloatMocks.AVERAGE_GRADE.getValue())
           .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
           .achievedPoints(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
           .examType(ExamType.TEST)
@@ -99,8 +100,6 @@ public class DummyData {
       Exam.builder()
           .uuid(MockValues.UuidMocks.EXAM_UUID4.getValue())
           .name("Chemistry Lab Exam")
-          .grade(MockValues.FloatMocks.GRADE.getValue())
-          .averageGrade(MockValues.FloatMocks.AVERAGE_GRADE.getValue())
           .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
           .achievedPoints(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
           .examType(ExamType.TEST)
@@ -118,8 +117,6 @@ public class DummyData {
       Exam.builder()
           .uuid(MockValues.UuidMocks.EXAM_UUID5.getValue())
           .name("History Essay Exam")
-          .grade(MockValues.FloatMocks.GRADE.getValue())
-          .averageGrade(MockValues.FloatMocks.AVERAGE_GRADE.getValue())
           .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
           .achievedPoints(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
           .examType(ExamType.PRESENTATION)
@@ -130,7 +127,7 @@ public class DummyData {
           .etcs(MockValues.IntMocks.ETCS.getValue())
           .room("Room D404")
           .lecturer(new Lecturer())
-          .assignedStudents(studentList)
+          .assignedStudents(studentList2)
           .module("History I")
           .build()
   );
@@ -167,6 +164,30 @@ public class DummyData {
           .studentUuid(MockValues.UuidMocks.STUDENT_UUID3.getValue())
           .submissionUuid(UUID.randomUUID().toString())
           .examUuid(MockValues.UuidMocks.EXAM_UUID.getValue())
+          .comment("Incomplete submission. Please review guidelines.")
+          .fileReference(fileReferencesList)
+          .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
+          .grade(MockValues.FloatMocks.GRADE.getValue())
+          .build(),
+      Grade.builder()
+          .uuid(MockValues.UuidMocks.GRADE_UUID2.getValue())
+          .gradedAt(date)
+          .lecturerUuid(UUID.randomUUID().toString())
+          .studentUuid(MockValues.UuidMocks.STUDENT_UUID.getValue())
+          .submissionUuid(UUID.randomUUID().toString())
+          .examUuid(MockValues.UuidMocks.EXAM_UUID5.getValue())
+          .comment("Great effort! Check feedback in files.")
+          .fileReference(fileReferencesList)
+          .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
+          .grade(MockValues.FloatMocks.GRADE.getValue())
+          .build(),
+      Grade.builder()
+          .uuid(MockValues.UuidMocks.GRADE_UUID3.getValue())
+          .gradedAt(date)
+          .lecturerUuid(UUID.randomUUID().toString())
+          .studentUuid(MockValues.UuidMocks.STUDENT_UUID2.getValue())
+          .submissionUuid(UUID.randomUUID().toString())
+          .examUuid(MockValues.UuidMocks.EXAM_UUID5.getValue())
           .comment("Incomplete submission. Please review guidelines.")
           .fileReference(fileReferencesList)
           .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())

@@ -9,16 +9,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.ase.lecturerservice.MockValues;
-import com.ase.lecturerservice.dtos.ExamDto;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.ExamType;
 import com.ase.lecturerservice.entities.user.Lecturer;
 import com.ase.lecturerservice.entities.user.UserType;
 
 @SpringBootTest
-public class LecturerServiceTest {
+public class ExamServiceTest {
   @Autowired
-  private LecturerService lecturerService;
+  private ExamService examService;
 
   private Lecturer lecturer;
   private LocalDate date;
@@ -26,7 +25,7 @@ public class LecturerServiceTest {
   @BeforeEach
   public void setUpLecturer() {
     lecturer = Lecturer.builder()
-        .id(UUID.randomUUID())
+        .uuid(UUID.randomUUID().toString())
         .email("lecturer@example.com")
         .type(UserType.LECTURER)
         .firstName("John")
@@ -44,8 +43,6 @@ public class LecturerServiceTest {
     DummyData.EXAMS = List.of(Exam.builder()
         .uuid(MockValues.UuidMocks.EXAM_UUID.getValue())
         .name("Mathematics Final Exam")
-        .grade(MockValues.FloatMocks.GRADE.getValue())
-        .averageGrade(MockValues.FloatMocks.AVERAGE_GRADE.getValue())
         .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
         .achievedPoints(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
         .examType(ExamType.PRESENTATION)
@@ -59,7 +56,7 @@ public class LecturerServiceTest {
         .module("Mathe")
         .build());
 
-    List<Exam> exams = lecturerService.getExamsByLecturer("Test");
+    List<Exam> exams = examService.getExamsByLecturer("Test");
     Exam exam = exams.getFirst();
 
     Assertions.assertThat(exams).isNotEmpty();
@@ -67,10 +64,6 @@ public class LecturerServiceTest {
         .isEqualTo(MockValues.UuidMocks.EXAM_UUID.getValue());
     Assertions.assertThat(exam.getName())
         .isEqualTo("Mathematics Final Exam");
-    Assertions.assertThat(exam.getGrade())
-        .isEqualTo(MockValues.FloatMocks.GRADE.getValue());
-    Assertions.assertThat(exam.getAverageGrade())
-        .isEqualTo(MockValues.FloatMocks.AVERAGE_GRADE.getValue());
     Assertions.assertThat(exam.getTotalPoints())
         .isEqualTo(MockValues.IntMocks.TOTAL_POINTS.getValue());
     Assertions.assertThat(exam.getAchievedPoints())
@@ -94,46 +87,8 @@ public class LecturerServiceTest {
   void fetchExamsByLecturerShouldNotGetExams() {
     DummyData.EXAMS = List.of();
 
-    List<Exam> exams = lecturerService.getExamsByLecturer("Test");
+    List<Exam> exams = examService.getExamsByLecturer("Test");
 
     Assertions.assertThat(exams).isEmpty();
-  }
-
-  @Test
-  void convertToExamDtoShouldConvertExamsToDto() {
-    Exam exam = Exam.builder()
-        .uuid(MockValues.UuidMocks.EXAM_UUID.getValue())
-        .name("Mathematics Final Exam")
-        .grade(MockValues.FloatMocks.GRADE.getValue())
-        .averageGrade(MockValues.FloatMocks.AVERAGE_GRADE.getValue())
-        .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
-        .achievedPoints(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
-        .examType(ExamType.PRESENTATION)
-        .date(date)
-        .time(MockValues.IntMocks.TIME_SECONDS.getValue())
-        .allowedResources("Calculator, Formula Sheet")
-        .attempt(MockValues.IntMocks.ATTEMPT.getValue())
-        .etcs(MockValues.IntMocks.ETCS.getValue())
-        .room("Room A101")
-        .lecturer(lecturer)
-        .module("Mathe")
-        .build();
-
-    ExamDto examDto = lecturerService.convertToExamDto(exam);
-
-    Assertions.assertThat(examDto.getUuid())
-        .isEqualTo(MockValues.UuidMocks.EXAM_UUID.getValue());
-    Assertions.assertThat(examDto.getName()).
-        isEqualTo("Mathematics Final Exam");
-    Assertions.assertThat(examDto.getModule()).
-        isEqualTo("Mathe");
-    Assertions.assertThat(examDto.getDate()).
-        isEqualTo(date);
-    Assertions.assertThat(examDto.getExamType()).
-        isEqualTo(ExamType.PRESENTATION);
-    Assertions.assertThat(examDto.getTime()).
-        isEqualTo(MockValues.IntMocks.TIME_MIN.getValue());
-    Assertions.assertThat(examDto.getSubmissionsCount()).
-        isEqualTo(MockValues.IntMocks.SUBMISSIONS.getValue());
   }
 }

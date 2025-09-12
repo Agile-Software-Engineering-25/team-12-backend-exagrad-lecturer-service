@@ -2,13 +2,13 @@ package com.ase.lecturerservice.entities;
 
 import java.time.LocalDate;
 import java.util.List;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import org.hibernate.annotations.UuidGenerator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import lombok.AllArgsConstructor;
@@ -32,21 +32,27 @@ public class Grade {
   private LocalDate gradedAt;
 
   @Column(name = "graded_exam")
+  @JsonProperty("examUuid")
   private String examUuid;
 
   @Column(name = "graded_by")
+  @JsonProperty("lecturerUuid")
   private String lecturerUuid;
 
   @Column(name = "grade_for")
+  @JsonProperty("studentUuid")
   private String studentUuid;
 
   @Column(name = "graded_submission")
+  @JsonProperty("submissionUuid")
   private String submissionUuid;
 
   @Column(name = "comment")
+  @JsonProperty("comment")
   private String comment;
 
   @ElementCollection
+  @JsonProperty("fileReference")
   @CollectionTable(
       name = "grade_file_references",
       joinColumns = @JoinColumn(name = "grade_id")
@@ -54,8 +60,10 @@ public class Grade {
   private List<FileReference> fileReference;
 
   @Column(name = "points")
+  @JsonProperty("points")
   private int points;
 
   @Column(name = "grade")
+  @JsonProperty("grade")
   private float grade;
 }
