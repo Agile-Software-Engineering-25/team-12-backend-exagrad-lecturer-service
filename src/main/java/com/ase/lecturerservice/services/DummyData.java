@@ -36,18 +36,6 @@ public class DummyData {
       Student.builder().uuid(
           MockValues.UuidMocks.STUDENT_UUID2.getValue()).matriculationNumber("D755").build()
   );
-
-  static List<FileReference> fileReferencesList = List.of(
-      FileReference.builder()
-          .fileUuid(UUID.randomUUID().toString())
-          .filename("dummy_file")
-          .build(),
-      FileReference.builder()
-          .fileUuid(UUID.randomUUID().toString())
-          .filename("dummy_file2")
-          .build()
-  );
-
   public static List<Exam> EXAMS = List.of(
       Exam.builder()
           .uuid(MockValues.UuidMocks.EXAM_UUID.getValue())
@@ -70,7 +58,7 @@ public class DummyData {
           .name("Physics Midterm")
           .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
           .achievedPoints(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
-          .examType(ExamType.TEST)
+          .examType(ExamType.EXAM)
           .date(date)
           .time(MockValues.IntMocks.TIME_SECONDS.getValue())
           .allowedResources("None")
@@ -86,7 +74,7 @@ public class DummyData {
           .name("Computer Science Project")
           .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
           .achievedPoints(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
-          .examType(ExamType.TEST)
+          .examType(ExamType.OTHERS)
           .date(date)
           .time(MockValues.IntMocks.TIME_SECONDS.getValue())
           .allowedResources("Laptop, IDE")
@@ -102,7 +90,7 @@ public class DummyData {
           .name("Chemistry Lab Exam")
           .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
           .achievedPoints(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
-          .examType(ExamType.TEST)
+          .examType(ExamType.ORAL)
           .date(date)
           .time(MockValues.IntMocks.TIME_SECONDS.getValue())
           .allowedResources("Lab Equipment, Safety Manual")
@@ -115,8 +103,8 @@ public class DummyData {
           .assignedStudents(studentList)
           .build(),
       Exam.builder()
-          .uuid(MockValues.UuidMocks.EXAM_UUID5.getValue())
-          .name("History Essay Exam")
+          .uuid(MockValues.UuidMocks.EXAM_UUID6.getValue())
+          .name("Software Development Project")
           .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
           .achievedPoints(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
           .examType(ExamType.PRESENTATION)
@@ -125,13 +113,22 @@ public class DummyData {
           .allowedResources("Notes, Textbook")
           .attempt(MockValues.IntMocks.ATTEMPT.getValue())
           .etcs(MockValues.IntMocks.ETCS.getValue())
-          .room("Room D404")
+          .room("")
           .lecturer(new Lecturer())
           .assignedStudents(studentList2)
           .module("History I")
           .build()
   );
-
+  static List<FileReference> fileReferencesList = List.of(
+      FileReference.builder()
+          .fileUuid(UUID.randomUUID().toString())
+          .filename("dummy_file")
+          .build(),
+      FileReference.builder()
+          .fileUuid(UUID.randomUUID().toString())
+          .filename("dummy_file2")
+          .build()
+  );
   public static List<Grade> GRADE = List.of(
       Grade.builder()
           .uuid(MockValues.UuidMocks.GRADE_UUID.getValue())
@@ -175,7 +172,7 @@ public class DummyData {
           .lecturerUuid(UUID.randomUUID().toString())
           .studentUuid(MockValues.UuidMocks.STUDENT_UUID.getValue())
           .submissionUuid(UUID.randomUUID().toString())
-          .examUuid(MockValues.UuidMocks.EXAM_UUID5.getValue())
+          .examUuid(MockValues.UuidMocks.EXAM_UUID6.getValue())
           .comment("Great effort! Check feedback in files.")
           .fileReference(fileReferencesList)
           .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
@@ -187,7 +184,7 @@ public class DummyData {
           .lecturerUuid(UUID.randomUUID().toString())
           .studentUuid(MockValues.UuidMocks.STUDENT_UUID2.getValue())
           .submissionUuid(UUID.randomUUID().toString())
-          .examUuid(MockValues.UuidMocks.EXAM_UUID5.getValue())
+          .examUuid(MockValues.UuidMocks.EXAM_UUID6.getValue())
           .comment("Incomplete submission. Please review guidelines.")
           .fileReference(fileReferencesList)
           .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())

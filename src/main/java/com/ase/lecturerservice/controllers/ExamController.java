@@ -18,8 +18,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(BASE_PATH + "/exams")
 @RequiredArgsConstructor
 public class ExamController {
-  private final ExamService examService;
   private static final int SECONDS_PER_MINUTE = 60;
+  private final ExamService examService;
   private final ObjectMapper objectMapper;
 
   @GetMapping("/{lecturerUuid}")

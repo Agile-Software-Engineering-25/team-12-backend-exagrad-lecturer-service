@@ -22,13 +22,11 @@ import com.ase.lecturerservice.services.GradeService;
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(GradeController.class)
 public class GradeControllerTest {
-  private static Grade grade;
-
   private static final LocalDate DATE = LocalDate.of(
       MockValues.IntMocks.DATE_YEAR.getValue(),
       MockValues.IntMocks.DATE_MONTH.getValue(),
       MockValues.IntMocks.DATE_DAY.getValue());
-
+  private static Grade grade;
   @Autowired
   private MockMvc mockMvc;
 

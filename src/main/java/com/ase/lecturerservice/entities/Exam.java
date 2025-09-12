@@ -2,7 +2,6 @@ package com.ase.lecturerservice.entities;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 import com.ase.lecturerservice.entities.user.Lecturer;
 import com.ase.lecturerservice.entities.user.Student;
 import lombok.AllArgsConstructor;
