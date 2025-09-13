@@ -12,11 +12,62 @@ import com.ase.lecturerservice.entities.user.Student;
 import com.ase.lecturerservice.mockvalues.MockValues;
 
 public class DummyData {
+  public static List<Submission> SUBMISSIONS = List.of(
+      Submission.builder()
+          .studentId(MockValues.UuidMocks.STUDENT_UUID.getValue())
+          .examId(MockValues.UuidMocks.EXAM_UUID.getValue())
+          .submissionDate("2025-09-01T10:30:00Z")
+          .fileUpload(FileReference.builder()
+              .fileUuid(UUID.randomUUID().toString())
+              .filename("submission1.pdf")
+              .downloadLink("https://example.com/submission1.pdf")
+              .build())
+          .build(),
+      Submission.builder()
+          .studentId(MockValues.UuidMocks.STUDENT_UUID2.getValue())
+          .examId(MockValues.UuidMocks.EXAM_UUID.getValue())
+          .submissionDate("2025-09-01T11:10:00Z")
+          .fileUpload(FileReference.builder()
+              .fileUuid(UUID.randomUUID().toString())
+              .filename("submission2.pdf")
+              .downloadLink("https://example.com/submission2.pdf")
+              .build())
+          .build(),
+      Submission.builder()
+          .studentId(MockValues.UuidMocks.STUDENT_UUID3.getValue())
+          .examId(MockValues.UuidMocks.EXAM_UUID2.getValue())
+          .submissionDate("2025-09-02T09:15:00Z")
+          .fileUpload(FileReference.builder()
+              .fileUuid(UUID.randomUUID().toString())
+              .filename("physics_midterm_attempt1.zip")
+              .downloadLink("https://example.com/physics_midterm_attempt1.zip")
+              .build())
+          .build(),
+      Submission.builder()
+          .studentId(MockValues.UuidMocks.STUDENT_UUID.getValue())
+          .examId(MockValues.UuidMocks.EXAM_UUID6.getValue())
+          .submissionDate("2025-09-03T14:45:00Z")
+          .fileUpload(FileReference.builder()
+              .fileUuid(UUID.randomUUID().toString())
+              .filename("software_project_demo.mp4")
+              .downloadLink("https://example.com/software_project_demo.mp4")
+              .build())
+          .build(),
+      Submission.builder()
+          .studentId(MockValues.UuidMocks.STUDENT_UUID2.getValue())
+          .examId(MockValues.UuidMocks.EXAM_UUID4.getValue())
+          .submissionDate("2025-09-04T08:05:00Z")
+          .fileUpload(FileReference.builder()
+              .fileUuid(UUID.randomUUID().toString())
+              .filename("chemistry_lab_report.docx")
+              .downloadLink("https://example.com/chemistry_lab_report.docx")
+              .build())
+          .build()
+  );
   static LocalDate date = LocalDate.of(
       MockValues.IntMocks.DATE_YEAR.getValue(),
       MockValues.IntMocks.DATE_MONTH.getValue(),
       MockValues.IntMocks.DATE_DAY.getValue());
-
   static List<Student> studentList = List.of(
       Student.builder().uuid(
           MockValues.UuidMocks.STUDENT_UUID.getValue()).matriculationNumber("D725").build(),
@@ -29,7 +80,6 @@ public class DummyData {
       Student.builder().uuid(
           MockValues.UuidMocks.STUDENT_UUID5.getValue()).matriculationNumber("D726").build()
   );
-
   static List<Student> studentList2 = List.of(
       Student.builder().uuid(
           MockValues.UuidMocks.STUDENT_UUID.getValue()).matriculationNumber("D725").build(),
@@ -113,60 +163,6 @@ public class DummyData {
           .module("History I")
           .build()
   );
-
-  public static List<Submission> SUBMISSIONS = List.of(
-      Submission.builder()
-          .studentId(MockValues.UuidMocks.STUDENT_UUID.getValue())
-          .examId(MockValues.UuidMocks.EXAM_UUID.getValue())
-          .submissionDate("2025-09-01T10:30:00Z")
-          .fileUpload(FileReference.builder()
-              .fileUuid(UUID.randomUUID().toString())
-              .filename("submission1.pdf")
-              .downloadLink("https://example.com/submission1.pdf")
-              .build())
-          .build(),
-      Submission.builder()
-          .studentId(MockValues.UuidMocks.STUDENT_UUID2.getValue())
-          .examId(MockValues.UuidMocks.EXAM_UUID.getValue())
-          .submissionDate("2025-09-01T11:10:00Z")
-          .fileUpload(FileReference.builder()
-              .fileUuid(UUID.randomUUID().toString())
-              .filename("submission2.pdf")
-              .downloadLink("https://example.com/submission2.pdf")
-              .build())
-          .build(),
-      Submission.builder()
-          .studentId(MockValues.UuidMocks.STUDENT_UUID3.getValue())
-          .examId(MockValues.UuidMocks.EXAM_UUID2.getValue())
-          .submissionDate("2025-09-02T09:15:00Z")
-          .fileUpload(FileReference.builder()
-              .fileUuid(UUID.randomUUID().toString())
-              .filename("physics_midterm_attempt1.zip")
-              .downloadLink("https://example.com/physics_midterm_attempt1.zip")
-              .build())
-          .build(),
-      Submission.builder()
-          .studentId(MockValues.UuidMocks.STUDENT_UUID.getValue())
-          .examId(MockValues.UuidMocks.EXAM_UUID6.getValue())
-          .submissionDate("2025-09-03T14:45:00Z")
-          .fileUpload(FileReference.builder()
-              .fileUuid(UUID.randomUUID().toString())
-              .filename("software_project_demo.mp4")
-              .downloadLink("https://example.com/software_project_demo.mp4")
-              .build())
-          .build(),
-      Submission.builder()
-          .studentId(MockValues.UuidMocks.STUDENT_UUID2.getValue())
-          .examId(MockValues.UuidMocks.EXAM_UUID4.getValue())
-          .submissionDate("2025-09-04T08:05:00Z")
-          .fileUpload(FileReference.builder()
-              .fileUuid(UUID.randomUUID().toString())
-              .filename("chemistry_lab_report.docx")
-              .downloadLink("https://example.com/chemistry_lab_report.docx")
-              .build())
-          .build()
-  );
-
   static List<FileReference> fileReferencesList = List.of(
       FileReference.builder()
           .fileUuid(UUID.randomUUID().toString())

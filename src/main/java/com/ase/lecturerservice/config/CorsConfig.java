@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.filter.CorsFilter;
 
 @Slf4j
 @Configuration
@@ -26,7 +26,8 @@ public class CorsConfig {
     corsConfiguration.addAllowedHeader("*");
     corsConfiguration.addAllowedMethod("*");
     corsConfiguration.setAllowCredentials(true);
-    Arrays.stream(corsConfigurationProperties.allowedOrigins).forEach(corsConfiguration::addAllowedOrigin);
+    Arrays.stream(corsConfigurationProperties.allowedOrigins)
+        .forEach(corsConfiguration::addAllowedOrigin);
     log.info("Allowed origins:");
     Arrays.stream(corsConfigurationProperties.allowedOrigins).forEach(System.out::println);
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
