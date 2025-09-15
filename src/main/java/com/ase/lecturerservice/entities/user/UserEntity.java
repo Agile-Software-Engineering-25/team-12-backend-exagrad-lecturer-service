@@ -1,6 +1,5 @@
 package com.ase.lecturerservice.entities.user;
 
-import java.util.UUID;
 import org.hibernate.annotations.UuidGenerator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -18,7 +17,7 @@ public abstract class UserEntity {
   protected String email;
 
   @UuidGenerator
-  private UUID id;
+  private String uuid;
 
   @JsonProperty("first_name")
   private String firstName;

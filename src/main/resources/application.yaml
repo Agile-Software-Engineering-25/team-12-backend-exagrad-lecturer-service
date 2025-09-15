@@ -27,3 +27,8 @@ management:
     health:
       probes:
         enabled: true
+app:
+  cors:
+    allowed-origins:
+      - http://localhost:5173
+      - https://sau-portal.de

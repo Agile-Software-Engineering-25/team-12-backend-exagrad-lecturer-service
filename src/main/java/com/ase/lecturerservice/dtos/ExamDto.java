@@ -1,27 +1,37 @@
 package com.ase.lecturerservice.dtos;
 
 import java.time.LocalDate;
-import java.util.UUID;
+import java.util.List;
+import org.antlr.v4.runtime.misc.NotNull;
+import com.ase.lecturerservice.entities.ExamType;
+import com.ase.lecturerservice.entities.user.Student;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
 
 @Data
 @Builder
 public class ExamDto {
-  @NonNull
-  private UUID uuid;
+  @NotNull
+  private String uuid;
 
-  @NonNull
+  @NotNull
   private String name;
 
-  @NonNull
+  @NotNull
   private LocalDate date;
 
-  @NonNull
+  @NotNull
   private String module;
 
+  @NotNull
+  private ExamType examType;
+
+  @NotNull
+  private List<Student> assignedStudents;
+
+  @NotNull
   private int time;
 
-  private int submissionsCount;
+  @NotNull
+  private int totalPoints;
 }
