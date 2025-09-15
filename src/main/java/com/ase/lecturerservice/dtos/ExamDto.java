@@ -2,9 +2,9 @@ package com.ase.lecturerservice.dtos;
 
 import java.time.LocalDate;
 import java.util.List;
+import org.antlr.v4.runtime.misc.NotNull;
 import com.ase.lecturerservice.entities.ExamType;
 import com.ase.lecturerservice.entities.user.Student;
-import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Data;
 

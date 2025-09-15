@@ -13,7 +13,9 @@ import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.services.ExamService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping(BASE_PATH + "/exams")
 @RequiredArgsConstructor

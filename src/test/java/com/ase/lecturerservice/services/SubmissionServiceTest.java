@@ -19,9 +19,6 @@ public class SubmissionServiceTest {
   @Autowired
   private SubmissionService submissionService;
 
-  @Autowired
-  private ExamService examService;
-
   private Lecturer lecturer;
   private LocalDate date;
 

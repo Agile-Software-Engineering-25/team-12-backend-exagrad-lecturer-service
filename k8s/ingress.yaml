@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grading-service
+  namespace: ase-12
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure # send traffic over HTTPS
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts: ["sau-portal.de"]
+      secretName: tls-to-come
+  rules:
+    - host: sau-portal.de
+      http:
+        paths:
+          - path: /exa-grad/grading-service # Public URL prefix for this service
+            pathType: Prefix
+            backend:
+              service:
+                name: grading-service
+                port:
+                  number: 80
