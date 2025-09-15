@@ -10,23 +10,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.ase.lecturerservice.dtos.ExamDto;
 import com.ase.lecturerservice.entities.Exam;
-import com.ase.lecturerservice.services.LecturerService;
+import com.ase.lecturerservice.services.ExamService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping(BASE_PATH + "/lecturer")
+@RequestMapping(BASE_PATH + "/exams")
 @RequiredArgsConstructor
-public class LecturerController {
+public class ExamController {
+  private final ExamService examService;
+  private final ObjectMapper objectMapper;
 
-  private final LecturerService lecturerService;
-
-  @GetMapping("/exams")
-  public ResponseEntity<List<ExamDto>> getExams(@RequestParam String lecturer)
+  @GetMapping
+  public ResponseEntity<List<ExamDto>> getExams(@RequestParam String lecturerUuid)
       throws IllegalArgumentException {
-    List<Exam> exams = lecturerService.getExamsByLecturer(lecturer);
+    List<Exam> exams = examService.getExamsByLecturer(lecturerUuid);
 
     List<ExamDto> examDtoList = exams.stream()
-        .map(lecturerService::convertToExamDto)
+        .map(exam -> objectMapper.convertValue(exam, ExamDto.class))
         .collect(Collectors.toList());
 
     return ResponseEntity.ok(examDtoList);

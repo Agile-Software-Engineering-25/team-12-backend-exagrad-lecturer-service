@@ -2,8 +2,6 @@ package com.ase.lecturerservice.entities;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
-import com.ase.lecturerservice.entities.user.Lecturer;
 import com.ase.lecturerservice.entities.user.Student;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,35 +15,29 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Exam {
-  protected UUID uuid;
+  private String uuid;
 
-  protected String name;
+  private String name;
 
-  protected int grade;
+  private int totalPoints;
 
-  protected int averageGrade;
+  private ExamType examType;
 
-  protected int totalPoints;
+  private LocalDate date;
 
-  protected int achievedPoints;
+  private int time;
 
-  protected String examType;
+  private String allowedResources;
 
-  protected LocalDate date;
+  private int attempt;
 
-  protected int time;
+  private int etcs;
 
-  protected String allowedResources;
+  private String room;
 
-  protected int attempt;
+  private String module;
 
-  protected int etcs;
+  private String lecturerUuid;
 
-  protected String room;
-
-  protected String module;
-
-  protected Lecturer lecturer;
-
-  protected List<Student> assignedStudents;
+  private List<Student> assignedStudents;
 }

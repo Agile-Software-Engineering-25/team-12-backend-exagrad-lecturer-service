@@ -1,7 +1,9 @@
 package com.ase.lecturerservice.dtos;
 
 import java.time.LocalDate;
-import java.util.UUID;
+import java.util.List;
+import com.ase.lecturerservice.entities.ExamType;
+import com.ase.lecturerservice.entities.user.Student;
 import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +12,7 @@ import lombok.Data;
 @Builder
 public class ExamDto {
   @NotNull
-  private UUID uuid;
+  private String uuid;
 
   @NotNull
   private String name;
@@ -22,7 +24,14 @@ public class ExamDto {
   private String module;
 
   @NotNull
+  private ExamType examType;
+
+  @NotNull
+  private List<Student> assignedStudents;
+
+  @NotNull
   private int time;
 
-  private int submissionsCount;
+  @NotNull
+  private int totalPoints;
 }

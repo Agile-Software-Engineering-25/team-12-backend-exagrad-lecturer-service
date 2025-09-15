@@ -17,3 +17,7 @@ spring:
 server:
   error:
     include-message: always
+app:
+  cors:
+    allowed-origins:
+      - http://localhost:5173
