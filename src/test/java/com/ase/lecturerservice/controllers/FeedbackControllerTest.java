@@ -30,21 +30,10 @@ public class FeedbackControllerTest {
       MockValues.IntMocks.DATE_YEAR.getValue(),
       MockValues.IntMocks.DATE_MONTH.getValue(),
       MockValues.IntMocks.DATE_DAY.getValue());
-  private static Feedback feedback;
-  @Autowired
-  private MockMvc mockMvc;
-
-  @MockitoBean
-  private FeedbackService feedbackService;
-
-  @Autowired
-  private ObjectMapper objectMapper;
-
   static LocalDate date = LocalDate.of(
       com.ase.lecturerservice.mockvalues.MockValues.IntMocks.DATE_YEAR.getValue(),
       com.ase.lecturerservice.mockvalues.MockValues.IntMocks.DATE_MONTH.getValue(),
       com.ase.lecturerservice.mockvalues.MockValues.IntMocks.DATE_DAY.getValue());
-
   static List<FileReference> fileReferencesList = List.of(
       FileReference.builder()
           .fileUuid(UUID.randomUUID().toString())
@@ -55,6 +44,13 @@ public class FeedbackControllerTest {
           .filename("dummy_file2")
           .build()
   );
+  private static Feedback feedback;
+  @Autowired
+  private MockMvc mockMvc;
+  @MockitoBean
+  private FeedbackService feedbackService;
+  @Autowired
+  private ObjectMapper objectMapper;
 
   @BeforeAll
   public static void setup() {
@@ -93,12 +89,13 @@ public class FeedbackControllerTest {
   }
 
   @Test
-  void saveFeedbackShouldSave() throws Exception{
+  void saveFeedbackShouldSave() throws Exception {
     Feedback feedback = Feedback.builder()
         .uuid(com.ase.lecturerservice.mockvalues.MockValues.UuidMocks.GRADE_UUID2.getValue())
         .gradedAt(date)
         .lecturerUuid(UUID.randomUUID().toString())
-        .studentUuid(com.ase.lecturerservice.mockvalues.MockValues.UuidMocks.STUDENT_UUID2.getValue())
+        .studentUuid(
+            com.ase.lecturerservice.mockvalues.MockValues.UuidMocks.STUDENT_UUID2.getValue())
         .submissionUuid(UUID.randomUUID().toString())
         .examUuid(com.ase.lecturerservice.mockvalues.MockValues.UuidMocks.EXAM_UUID.getValue())
         .comment("Great effort! Check feedback in files.")
@@ -110,6 +107,6 @@ public class FeedbackControllerTest {
     mockMvc.perform(post("/api/v1/feedback/save")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(feedback)))
-        .andExpect(status().isCreated());
+        .andExpect(status().isNoContent());
   }
 }
