@@ -39,7 +39,7 @@ public class FeedbackService {
   }
 
   public void saveFeedback(Feedback feedback) {
-	feedback.setUUID(null);
+    feedback.setUuid(null);
     feedbackRepository.save(feedback);
     log.info("Saving grade with UUID: {}", feedback.getUuid());
   }

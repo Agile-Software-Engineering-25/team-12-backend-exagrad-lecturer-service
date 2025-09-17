@@ -104,7 +104,7 @@ public class FeedbackControllerTest {
         .grade(com.ase.lecturerservice.mockvalues.MockValues.FloatMocks.GRADE.getValue())
         .build();
 
-    mockMvc.perform(post("/api/v1/feedback/save")
+    mockMvc.perform(post("/api/v1/feedback")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(feedback)))
         .andExpect(status().isNoContent());
