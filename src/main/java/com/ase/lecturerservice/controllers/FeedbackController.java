@@ -31,7 +31,7 @@ public class FeedbackController {
     return ResponseEntity.ok(feedbackService.getFeedbackForLecturer(lecturerUuid));
   }
 
-  @PostMapping("/save")
+  @PostMapping
   public ResponseEntity<Void> saveFeedback(@RequestBody Feedback feedback) {
     feedbackService.saveFeedback(feedback);
     return ResponseEntity.noContent().build();
