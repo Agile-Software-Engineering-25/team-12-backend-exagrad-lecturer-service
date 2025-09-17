@@ -24,6 +24,16 @@ public class DummyData {
               .build())
           .build(),
       Submission.builder()
+          .studentId(MockValues.UuidMocks.STUDENT_UUID.getValue())
+          .examId(MockValues.UuidMocks.EXAM_UUID.getValue())
+          .submissionDate("2025-09-01T10:30:00Z")
+          .fileUpload(FileReference.builder()
+              .fileUuid(UUID.randomUUID().toString())
+              .filename("idkman.pdf")
+              .downloadLink("https://example.com/idkman.pdf")
+              .build())
+          .build(),
+      Submission.builder()
           .studentId(MockValues.UuidMocks.STUDENT_UUID2.getValue())
           .examId(MockValues.UuidMocks.EXAM_UUID.getValue())
           .submissionDate("2025-09-01T11:10:00Z")
