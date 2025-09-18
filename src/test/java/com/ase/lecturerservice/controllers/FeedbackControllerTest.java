@@ -11,7 +11,6 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -101,7 +100,7 @@ public class FeedbackControllerTest {
     when(feedbackService.getFeedbackForLecturer("Tom")).thenReturn(feedbackList);
 
     mockMvc.perform(get("/api/v1/feedback/for-lecturer/Tom")
-    .contentType(MediaType.APPLICATION_JSON))
+            .contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$[0].gradedAt").value(DATE.toString()))
         .andExpect(jsonPath("$[0].studentUuid").value(MockValues.UuidMocks.STUDENT_UUID.getValue()))
         .andExpect(jsonPath("$[0].examUuid").value(MockValues.UuidMocks.EXAM_UUID.getValue()))
