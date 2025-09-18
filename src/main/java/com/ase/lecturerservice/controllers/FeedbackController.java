@@ -20,12 +20,6 @@ import lombok.RequiredArgsConstructor;
 public class FeedbackController {
   private final FeedbackService feedbackService;
 
-  @GetMapping
-  public ResponseEntity<Feedback> getFeedbackFromExam(
-      @RequestParam String examUuid, @RequestParam String studentUuid) {
-    return ResponseEntity.ok(feedbackService.getFeedbackExam(studentUuid, examUuid));
-  }
-
   @GetMapping("/for-lecturer/{lecturerUuid}")
   public ResponseEntity<List<Feedback>> getFeedbacksForLecturer(@PathVariable String lecturerUuid) {
     return ResponseEntity.ok(feedbackService.getFeedbackForLecturer(lecturerUuid));

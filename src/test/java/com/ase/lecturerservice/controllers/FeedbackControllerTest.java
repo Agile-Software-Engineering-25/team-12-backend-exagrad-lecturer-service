@@ -11,6 +11,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -26,14 +27,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(FeedbackController.class)
 public class FeedbackControllerTest {
+
   private static final LocalDate DATE = LocalDate.of(
       MockValues.IntMocks.DATE_YEAR.getValue(),
       MockValues.IntMocks.DATE_MONTH.getValue(),
       MockValues.IntMocks.DATE_DAY.getValue());
+
   static LocalDate date = LocalDate.of(
       com.ase.lecturerservice.mockvalues.MockValues.IntMocks.DATE_YEAR.getValue(),
       com.ase.lecturerservice.mockvalues.MockValues.IntMocks.DATE_MONTH.getValue(),
       com.ase.lecturerservice.mockvalues.MockValues.IntMocks.DATE_DAY.getValue());
+
   static List<FileReference> fileReferencesList = List.of(
       FileReference.builder()
           .fileUuid(UUID.randomUUID().toString())
@@ -44,6 +48,7 @@ public class FeedbackControllerTest {
           .filename("dummy_file2")
           .build()
   );
+
   private static Feedback feedback;
   @Autowired
   private MockMvc mockMvc;
@@ -68,27 +73,6 @@ public class FeedbackControllerTest {
   }
 
   @Test
-  void getGradedExamShouldReturnGradeWhenValidUuids() throws Exception {
-    String studentUuid = MockValues.UuidMocks.STUDENT_UUID.getValue();
-    String examUuid = MockValues.UuidMocks.EXAM_UUID.getValue();
-
-    when(feedbackService.getFeedbackExam(studentUuid, examUuid))
-        .thenReturn(feedback);
-
-    mockMvc.perform(get("/api/v1/feedback")
-            .param("studentUuid", studentUuid)
-            .param("examUuid", examUuid)
-            .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.gradedAt").value(DATE.toString()))
-        .andExpect(jsonPath("$.studentUuid").value(studentUuid))
-        .andExpect(jsonPath("$.examUuid").value(examUuid))
-        .andExpect(jsonPath("$.comment").value("Excellent work on the assignment."))
-        .andExpect(jsonPath("$.grade").value(feedback.getGrade()))
-        .andExpect(jsonPath("$.points").value(feedback.getPoints()));
-  }
-
-  @Test
   void saveFeedbackShouldSave() throws Exception {
     Feedback feedback = Feedback.builder()
         .uuid(com.ase.lecturerservice.mockvalues.MockValues.UuidMocks.GRADE_UUID2.getValue())
@@ -109,4 +93,21 @@ public class FeedbackControllerTest {
             .content(objectMapper.writeValueAsString(feedback)))
         .andExpect(status().isNoContent());
   }
+
+  @Test
+  void getFeedbackForLecturerShouldReturnListofFeedback() throws Exception {
+    List<Feedback> feedbackList = List.of(feedback);
+
+    when(feedbackService.getFeedbackForLecturer("Tom")).thenReturn(feedbackList);
+
+    mockMvc.perform(get("/api/v1/feedback/for-lecturer/Tom")
+    .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$[0].gradedAt").value(DATE.toString()))
+        .andExpect(jsonPath("$[0].studentUuid").value(MockValues.UuidMocks.STUDENT_UUID.getValue()))
+        .andExpect(jsonPath("$[0].examUuid").value(MockValues.UuidMocks.EXAM_UUID.getValue()))
+        .andExpect(jsonPath("$[0].comment").value("Excellent work on the assignment."))
+        .andExpect(jsonPath("$[0].grade").value(MockValues.FloatMocks.GRADE.getValue()))
+        .andExpect(jsonPath("$[0].points").value(MockValues.IntMocks.ACHIEVED_POINTS.getValue()));
+  }
+
 }
