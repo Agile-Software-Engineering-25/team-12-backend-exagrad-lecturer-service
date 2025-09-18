@@ -53,7 +53,7 @@ public class SubmissionControllerTest {
         .examId(EXAM_UUID)
         .studentId(STUDENT_UUID)
         .submissionDate(SUBMISSION_DATE)
-        .fileUpload(fileReference)
+        .fileUpload(List.of(fileReference))
         .build();
 
     submissionList = List.of(submission);

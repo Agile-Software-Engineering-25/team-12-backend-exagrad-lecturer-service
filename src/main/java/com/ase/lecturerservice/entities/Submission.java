@@ -1,5 +1,6 @@
 package com.ase.lecturerservice.entities;
 
+import java.util.List;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,5 +11,5 @@ public class Submission {
   private String examId;
   private String studentId;
   private String submissionDate;
-  private FileReference fileUpload;
+  private List<FileReference> fileUpload;
 }
