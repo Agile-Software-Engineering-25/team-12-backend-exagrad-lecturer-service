@@ -83,7 +83,7 @@ public class FeedbackServiceTest {
   }
 
   @Test
-  void getFeedbackForLecturer_ShouldReturnFeedbackForCorrectLecturer() {
+  void getFeedbackForLecturerShouldReturnFeedbackForCorrectLecturer() {
     List<Feedback> allFeedbacks = List.of(feedback1, feedback2, feedback3);
     when(feedbackRepository.findAll()).thenReturn(allFeedbacks);
 
@@ -106,7 +106,7 @@ public class FeedbackServiceTest {
   }
 
   @Test
-  void getFeedbackForLecturer_ShouldReturnEmptyListWhenNoMatchingLecturer() {
+  void getFeedbackForLecturerShouldReturnEmptyListWhenNoMatchingLecturer() {
     List<Feedback> allFeedbacks = List.of(feedback1, feedback2, feedback3);
     when(feedbackRepository.findAll()).thenReturn(allFeedbacks);
 
