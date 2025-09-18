@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,4 +31,9 @@ public class FeedbackController {
     return ResponseEntity.ok(feedbackService.getFeedbackForLecturer(lecturerUuid));
   }
 
+  @PostMapping
+  public ResponseEntity<Void> saveFeedback(@RequestBody Feedback feedback) {
+    feedbackService.saveFeedback(feedback);
+    return ResponseEntity.noContent().build();
+  }
 }

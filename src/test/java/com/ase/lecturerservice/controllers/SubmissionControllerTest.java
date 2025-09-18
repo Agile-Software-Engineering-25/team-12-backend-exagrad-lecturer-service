@@ -49,11 +49,11 @@ public class SubmissionControllerTest {
         .build();
 
     submission = Submission.builder()
-        .id(UUID.randomUUID().toString())
-        .examId(EXAM_UUID)
-        .studentId(STUDENT_UUID)
+        .uuid(UUID.randomUUID().toString())
+        .examUuid(EXAM_UUID)
+        .studentUuid(STUDENT_UUID)
         .submissionDate(SUBMISSION_DATE)
-        .fileUpload(fileReference)
+        .fileUpload(List.of(fileReference))
         .build();
 
     submissionList = List.of(submission);
@@ -69,11 +69,11 @@ public class SubmissionControllerTest {
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$").isArray())
-        .andExpect(jsonPath("$[0].examId").value(EXAM_UUID))
-        .andExpect(jsonPath("$[0].studentId").value(STUDENT_UUID))
+        .andExpect(jsonPath("$[0].examUuid").value(EXAM_UUID))
+        .andExpect(jsonPath("$[0].studentUuid").value(STUDENT_UUID))
         .andExpect(jsonPath("$[0].submissionDate").value(SUBMISSION_DATE))
-        .andExpect(jsonPath("$[0].fileUpload.filename").value(FILENAME))
-        .andExpect(jsonPath("$[0].fileUpload.downloadLink").value(DOWNLOAD_LINK));
+        .andExpect(jsonPath("$[0].fileUpload[0].filename").value(FILENAME))
+        .andExpect(jsonPath("$[0].fileUpload[0].downloadLink").value(DOWNLOAD_LINK));
   }
 
   @Test
