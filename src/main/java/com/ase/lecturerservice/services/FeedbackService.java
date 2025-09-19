@@ -2,6 +2,8 @@ package com.ase.lecturerservice.services;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.Feedback;
@@ -15,23 +17,22 @@ import lombok.extern.slf4j.Slf4j;
 public class FeedbackService {
   private final FeedbackRepository feedbackRepository;
 
-  // TODO: Adjust this when saving data is implemented
-  public Feedback getFeedbackExam(String studentUuid, String examUuid) {
-    return DummyData.Feedbacks.stream()
-        .filter(feedback -> feedback.getStudentUuid().equals(studentUuid)
-            && feedback.getExamUuid().equals(examUuid))
-        .findFirst()
-        .orElse(null);
+  @EventListener(ApplicationReadyEvent.class)
+  public void instantiateDummies() {
+    log.info("Creating Dummies...");
+    DummyData.Feedbacks.forEach(this::saveFeedback);
   }
 
   public List<Feedback> getFeedbackForLecturer(String lecturerUuid) {
-    return DummyData.Feedbacks.stream().filter(feedback ->
+    List<Feedback> feedbacks = feedbackRepository.findAll();
+    return feedbacks.stream().filter(feedback ->
         Optional.ofNullable(getExam(feedback.getExamUuid()))
             .map(exam -> exam.getLecturerUuid().equals(lecturerUuid))
             .orElse(false)
     ).toList();
   }
 
+  // TODO: change this webclient, when the API Endpoint is ready
   public Exam getExam(String uuid) {
     return DummyData.EXAMS.stream()
         .filter(exam -> exam.getUuid().equals(uuid))

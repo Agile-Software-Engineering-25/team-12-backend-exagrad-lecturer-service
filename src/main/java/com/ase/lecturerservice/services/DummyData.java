@@ -252,7 +252,7 @@ public class DummyData {
           .grade(MockValues.FloatMocks.GRADE.getValue())
           .build(),
       Feedback.builder()
-          .uuid(MockValues.UuidMocks.GRADE_UUID6.getValue())
+          .uuid(MockValues.UuidMocks.GRADE_UUID7.getValue())
           .gradedAt(date)
           .lecturerUuid(UUID.randomUUID().toString())
           .studentUuid(MockValues.UuidMocks.STUDENT_UUID2.getValue())
@@ -264,7 +264,7 @@ public class DummyData {
           .grade(MockValues.FloatMocks.GRADE.getValue())
           .build(),
       Feedback.builder()
-          .uuid(MockValues.UuidMocks.GRADE_UUID7.getValue())
+          .uuid(MockValues.UuidMocks.GRADE_UUID8.getValue())
           .gradedAt(date)
           .lecturerUuid(UUID.randomUUID().toString())
           .studentUuid(MockValues.UuidMocks.STUDENT_UUID.getValue())
