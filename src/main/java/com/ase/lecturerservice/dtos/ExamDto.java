@@ -34,4 +34,7 @@ public class ExamDto {
 
   @NotNull
   private int totalPoints;
+
+  @NotNull
+  private boolean fileUploadRequired;
 }

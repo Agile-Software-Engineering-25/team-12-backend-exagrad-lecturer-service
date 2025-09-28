@@ -26,13 +26,4 @@ public class SubmissionController {
         submissionService.getAllAccessibleSubmissionsForLecturer(lecturerUuid)
     );
   }
-
-  @GetMapping("/for-exam/{examUuid}")
-  public ResponseEntity<List<Submission>> getRelevantSubmissionsByExam(
-      @PathVariable String examUuid
-  ) {
-    return ResponseEntity.ok(
-        submissionService.getSubmissionsForExam(examUuid)
-    );
-  }
 }

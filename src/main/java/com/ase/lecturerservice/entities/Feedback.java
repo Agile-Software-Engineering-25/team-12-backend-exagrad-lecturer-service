@@ -54,8 +54,8 @@ public class Feedback {
   @ElementCollection
   @JsonProperty("fileReference")
   @CollectionTable(
-      name = "grade_file_references",
-      joinColumns = @JoinColumn(name = "grade_id")
+      name = "feedback_file_references",
+      joinColumns = @JoinColumn(name = "feedback_id")
   )
   private List<FileReference> fileReference;
 

@@ -40,4 +40,6 @@ public class Exam {
   private String lecturerUuid;
 
   private List<Student> assignedStudents;
+
+  private boolean fileUploadRequired;
 }

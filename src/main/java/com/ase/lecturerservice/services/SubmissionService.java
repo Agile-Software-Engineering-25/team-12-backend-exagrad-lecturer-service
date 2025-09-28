@@ -16,13 +16,13 @@ public class SubmissionService {
 
   public List<Submission> getSubmissionsForExam(String examId) {
     return DummyData.SUBMISSIONS.stream()
-        .filter(submission -> submission.getExamId().equals(examId))
+        .filter(submission -> submission.getExamUuid().equals(examId))
         .toList();
   }
 
   public List<Submission> getSubmissionsForStudent(String studentId) {
     return DummyData.SUBMISSIONS.stream()
-        .filter(submission -> submission.getStudentId().equals(studentId))
+        .filter(submission -> submission.getStudentUuid().equals(studentId))
         .toList();
   }
 
@@ -33,7 +33,7 @@ public class SubmissionService {
         .collect(Collectors.toSet());
 
     return DummyData.SUBMISSIONS.stream()
-        .filter(submission -> examsOfLecturer.contains(submission.getExamId()))
+        .filter(submission -> examsOfLecturer.contains(submission.getExamUuid()))
         .collect(Collectors.toList());
   }
 

@@ -46,7 +46,7 @@ public class SubmissionServiceTest {
 
     Assertions.assertThat(submissions).isNotEmpty();
     Assertions.assertThat(submissions)
-        .allMatch(submission -> submission.getExamId().equals(examId));
+        .allMatch(submission -> submission.getExamUuid().equals(examId));
   }
 
   @Test
@@ -57,7 +57,7 @@ public class SubmissionServiceTest {
 
     Assertions.assertThat(submissions).isNotEmpty();
     Assertions.assertThat(submissions)
-        .allMatch(submission -> submission.getStudentId().equals(studentId));
+        .allMatch(submission -> submission.getStudentUuid().equals(studentId));
   }
 
   @Test
@@ -87,7 +87,7 @@ public class SubmissionServiceTest {
     // All submissions should be for exams belonging to this lecturer
     Assertions.assertThat(submissions).allMatch(submission ->
         DummyData.EXAMS.stream()
-            .anyMatch(ex -> ex.getUuid().equals(submission.getExamId())
+            .anyMatch(ex -> ex.getUuid().equals(submission.getExamUuid())
                 && ex.getLecturerUuid().equals(lecturer.getUuid()))
     );
   }
