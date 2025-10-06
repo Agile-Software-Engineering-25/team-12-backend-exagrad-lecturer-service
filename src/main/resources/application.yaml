@@ -1,6 +1,6 @@
 spring:
   application:
-    name: ASE-UserService
+    name: ASE-LecturerService
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     show-sql: false
@@ -27,8 +27,21 @@ management:
     health:
       probes:
         enabled: true
+minio-connection:
+  # TODO: updated these configs if more information from the responsible team are gained
+  endpoint: http://80.158.79.52:9000
+  accessKey: my-access-key
+  secretKey: my-secret-key
 app:
   cors:
     allowed-origins:
       - http://localhost:5173
       - https://sau-portal.de
+      - http://80.158.79.52:5173"
+  timezone: Europe/Berlin
+  storage:
+    feedbackDocumentsBucket: feedback-documents
+  file:
+    max-size: 10485760 # 10MB
+    allowed-types: application/pdf,application/octet-stream,image/jpeg,image/png,image/gif,text/plain,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document
+

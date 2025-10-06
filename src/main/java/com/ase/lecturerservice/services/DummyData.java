@@ -188,6 +188,7 @@ public class DummyData {
           .examUuid(MockValues.UuidMocks.EXAM_UUID.getValue())
           .comment("Excellent work on the assignment.")
           .fileReference(fileReferencesList)
+          .fileUpload(null)
           .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
           .grade(MockValues.FloatMocks.GRADE.getValue())
           .build(),
@@ -200,6 +201,7 @@ public class DummyData {
           .examUuid(MockValues.UuidMocks.EXAM_UUID.getValue())
           .comment("Great effort! Check feedback in files.")
           .fileReference(fileReferencesList)
+          .fileUpload(null)
           .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
           .grade(MockValues.FloatMocks.GRADE.getValue())
           .build(),
@@ -212,6 +214,7 @@ public class DummyData {
           .examUuid(MockValues.UuidMocks.EXAM_UUID.getValue())
           .comment("Incomplete submission. Please review guidelines.")
           .fileReference(fileReferencesList)
+          .fileUpload(null)
           .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
           .grade(MockValues.FloatMocks.GRADE.getValue())
           .build(),
@@ -224,6 +227,7 @@ public class DummyData {
           .examUuid(MockValues.UuidMocks.EXAM_UUID6.getValue())
           .comment("Great effort! Check feedback in files.")
           .fileReference(fileReferencesList)
+          .fileUpload(null)
           .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
           .grade(MockValues.FloatMocks.GRADE.getValue())
           .build(),
@@ -236,6 +240,7 @@ public class DummyData {
           .examUuid(MockValues.UuidMocks.EXAM_UUID6.getValue())
           .comment("Great effort! Check feedback in files.")
           .fileReference(fileReferencesList)
+          .fileUpload(null)
           .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
           .grade(MockValues.FloatMocks.GRADE.getValue())
           .build(),
@@ -248,6 +253,7 @@ public class DummyData {
           .examUuid(MockValues.UuidMocks.EXAM_UUID2.getValue())
           .comment("Great effort! Check feedback in files.")
           .fileReference(fileReferencesList)
+          .fileUpload(null)
           .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
           .grade(MockValues.FloatMocks.GRADE.getValue())
           .build(),
@@ -260,6 +266,7 @@ public class DummyData {
           .examUuid(MockValues.UuidMocks.EXAM_UUID2.getValue())
           .comment("Great effort! Check feedback in files.")
           .fileReference(fileReferencesList)
+          .fileUpload(null)
           .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
           .grade(MockValues.FloatMocks.GRADE.getValue())
           .build(),
@@ -272,6 +279,7 @@ public class DummyData {
           .examUuid(MockValues.UuidMocks.EXAM_UUID4.getValue())
           .comment("Great effort! Check feedback in files.")
           .fileReference(fileReferencesList)
+          .fileUpload(null)
           .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
           .grade(MockValues.FloatMocks.GRADE.getValue())
           .build()

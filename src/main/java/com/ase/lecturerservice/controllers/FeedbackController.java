@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.ase.lecturerservice.entities.Feedback;
 import com.ase.lecturerservice.services.FeedbackService;
+import com.ase.lecturerservice.services.FileService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FeedbackController {
   private final FeedbackService feedbackService;
+  private final FileService fileService;
 
   @GetMapping("/for-lecturer/{lecturerUuid}")
   public ResponseEntity<List<Feedback>> getFeedbacksForLecturer(@PathVariable String lecturerUuid) {
@@ -27,6 +29,7 @@ public class FeedbackController {
   @PostMapping
   public ResponseEntity<Void> saveFeedback(@RequestBody Feedback feedback) {
     feedbackService.saveFeedback(feedback);
+    fileService.saveFiles(feedback.getFileUpload());
     return ResponseEntity.noContent().build();
   }
 }
