@@ -14,6 +14,7 @@ import com.ase.lecturerservice.mockvalues.MockValues;
 public class DummyData {
   public static List<Submission> SUBMISSIONS = List.of(
       Submission.builder()
+          .uuid(MockValues.UuidMocks.SUBMISSION_UUID1.getValue())
           .studentUuid(MockValues.UuidMocks.STUDENT_UUID.getValue())
           .examUuid(MockValues.UuidMocks.EXAM_UUID.getValue())
           .submissionDate("2025-09-01T10:30:00Z")
@@ -24,6 +25,7 @@ public class DummyData {
               .build()))
           .build(),
       Submission.builder()
+          .uuid(MockValues.UuidMocks.SUBMISSION_UUID2.getValue())
           .studentUuid(MockValues.UuidMocks.STUDENT_UUID2.getValue())
           .examUuid(MockValues.UuidMocks.EXAM_UUID.getValue())
           .submissionDate("2025-09-01T11:10:00Z")
@@ -34,6 +36,7 @@ public class DummyData {
               .build()))
           .build(),
       Submission.builder()
+          .uuid(MockValues.UuidMocks.SUBMISSION_UUID3.getValue())
           .studentUuid(MockValues.UuidMocks.STUDENT_UUID.getValue())
           .examUuid(MockValues.UuidMocks.EXAM_UUID2.getValue())
           .submissionDate("2025-09-02T09:15:00Z")
@@ -44,6 +47,7 @@ public class DummyData {
               .build()))
           .build(),
       Submission.builder()
+          .uuid(MockValues.UuidMocks.SUBMISSION_UUID4.getValue())
           .studentUuid(MockValues.UuidMocks.STUDENT_UUID3.getValue())
           .examUuid(MockValues.UuidMocks.EXAM_UUID.getValue())
           .submissionDate("2025-09-03T14:45:00Z")
@@ -54,6 +58,7 @@ public class DummyData {
               .build()))
           .build(),
       Submission.builder()
+          .uuid(MockValues.UuidMocks.SUBMISSION_UUID5.getValue())
           .studentUuid(MockValues.UuidMocks.STUDENT_UUID4.getValue())
           .examUuid(MockValues.UuidMocks.EXAM_UUID.getValue())
           .submissionDate("2025-09-04T08:05:00Z")
