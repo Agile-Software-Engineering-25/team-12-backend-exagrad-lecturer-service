@@ -28,31 +28,28 @@ public class FeedbackDocumentService {
   private final FeedbackDocumentMapper feedbackDocumentMapper;
 
   @Transactional
-  public FeedbackDocumentResponse uploadFeedbackDocument(MultipartFile file, FeedbackDocumentRequest metadata)
+  public FeedbackDocument uploadFeedbackDocument(MultipartFile file, FeedbackDocumentRequest metadata)
       throws IOException {
     // Validate file before processing
     fileValidationService.validateFile(file);
 
     String bucketName = storageProperties.getFeedbackDocumentsBucket();
-    String sanitizedFilename =
-        fileValidationService.sanitizeFileName(file.getOriginalFilename());
+    String sanitizedFilename = fileValidationService.sanitizeFileName(file.getOriginalFilename());
     String minioKey = generateMinioKey(sanitizedFilename);
 
     minioService.uploadFile(
         bucketName, minioKey, file.getInputStream(), file.getSize(), file.getContentType());
 
-    FeedbackDocument doc =
-        FeedbackDocument.builder()
-            .feedbackId(metadata.getFeedbackId())
-            .lecturerId(metadata.getLecturerId())
-            .minioKey(minioKey)
-            .fileName(sanitizedFilename)
-            .build();
+    FeedbackDocument doc = FeedbackDocument.builder()
+        .feedbackId(metadata.getFeedbackId())
+        .lecturerId(metadata.getLecturerId())
+        .minioKey(minioKey)
+        .fileName(sanitizedFilename)
+        .build();
 
     FeedbackDocument saved = feedbackDocumentRepository.saveAndFlush(doc);
 
-    String downloadUrl = minioService.getFileUrl(bucketName, saved.getMinioKey());
-    return feedbackDocumentMapper.toResponse(saved, downloadUrl);
+    return saved;
   }
 
   public List<FeedbackDocumentResponse> getDocumentsByFeedbackId(String feedbackId) {
@@ -60,14 +57,19 @@ public class FeedbackDocumentService {
     return convertToResponseWithUrls(documents);
   }
 
+public List<FeedbackDocumentResponse> getDocumentsByDocumentId(UUID docId) {
+  return feedbackDocumentRepository.findById(docId)
+      .map(doc -> convertToResponseWithUrls(List.of(doc)))
+      .orElse(List.of());
+}
+
   private List<FeedbackDocumentResponse> convertToResponseWithUrls(List<FeedbackDocument> documents) {
     String bucketName = storageProperties.getFeedbackDocumentsBucket();
 
     return documents.stream()
         .map(
             doc -> {
-              String downloadUrl =
-                  minioService.getFileUrl(bucketName, doc.getMinioKey());
+              String downloadUrl = minioService.getFileUrl(bucketName, doc.getMinioKey());
               return feedbackDocumentMapper.toResponse(doc, downloadUrl);
             })
         .toList();

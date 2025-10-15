@@ -82,7 +82,7 @@ public class FeedbackControllerTest {
         .submissionUuid(UUID.randomUUID().toString())
         .examUuid(com.ase.lecturerservice.mockvalues.MockValues.UuidMocks.EXAM_UUID.getValue())
         .comment("Great effort! Check feedback in files.")
-        .fileReference(fileReferencesList)
+        //.fileReference(fileReferencesList)
         .points(com.ase.lecturerservice.mockvalues.MockValues.IntMocks.ACHIEVED_POINTS.getValue())
         .grade(com.ase.lecturerservice.mockvalues.MockValues.FloatMocks.GRADE.getValue())
         .build();

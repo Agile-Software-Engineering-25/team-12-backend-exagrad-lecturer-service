@@ -15,9 +15,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.Feedback;
 import com.ase.lecturerservice.repositories.FeedbackRepository;
+import com.ase.lecturerservice.dtos.FeedbackRequest;
 
 @ExtendWith(MockitoExtension.class)
 public class FeedbackServiceTest {
@@ -64,13 +67,17 @@ public class FeedbackServiceTest {
   @Test
   void saveFeedbackShouldCallRepository() {
     Feedback feedback = Feedback.builder()
-        .uuid("test-uuid")
+        .comment("Test comment")
+        .points(1)
+        .grade(1.0f)
+        .build();
+      FeedbackRequest feedbackRequest = FeedbackRequest.builder()
         .comment("Test comment")
         .points(1)
         .grade(1.0f)
         .build();
 
-    feedbackService.saveFeedback(feedback);
+    feedbackService.saveFeedback(feedbackRequest, new MultipartFile[0]);
 
     verify(feedbackRepository).save(feedback);
   }
@@ -78,7 +85,7 @@ public class FeedbackServiceTest {
   @Test
   void saveFeedbackShouldHandleNullFeedback() {
     assertThrows(NullPointerException.class, () -> {
-      feedbackService.saveFeedback(null);
+      feedbackService.saveFeedback(null, new MultipartFile[0]);
     });
   }
 

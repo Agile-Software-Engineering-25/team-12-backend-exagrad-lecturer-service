@@ -19,21 +19,14 @@ import com.ase.lecturerservice.dtos.FeedbackDocumentRequest;
 import com.ase.lecturerservice.dtos.response.ApiResponseWrapper;
 import com.ase.lecturerservice.dtos.FeedbackDocumentResponse;
 import com.ase.lecturerservice.services.FeedbackDocumentService;
-import com.ase.lecturerservice.entities.Feedback;
-import com.ase.lecturerservice.services.FeedbackService;
+import com.ase.lecturerservice.entities.FeedbackDocument;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import com.ase.lecturerservice.services.FileService;
-import org.springframework.validation.annotation.Validated;
 import jakarta.validation.constraints.NotBlank;
 
 @RestController
@@ -51,7 +44,7 @@ public class FeedbackDocumentController {
   @Operation(
       summary = "Upload feedback document",
       description = "Upload an feedback document with metadata")
-  public ResponseEntity<ApiResponseWrapper<FeedbackDocumentResponse>> uploadFeedbackDocument(
+  public ResponseEntity<ApiResponseWrapper<FeedbackDocument>> uploadFeedbackDocument(
       @Parameter(description = "Document file to upload")
       @RequestPart("file")
       MultipartFile file,
@@ -62,7 +55,7 @@ public class FeedbackDocumentController {
 
            log.info(">>> Received file: " + file.getOriginalFilename() 
                        + " (" + file.getContentType() + ")");
-      FeedbackDocumentResponse response = feedbackDocumentService.uploadFeedbackDocument(file, metadata);
+      FeedbackDocument response = feedbackDocumentService.uploadFeedbackDocument(file, metadata);
 
       return ResponseEntity.status(HttpStatus.CREATED)
           .body(apiResponseFactory.created(response, request.getRequestURI()));

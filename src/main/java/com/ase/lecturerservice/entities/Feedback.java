@@ -1,8 +1,8 @@
 package com.ase.lecturerservice.entities;
 
-import jakarta.persistence.Transient;
 import java.time.LocalDate;
 import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -17,7 +17,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.ase.lecturerservice.entities.UploadFile;
 
 @Builder
 @Getter
@@ -54,13 +53,9 @@ public class Feedback {
   private String comment;
 
   @ElementCollection
-  @JsonProperty("fileReference")
+  @JsonProperty("fileReferences")
   @CollectionTable(name = "feedback_file_references", joinColumns = @JoinColumn(name = "feedback_id"))
-  private List<FileReference> fileReference;
-
-  @Transient
-  @JsonProperty("fileUpload")
-  private List<UploadFile> fileUpload;
+  private List<FileReference> fileReferences;
 
   @Column(name = "points")
   @JsonProperty("points")
