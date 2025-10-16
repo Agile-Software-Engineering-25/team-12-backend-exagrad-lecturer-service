@@ -11,5 +11,5 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class Lecturer extends UserEntity {
 
-  private final UserType type = UserType.LECTURER;
+    private final UserType type = UserType.LECTURER;
 }

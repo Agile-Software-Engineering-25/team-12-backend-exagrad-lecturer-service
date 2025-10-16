@@ -1,21 +1,20 @@
 package com.ase.lecturerservice.dtos;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-
-import java.time.LocalDate;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * Ein Data Transfer Object (DTO), das die Daten für die Erstellung
- * eines neuen Feedbacks vom Frontend zum Backend transportiert.
- * Es enthält keine Datenbank-spezifischen Annotationen oder Logik.
+ * Ein Data Transfer Object (DTO), das die Daten für die Erstellung eines neuen Feedbacks vom
+ * Frontend zum Backend transportiert. Es enthält keine Datenbank-spezifischen Annotationen oder
+ * Logik.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder 
+@Builder
 public class FeedbackRequest {
 
     private LocalDate gradedAt;
@@ -26,5 +25,4 @@ public class FeedbackRequest {
     private String comment;
     private int points;
     private float grade;
-
 }

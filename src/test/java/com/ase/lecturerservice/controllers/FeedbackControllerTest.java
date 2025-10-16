@@ -5,6 +5,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.ase.lecturerservice.MockValues;
+import com.ase.lecturerservice.entities.Feedback;
+import com.ase.lecturerservice.entities.FileReference;
+import com.ase.lecturerservice.services.FeedbackService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -17,96 +23,109 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import com.ase.lecturerservice.MockValues;
-import com.ase.lecturerservice.entities.Feedback;
-import com.ase.lecturerservice.entities.FileReference;
-import com.ase.lecturerservice.services.FeedbackService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(FeedbackController.class)
 public class FeedbackControllerTest {
 
-  private static final LocalDate DATE = LocalDate.of(
-      MockValues.IntMocks.DATE_YEAR.getValue(),
-      MockValues.IntMocks.DATE_MONTH.getValue(),
-      MockValues.IntMocks.DATE_DAY.getValue());
+    private static final LocalDate DATE =
+            LocalDate.of(
+                    MockValues.IntMocks.DATE_YEAR.getValue(),
+                    MockValues.IntMocks.DATE_MONTH.getValue(),
+                    MockValues.IntMocks.DATE_DAY.getValue());
 
-  static LocalDate date = LocalDate.of(
-      com.ase.lecturerservice.mockvalues.MockValues.IntMocks.DATE_YEAR.getValue(),
-      com.ase.lecturerservice.mockvalues.MockValues.IntMocks.DATE_MONTH.getValue(),
-      com.ase.lecturerservice.mockvalues.MockValues.IntMocks.DATE_DAY.getValue());
+    static LocalDate date =
+            LocalDate.of(
+                    com.ase.lecturerservice.mockvalues.MockValues.IntMocks.DATE_YEAR.getValue(),
+                    com.ase.lecturerservice.mockvalues.MockValues.IntMocks.DATE_MONTH.getValue(),
+                    com.ase.lecturerservice.mockvalues.MockValues.IntMocks.DATE_DAY.getValue());
 
-  static List<FileReference> fileReferencesList = List.of(
-      FileReference.builder()
-          .fileUuid(UUID.randomUUID().toString())
-          .filename("dummy_file")
-          .build(),
-      FileReference.builder()
-          .fileUuid(UUID.randomUUID().toString())
-          .filename("dummy_file2")
-          .build()
-  );
+    static List<FileReference> fileReferencesList =
+            List.of(
+                    FileReference.builder()
+                            .fileUuid(UUID.randomUUID().toString())
+                            .filename("dummy_file")
+                            .build(),
+                    FileReference.builder()
+                            .fileUuid(UUID.randomUUID().toString())
+                            .filename("dummy_file2")
+                            .build());
 
-  private static Feedback feedback;
-  @Autowired
-  private MockMvc mockMvc;
-  @MockitoBean
-  private FeedbackService feedbackService;
-  @Autowired
-  private ObjectMapper objectMapper;
+    private static Feedback feedback;
+    @Autowired private MockMvc mockMvc;
+    @MockitoBean private FeedbackService feedbackService;
+    @Autowired private ObjectMapper objectMapper;
 
-  @BeforeAll
-  public static void setup() {
-    feedback = Feedback.builder()
-        .uuid(MockValues.UuidMocks.GRADE_UUID.getValue())
-        .gradedAt(DATE)
-        .lecturerUuid(UUID.randomUUID().toString())
-        .studentUuid(MockValues.UuidMocks.STUDENT_UUID.getValue())
-        .submissionUuid(UUID.randomUUID().toString())
-        .examUuid(MockValues.UuidMocks.EXAM_UUID.getValue())
-        .comment("Excellent work on the assignment.")
-        .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
-        .grade(MockValues.FloatMocks.GRADE.getValue())
-        .build();
-  }
+    @BeforeAll
+    public static void setup() {
+        feedback =
+                Feedback.builder()
+                        .uuid(MockValues.UuidMocks.GRADE_UUID.getValue())
+                        .gradedAt(DATE)
+                        .lecturerUuid(UUID.randomUUID().toString())
+                        .studentUuid(MockValues.UuidMocks.STUDENT_UUID.getValue())
+                        .submissionUuid(UUID.randomUUID().toString())
+                        .examUuid(MockValues.UuidMocks.EXAM_UUID.getValue())
+                        .comment("Excellent work on the assignment.")
+                        .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
+                        .grade(MockValues.FloatMocks.GRADE.getValue())
+                        .build();
+    }
 
-  @Test
-  void saveFeedbackShouldSave() throws Exception {
-    Feedback feedback = Feedback.builder()
-        .uuid(com.ase.lecturerservice.mockvalues.MockValues.UuidMocks.GRADE_UUID2.getValue())
-        .gradedAt(date)
-        .lecturerUuid(UUID.randomUUID().toString())
-        .studentUuid(
-            com.ase.lecturerservice.mockvalues.MockValues.UuidMocks.STUDENT_UUID2.getValue())
-        .submissionUuid(UUID.randomUUID().toString())
-        .examUuid(com.ase.lecturerservice.mockvalues.MockValues.UuidMocks.EXAM_UUID.getValue())
-        .comment("Great effort! Check feedback in files.")
-        //.fileReference(fileReferencesList)
-        .points(com.ase.lecturerservice.mockvalues.MockValues.IntMocks.ACHIEVED_POINTS.getValue())
-        .grade(com.ase.lecturerservice.mockvalues.MockValues.FloatMocks.GRADE.getValue())
-        .build();
+    @Test
+    void saveFeedbackShouldSave() throws Exception {
+        Feedback feedback =
+                Feedback.builder()
+                        .uuid(
+                                com.ase.lecturerservice.mockvalues.MockValues.UuidMocks.GRADE_UUID2
+                                        .getValue())
+                        .gradedAt(date)
+                        .lecturerUuid(UUID.randomUUID().toString())
+                        .studentUuid(
+                                com.ase.lecturerservice.mockvalues.MockValues.UuidMocks
+                                        .STUDENT_UUID2
+                                        .getValue())
+                        .submissionUuid(UUID.randomUUID().toString())
+                        .examUuid(
+                                com.ase.lecturerservice.mockvalues.MockValues.UuidMocks.EXAM_UUID
+                                        .getValue())
+                        .comment("Great effort! Check feedback in files.")
+                        // .fileReference(fileReferencesList)
+                        .points(
+                                com.ase.lecturerservice.mockvalues.MockValues.IntMocks
+                                        .ACHIEVED_POINTS
+                                        .getValue())
+                        .grade(
+                                com.ase.lecturerservice.mockvalues.MockValues.FloatMocks.GRADE
+                                        .getValue())
+                        .build();
 
-    mockMvc.perform(post("/api/v1/feedback")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(feedback)))
-        .andExpect(status().isNoContent());
-  }
+        mockMvc.perform(
+                        post("/api/v1/feedback")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(feedback)))
+                .andExpect(status().isNoContent());
+    }
 
-  @Test
-  void getFeedbackForLecturerShouldReturnListofFeedback() throws Exception {
-    List<Feedback> feedbackList = List.of(feedback);
+    @Test
+    void getFeedbackForLecturerShouldReturnListofFeedback() throws Exception {
+        List<Feedback> feedbackList = List.of(feedback);
 
-    when(feedbackService.getFeedbackForLecturer("Tom")).thenReturn(feedbackList);
+        when(feedbackService.getFeedbackForLecturer("Tom")).thenReturn(feedbackList);
 
-    mockMvc.perform(get("/api/v1/feedback/for-lecturer/Tom")
-            .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(jsonPath("$[0].gradedAt").value(DATE.toString()))
-        .andExpect(jsonPath("$[0].studentUuid").value(MockValues.UuidMocks.STUDENT_UUID.getValue()))
-        .andExpect(jsonPath("$[0].examUuid").value(MockValues.UuidMocks.EXAM_UUID.getValue()))
-        .andExpect(jsonPath("$[0].comment").value("Excellent work on the assignment."))
-        .andExpect(jsonPath("$[0].grade").value(MockValues.FloatMocks.GRADE.getValue()))
-        .andExpect(jsonPath("$[0].points").value(MockValues.IntMocks.ACHIEVED_POINTS.getValue()));
-  }
-
+        mockMvc.perform(
+                        get("/api/v1/feedback/for-lecturer/Tom")
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].gradedAt").value(DATE.toString()))
+                .andExpect(
+                        jsonPath("$[0].studentUuid")
+                                .value(MockValues.UuidMocks.STUDENT_UUID.getValue()))
+                .andExpect(
+                        jsonPath("$[0].examUuid").value(MockValues.UuidMocks.EXAM_UUID.getValue()))
+                .andExpect(jsonPath("$[0].comment").value("Excellent work on the assignment."))
+                .andExpect(jsonPath("$[0].grade").value(MockValues.FloatMocks.GRADE.getValue()))
+                .andExpect(
+                        jsonPath("$[0].points")
+                                .value(MockValues.IntMocks.ACHIEVED_POINTS.getValue()));
+    }
 }

@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class Student extends UserEntity {
 
-  private String matriculationNumber;
+    private String matriculationNumber;
 
-  private UserType type = UserType.STUDENT;
+    private UserType type = UserType.STUDENT;
 }

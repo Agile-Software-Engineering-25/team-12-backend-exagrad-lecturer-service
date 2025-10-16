@@ -5,11 +5,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class ApplicationTests {
-/*   @MockBean
-  private MinioClientService minioClientService; */
+    /*   @MockBean
+    private MinioClientService minioClientService; */
 
-  @Test
-  void contextLoads() {
-  }
-
+    @Test
+    void contextLoads() {}
 }

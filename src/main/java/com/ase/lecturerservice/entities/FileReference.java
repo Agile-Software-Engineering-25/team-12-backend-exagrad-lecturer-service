@@ -1,8 +1,7 @@
 package com.ase.lecturerservice.entities;
 
-import java.util.UUID;
-
 import jakarta.persistence.Embeddable;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +13,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Embeddable
 public class FileReference {
-  private UUID fileUuid;
-  private String fileName;
+    private UUID fileUuid;
+    private String fileName;
 }

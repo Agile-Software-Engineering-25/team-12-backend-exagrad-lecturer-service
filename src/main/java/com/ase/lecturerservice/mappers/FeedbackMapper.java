@@ -1,25 +1,22 @@
 package com.ase.lecturerservice.mappers;
 
+import com.ase.lecturerservice.dtos.FeedbackDocumentResponse;
 import com.ase.lecturerservice.dtos.FeedbackRequest;
 import com.ase.lecturerservice.dtos.FeedbackResponse;
-import com.ase.lecturerservice.dtos.FeedbackDocumentResponse;
 import com.ase.lecturerservice.entities.Feedback;
-
-import java.time.LocalDate;
 import java.util.List;
-
 import org.springframework.stereotype.Component;
 
 /**
- * Mapper-Komponente, die für die Umwandlung zwischen Feedback-DTOs
- * und Feedback-Datenbank-Entitäten zuständig ist.
+ * Mapper-Komponente, die für die Umwandlung zwischen Feedback-DTOs und Feedback-Datenbank-Entitäten
+ * zuständig ist.
  */
 @Component
 public class FeedbackMapper {
 
     /**
-     * Wandelt ein FeedbackCreateRequest DTO in ein Feedback Entity um.
-     * Diese Methode wird verwendet, bevor das Feedback in der Datenbank gespeichert wird.
+     * Wandelt ein FeedbackCreateRequest DTO in ein Feedback Entity um. Diese Methode wird
+     * verwendet, bevor das Feedback in der Datenbank gespeichert wird.
      *
      * @param dto Das aus dem Frontend empfangene DTO.
      * @return Ein neues Feedback-Entity, das bereit zum Speichern ist.
@@ -43,13 +40,13 @@ public class FeedbackMapper {
         return entity;
     }
 
-        public FeedbackResponse toResponse(Feedback feedback, List<FeedbackDocumentResponse> fileReferences) {
+    public FeedbackResponse toResponse(
+            Feedback feedback, List<FeedbackDocumentResponse> fileReferences) {
         if (feedback == null) {
             return null;
         }
 
         FeedbackResponse response = new FeedbackResponse();
-
 
         response.setUuid(feedback.getUuid());
         response.setGradedAt(feedback.getGradedAt());
@@ -61,8 +58,6 @@ public class FeedbackMapper {
         response.setPoints(feedback.getPoints());
         response.setGrade(feedback.getGrade());
         response.setFileReference(fileReferences);
-
-
 
         return response;
     }
