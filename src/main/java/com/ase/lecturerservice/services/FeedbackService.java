@@ -2,6 +2,7 @@ package com.ase.lecturerservice.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,11 @@ public class FeedbackService {
             .map(exam -> exam.getLecturerUuid().equals(lecturerUuid))
             .orElse(false)
     ).toList();
+  }
+
+  public List<Feedback> getFeedbackForExam(String examUuid) {
+    List<Feedback> feedbacks = feedbackRepository.findAll();
+    return feedbacks.stream().filter(feedback -> feedback.getExamUuid().equals(examUuid)).toList();
   }
 
   // TODO: change this webclient, when the API Endpoint is ready
