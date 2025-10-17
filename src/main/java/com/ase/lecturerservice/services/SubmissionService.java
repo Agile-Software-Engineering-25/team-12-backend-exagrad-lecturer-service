@@ -25,21 +25,21 @@ public class SubmissionService {
   private WebClient studentServiceWebClient = WebClient.create();
 
   private List<Submission> executeApiCall(String apiPath) {
-    return
-        parseSubmissions(studentServiceWebClient.get()
-            .uri(studentServiceBaseUrl + apiPath)
-            .exchangeToMono(clientResponse -> clientResponse.bodyToMono(StudentServiceSubmissionResponse.class))
-            .block()
-            .getData()
-        );
+    return parseSubmissions(studentServiceWebClient.get()
+        .uri(studentServiceBaseUrl + apiPath)
+        .exchangeToMono(clientResponse ->
+            clientResponse.bodyToMono(StudentServiceSubmissionResponse.class)).block().getData());
   }
 
-  private List<Submission> parseSubmissions(List<StudentServiceSubmissionResponse.StudentServiceSubmissionDto> submissionDtos) {
+  private List<Submission> parseSubmissions(
+      List<StudentServiceSubmissionResponse.StudentServiceSubmissionDto> submissionDtos
+  ) {
     Map<String, List<StudentServiceSubmissionResponse.StudentServiceSubmissionDto>> fileReferences = new HashMap<>();
 
     submissionDtos.stream().forEach(submissionDto -> {
       String key = submissionDto.getStudentId() + ":" + submissionDto.getExamId();
-      List<StudentServiceSubmissionResponse.StudentServiceSubmissionDto> references = fileReferences.getOrDefault(key, new LinkedList<>());
+      List<StudentServiceSubmissionResponse.StudentServiceSubmissionDto> references = fileReferences
+          .getOrDefault(key, new LinkedList<>());
       references.add(submissionDto);
       fileReferences.put(key, references);
     });
@@ -50,12 +50,13 @@ public class SubmissionService {
             .submissionDate(references.getLast().getUploadDate())
             .examUuid(references.getLast().getId())
             .studentUuid(references.getLast().getStudentId())
-            .fileUpload(references.stream().map(fileRef -> FileReference.builder()
-                .downloadLink(fileRef.getDownloadUrl())
-                .filename(fileRef.getFileName())
-                .fileUuid(fileRef.getId())
-                .build()).collect(Collectors.toList()))
-            .build()).collect(Collectors.toList());
+            .fileUpload(references.stream().map(fileRef ->
+                FileReference.builder()
+                    .downloadLink(fileRef.getDownloadUrl())
+                    .filename(fileRef.getFileName())
+                    .fileUuid(fileRef.getId()).build())
+                .collect(Collectors.toList())).build())
+        .collect(Collectors.toList());
   }
 
   public List<Submission> getSubmissionsForExam(String examId) {
@@ -67,12 +68,11 @@ public class SubmissionService {
   }
 
   public List<Submission> getAllAccessibleSubmissionsForLecturer(String lecturerUuid) {
-    Set<String> examsOfLecturer = examService.getExamsByLecturer(lecturerUuid)
-        .stream()
-        .map(Exam::getUuid)
-        .collect(Collectors.toSet());
+    Set<String> examsOfLecturer = examService.getExamsByLecturer(lecturerUuid).stream()
+        .map(Exam::getUuid).collect(Collectors.toSet());
 
-    return examsOfLecturer.stream().map(examUuid -> getSubmissionsForExam(examUuid))
+    return examsOfLecturer.stream()
+        .map(examUuid -> getSubmissionsForExam(examUuid))
         .flatMap(java.util.Collection::stream).collect(Collectors.toList());
   }
 

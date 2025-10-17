@@ -1,12 +1,8 @@
 package com.ase.lecturerservice.services;
 
+import static org.mockito.BDDMockito.given;
 import java.time.LocalDate;
-import com.ase.lecturerservice.MockValues;
-import com.ase.lecturerservice.entities.Exam;
-import com.ase.lecturerservice.entities.ExamType;
-import com.ase.lecturerservice.entities.Submission;
-import com.ase.lecturerservice.entities.user.Lecturer;
-import com.ase.lecturerservice.entities.user.UserType;
+import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,11 +14,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.mockito.BDDMockito.given;
+import com.ase.lecturerservice.MockValues;
+import com.ase.lecturerservice.entities.Exam;
+import com.ase.lecturerservice.entities.ExamType;
+import com.ase.lecturerservice.entities.Submission;
+import com.ase.lecturerservice.entities.user.Lecturer;
+import com.ase.lecturerservice.entities.user.UserType;
 
 @SpringBootTest
 public class SubmissionServiceTest {
