@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.client.WebClient;
 import com.ase.lecturerservice.MockValues;
 import com.ase.lecturerservice.entities.Exam;
@@ -34,7 +33,6 @@ public class SubmissionServiceTest {
 
   private Lecturer lecturer;
   private LocalDate date;
-  private WebTestClient webTestClient;
 
   @BeforeEach
   public void setUpLecturer() {
@@ -51,10 +49,9 @@ public class SubmissionServiceTest {
         MockValues.IntMocks.DATE_MONTH.getValue(),
         MockValues.IntMocks.DATE_DAY.getValue());
 
-    // Setup a WebTestClient bound to a mock server using Reactor Netty to simulate student-service
-    webTestClient = WebTestClient.bindToServer().baseUrl(studentServiceBaseUrl).build();
 
-    // Inject a WebClient that points to the same base URL (it will be intercepted by WebTestClient's mock server if configured)
+    // Inject a WebClient that points to the same base URL
+    // (it will be intercepted by WebTestClient's mock server if configured)
     WebClient webClient = WebClient.create();
     ReflectionTestUtils.setField(submissionService, "studentServiceBaseUrl", studentServiceBaseUrl);
     ReflectionTestUtils.setField(submissionService, "studentServiceWebClient", webClient);

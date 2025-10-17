@@ -34,7 +34,8 @@ public class SubmissionService {
   private List<Submission> parseSubmissions(
       List<StudentServiceSubmissionResponse.StudentServiceSubmissionDto> submissionDtos
   ) {
-    Map<String, List<StudentServiceSubmissionResponse.StudentServiceSubmissionDto>> fileReferences = new HashMap<>();
+    Map<String, List<StudentServiceSubmissionResponse.StudentServiceSubmissionDto>> fileReferences
+        = new HashMap<>();
 
     submissionDtos.stream().forEach(submissionDto -> {
       String key = submissionDto.getStudentId() + ":" + submissionDto.getExamId();
