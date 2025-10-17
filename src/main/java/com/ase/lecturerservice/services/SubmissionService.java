@@ -25,7 +25,6 @@ public class SubmissionService {
   private WebClient studentServiceWebClient = WebClient.create();
 
   private List<Submission> executeApiCall(String apiPath) {
-    System.out.println("Sending to: " + studentServiceBaseUrl + apiPath);
     return
         parseSubmissions(studentServiceWebClient.get()
             .uri(studentServiceBaseUrl + apiPath)

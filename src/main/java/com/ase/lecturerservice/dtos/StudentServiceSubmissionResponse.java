@@ -1,9 +1,11 @@
 package com.ase.lecturerservice.dtos;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class StudentServiceSubmissionResponse {
   private boolean success;
   private int statusCode;
@@ -15,7 +17,8 @@ public class StudentServiceSubmissionResponse {
   private String error;
 
   @Data
-  public class StudentServiceSubmissionDto {
+  @NoArgsConstructor
+  public static class StudentServiceSubmissionDto {
     private String id;
     private String examId;
     private String studentId;
