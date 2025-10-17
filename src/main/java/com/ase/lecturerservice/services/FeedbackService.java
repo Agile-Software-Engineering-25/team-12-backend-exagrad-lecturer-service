@@ -35,6 +35,10 @@ public class FeedbackService {
     ).toList();
   }
 
+  public List<Feedback> getFeedbackForExam(String examUuid) {
+    return feedbackRepository.findByExamUuid(examUuid);
+  }
+
   // TODO: change this webclient, when the API Endpoint is ready
   public Exam getExam(String uuid) {
     return DummyData.EXAMS.stream()
@@ -60,7 +64,7 @@ public class FeedbackService {
 
     feedbackRepository.save(existing);
 
-    log.info("Feedback {} wurde erfolgreich bearbeitet von Lecturer {} (Student {}, Punkte: {}, Note: {})",
+    log.info("Feedback {} was successfully edited by Lecturer {} (Student {}, Points: {}, Grade: {})",
         uuid,
         existing.getLecturerUuid(),
         existing.getStudentUuid(),

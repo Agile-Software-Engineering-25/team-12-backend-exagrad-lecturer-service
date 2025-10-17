@@ -25,6 +25,11 @@ public class FeedbackController {
     return ResponseEntity.ok(feedbackService.getFeedbackForLecturer(lecturerUuid));
   }
 
+  @GetMapping("/for-exam/{examUuid}")
+  public ResponseEntity<List<Feedback>> getFeedbackForExam(@PathVariable String examUuid) {
+    return ResponseEntity.ok(feedbackService.getFeedbackForExam(examUuid));
+  }
+
   @PostMapping
   public ResponseEntity<Void> saveFeedback(@RequestBody Feedback feedback) {
     feedbackService.saveFeedback(feedback);
