@@ -28,6 +28,9 @@ management:
       probes:
         enabled: true
 app:
+  apis:
+    student-service:
+      baseurl: https://sau-portal.de/api/v1/exagrad/student
   cors:
     allowed-origins:
       - http://localhost:5173

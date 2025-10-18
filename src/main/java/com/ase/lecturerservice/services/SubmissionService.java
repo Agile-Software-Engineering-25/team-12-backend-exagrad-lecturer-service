@@ -1,10 +1,17 @@
 package com.ase.lecturerservice.services;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import com.ase.lecturerservice.dtos.StudentServiceSubmissionResponse;
 import com.ase.lecturerservice.entities.Exam;
+import com.ase.lecturerservice.entities.FileReference;
 import com.ase.lecturerservice.entities.Submission;
 import lombok.RequiredArgsConstructor;
 
@@ -13,28 +20,61 @@ import lombok.RequiredArgsConstructor;
 public class SubmissionService {
 
   private final ExamService examService;
+  @Value("${app.apis.student-service.baseurl}")
+  private String studentServiceBaseUrl;
+  private WebClient studentServiceWebClient = WebClient.create();
+
+  private List<Submission> executeApiCall(String apiPath) {
+    return parseSubmissions(studentServiceWebClient.get()
+        .uri(studentServiceBaseUrl + apiPath)
+        .exchangeToMono(clientResponse ->
+            clientResponse.bodyToMono(StudentServiceSubmissionResponse.class)).block().getData());
+  }
+
+  private List<Submission> parseSubmissions(
+      List<StudentServiceSubmissionResponse.StudentServiceSubmissionDto> submissionDtos
+  ) {
+    Map<String, List<StudentServiceSubmissionResponse.StudentServiceSubmissionDto>> fileReferences
+        = new HashMap<>();
+
+    submissionDtos.stream().forEach(submissionDto -> {
+      String key = submissionDto.getStudentId() + ":" + submissionDto.getExamId();
+      List<StudentServiceSubmissionResponse.StudentServiceSubmissionDto> references = fileReferences
+          .getOrDefault(key, new LinkedList<>());
+      references.add(submissionDto);
+      fileReferences.put(key, references);
+    });
+
+    return fileReferences.values().stream()
+        .map(references -> Submission.builder()
+            .uuid(references.getLast().getId())
+            .submissionDate(references.getLast().getUploadDate())
+            .examUuid(references.getLast().getId())
+            .studentUuid(references.getLast().getStudentId())
+            .fileUpload(references.stream().map(fileRef ->
+                FileReference.builder()
+                    .downloadLink(fileRef.getDownloadUrl())
+                    .filename(fileRef.getFileName())
+                    .fileUuid(fileRef.getId()).build())
+                .collect(Collectors.toList())).build())
+        .collect(Collectors.toList());
+  }
 
   public List<Submission> getSubmissionsForExam(String examId) {
-    return DummyData.SUBMISSIONS.stream()
-        .filter(submission -> submission.getExamUuid().equals(examId))
-        .toList();
+    return executeApiCall("/documents/exams?examId=" + examId);
   }
 
   public List<Submission> getSubmissionsForStudent(String studentId) {
-    return DummyData.SUBMISSIONS.stream()
-        .filter(submission -> submission.getStudentUuid().equals(studentId))
-        .toList();
+    return executeApiCall("/documents/exams?studentId=" + studentId);
   }
 
   public List<Submission> getAllAccessibleSubmissionsForLecturer(String lecturerUuid) {
-    Set<String> examsOfLecturer = examService.getExamsByLecturer(lecturerUuid)
-        .stream()
-        .map(Exam::getUuid)
-        .collect(Collectors.toSet());
+    Set<String> examsOfLecturer = examService.getExamsByLecturer(lecturerUuid).stream()
+        .map(Exam::getUuid).collect(Collectors.toSet());
 
-    return DummyData.SUBMISSIONS.stream()
-        .filter(submission -> examsOfLecturer.contains(submission.getExamUuid()))
-        .collect(Collectors.toList());
+    return examsOfLecturer.stream()
+        .map(examUuid -> getSubmissionsForExam(examUuid))
+        .flatMap(java.util.Collection::stream).collect(Collectors.toList());
   }
 
 }
