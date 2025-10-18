@@ -7,12 +7,12 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.Feedback;
 import com.ase.lecturerservice.repositories.FeedbackRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @Service
@@ -64,7 +64,8 @@ public class FeedbackService {
 
     feedbackRepository.save(existing);
 
-    log.info("Feedback {} was successfully edited by Lecturer {} (Student {}, Points: {}, Grade: {})",
+    log.info("Feedback {} was successfully edited by Lecturer {} "
+            + "(Student {}, Points: {}, Grade: {})",
         uuid,
         existing.getLecturerUuid(),
         existing.getStudentUuid(),
