@@ -22,7 +22,7 @@ public class SubmissionService {
   private final ExamService examService;
   @Value("${app.apis.student-service.baseurl}")
   private String studentServiceBaseUrl;
-  private WebClient studentServiceWebClient = WebClient.create();
+  private final WebClient studentServiceWebClient = WebClient.create();
 
   private List<Submission> executeApiCall(String apiPath) {
     return parseSubmissions(studentServiceWebClient.get()
@@ -73,7 +73,7 @@ public class SubmissionService {
         .map(Exam::getUuid).collect(Collectors.toSet());
 
     return examsOfLecturer.stream()
-        .map(examUuid -> getSubmissionsForExam(examUuid))
+        .map(this::getSubmissionsForExam)
         .flatMap(java.util.Collection::stream).collect(Collectors.toList());
   }
 
