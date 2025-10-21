@@ -66,4 +66,8 @@ public class Feedback {
   @Column(name = "grade")
   @JsonProperty("grade")
   private float grade;
+
+  @Column(name = "publish_status")
+  @JsonProperty("publishStatus")
+  private PublishStatus publishStatus;
 }

@@ -44,4 +44,10 @@ public class FeedbackController {
     feedbackService.updateFeedback(uuid, updateFeedback);
     return ResponseEntity.noContent().build();
   }
+
+  @PostMapping("/submit")
+  public ResponseEntity<Void> submitFeedback(@RequestBody List<Feedback> feedbacks) {
+    feedbackService.submitFeedback(feedbacks);
+    return ResponseEntity.noContent().build();
+  }
 }

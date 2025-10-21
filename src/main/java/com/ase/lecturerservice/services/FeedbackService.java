@@ -7,6 +7,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.Feedback;
@@ -19,6 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class FeedbackService {
   private final FeedbackRepository feedbackRepository;
+  private final BitfrostService bitfrostService;
+  private final WebClient feedbackServiceWebClient = WebClient.create();
 
   @EventListener(ApplicationReadyEvent.class)
   public void instantiateDummies() {
@@ -35,15 +38,15 @@ public class FeedbackService {
     ).toList();
   }
 
-  public List<Feedback> getFeedbackForExam(String examUuid) {
-    return feedbackRepository.findByExamUuid(examUuid);
-  }
-
   // TODO: change this webclient, when the API Endpoint is ready
   public Exam getExam(String uuid) {
     return DummyData.EXAMS.stream()
         .filter(exam -> exam.getUuid().equals(uuid))
         .findFirst().orElse(null);
+  }
+
+  public List<Feedback> getFeedbackForExam(String examUuid) {
+    return feedbackRepository.findByExamUuid(examUuid);
   }
 
   public void saveFeedback(Feedback feedback) {
@@ -71,6 +74,11 @@ public class FeedbackService {
         existing.getStudentUuid(),
         existing.getPoints(),
         existing.getGrade());
+  }
+
+  public void submitFeedback(List<Feedback> feedbacks) {
+    log.info("submitting feedbacks to the examination office");
+    bitfrostService.sendRequest("feedbacks:submit", feedbacks);
   }
 
 }
