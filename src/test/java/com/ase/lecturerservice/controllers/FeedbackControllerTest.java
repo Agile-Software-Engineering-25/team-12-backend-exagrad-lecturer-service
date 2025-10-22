@@ -7,8 +7,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.ase.lecturerservice.MockValues;
+import com.ase.lecturerservice.dtos.FeedbackResponse;
 import com.ase.lecturerservice.entities.Feedback;
 import com.ase.lecturerservice.entities.FileReference;
+import com.ase.lecturerservice.mappers.FeedbackMapper;
 import com.ase.lecturerservice.services.FeedbackService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
@@ -28,6 +30,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(FeedbackController.class)
 public class FeedbackControllerTest {
 
+private final FeedbackMapper feedbackMapper = new FeedbackMapper();
+
     private static final LocalDate DATE =
             LocalDate.of(
                     MockValues.IntMocks.DATE_YEAR.getValue(),
@@ -43,12 +47,12 @@ public class FeedbackControllerTest {
     static List<FileReference> fileReferencesList =
             List.of(
                     FileReference.builder()
-                            .fileUuid(UUID.randomUUID().toString())
-                            .filename("dummy_file")
+                            .fileUuid(UUID.randomUUID())
+                            .fileName("dummy_file")
                             .build(),
                     FileReference.builder()
-                            .fileUuid(UUID.randomUUID().toString())
-                            .filename("dummy_file2")
+                            .fileUuid(UUID.randomUUID())
+                            .fileName("dummy_file2")
                             .build());
 
     private static Feedback feedback;
@@ -109,7 +113,7 @@ public class FeedbackControllerTest {
 
     @Test
     void getFeedbackForLecturerShouldReturnListofFeedback() throws Exception {
-        List<Feedback> feedbackList = List.of(feedback);
+        List<FeedbackResponse> feedbackList = List.of(feedbackMapper.toResponse(feedback));
 
         when(feedbackService.getFeedbackForLecturer("Tom")).thenReturn(feedbackList);
 

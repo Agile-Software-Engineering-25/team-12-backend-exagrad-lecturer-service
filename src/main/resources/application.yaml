@@ -37,7 +37,7 @@ app:
     allowed-origins:
       - http://localhost:5173
       - https://sau-portal.de
-      - http://80.158.79.52:5173
+      - http://80.158.79.52:5173 #TODO: remove before production
   timezone: Europe/Berlin
   storage:
     feedbackDocumentsBucket: feedback-documents

@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.ase.lecturerservice.dtos.FeedbackRequest;
+import com.ase.lecturerservice.dtos.FeedbackResponse;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.Feedback;
 import com.ase.lecturerservice.repositories.FeedbackRepository;
@@ -93,7 +94,7 @@ public class FeedbackServiceTest {
         doReturn(exam2).when(spyService).getExam("exam-2");
         doReturn(exam3).when(spyService).getExam("exam-3");
 
-        List<Feedback> result = spyService.getFeedbackForLecturer(lecturerUuid);
+        List<FeedbackResponse> result = spyService.getFeedbackForLecturer(lecturerUuid);
 
         assertEquals(2, result.size());
         assertTrue(result.contains(feedback1));
@@ -116,7 +117,7 @@ public class FeedbackServiceTest {
         doReturn(exam3).when(spyService).getExam("exam-2");
         doReturn(exam3).when(spyService).getExam("exam-3");
 
-        List<Feedback> result = spyService.getFeedbackForLecturer(lecturerUuid);
+        List<FeedbackResponse> result = spyService.getFeedbackForLecturer(lecturerUuid);
 
         assertTrue(result.isEmpty());
         verify(feedbackRepository).findAll();

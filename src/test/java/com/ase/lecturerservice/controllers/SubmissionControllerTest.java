@@ -43,9 +43,8 @@ public class SubmissionControllerTest {
     public static void setup() {
         FileReference fileReference =
                 FileReference.builder()
-                        .fileUuid(UUID.randomUUID().toString())
-                        .filename(FILENAME)
-                        .downloadLink(DOWNLOAD_LINK)
+                        .fileUuid(UUID.randomUUID())
+                        .fileName(FILENAME)
                         .build();
 
         submission =

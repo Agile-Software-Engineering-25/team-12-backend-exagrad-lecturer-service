@@ -1,5 +1,6 @@
 package com.ase.lecturerservice.mappers;
 
+import java.util.Collections;
 import java.util.List;
 import org.springframework.stereotype.Component;
 import com.ase.lecturerservice.dtos.FeedbackDocumentResponse;
@@ -61,4 +62,8 @@ public class FeedbackMapper {
 
     return response;
   }
+
+  public FeedbackResponse toResponse(Feedback feedback) {
+    return toResponse(feedback, Collections.emptyList());
+}
 }
