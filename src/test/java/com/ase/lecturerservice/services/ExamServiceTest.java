@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import com.ase.lecturerservice.MockValues;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.ExamType;
@@ -14,6 +15,7 @@ import com.ase.lecturerservice.entities.user.Lecturer;
 import com.ase.lecturerservice.entities.user.UserType;
 
 @SpringBootTest
+@ActiveProfiles("test")
 public class ExamServiceTest {
   @Autowired
   private ExamService examService;
