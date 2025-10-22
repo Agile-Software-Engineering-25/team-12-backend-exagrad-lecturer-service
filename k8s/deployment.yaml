@@ -64,8 +64,11 @@ spec:
                 secretKeyRef:
                   name: ase-12-postgres
                   key: password
-
-
+            - name: BITFROST_TOPIC_LECTURER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: bitfrost-topic-lecturer
+                  key: secret
 
           readinessProbe:
             httpGet:
