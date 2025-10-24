@@ -1,8 +1,8 @@
 package com.ase.lecturerservice.entities;
 
+import com.ase.lecturerservice.entities.user.Student;
 import java.time.LocalDate;
 import java.util.List;
-import com.ase.lecturerservice.entities.user.Student;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,31 +15,31 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Exam {
-  private String uuid;
+    private String uuid;
 
-  private String name;
+    private String name;
 
-  private int totalPoints;
+    private int totalPoints;
 
-  private ExamType examType;
+    private ExamType examType;
 
-  private LocalDate date;
+    private LocalDate date;
 
-  private int time;
+    private int time;
 
-  private String allowedResources;
+    private String allowedResources;
 
-  private int attempt;
+    private int attempt;
 
-  private int etcs;
+    private int etcs;
 
-  private String room;
+    private String room;
 
-  private String module;
+    private String module;
 
-  private String lecturerUuid;
+    private String lecturerUuid;
 
-  private List<Student> assignedStudents;
+    private List<Student> assignedStudents;
 
-  private boolean fileUploadRequired;
+    private boolean fileUploadRequired;
 }

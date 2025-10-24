@@ -17,7 +17,6 @@ import com.ase.lecturerservice.mappers.FeedbackMapper;
 import com.ase.lecturerservice.services.FeedbackDocumentService;
 import com.ase.lecturerservice.services.FeedbackService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
@@ -27,7 +26,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
@@ -43,11 +41,9 @@ import org.springframework.web.multipart.MultipartFile;
 @WebMvcTest(FeedbackController.class)
 public class FeedbackControllerTest {
 
-        private final FeedbackMapper feedbackMapper = new FeedbackMapper();
+    private final FeedbackMapper feedbackMapper = new FeedbackMapper();
 
-
-        @Autowired
-private ResourceLoader resourceLoader;
+    @Autowired private ResourceLoader resourceLoader;
 
     private static final LocalDate DATE =
             LocalDate.of(
@@ -55,7 +51,7 @@ private ResourceLoader resourceLoader;
                     MockValues.IntMocks.DATE_MONTH.getValue(),
                     MockValues.IntMocks.DATE_DAY.getValue());
 
-        private static final String TEST_FILE_PATH = "testfiles/test.pdf";
+    private static final String TEST_FILE_PATH = "testfiles/test.pdf";
 
     static LocalDate date =
             LocalDate.of(
@@ -123,33 +119,39 @@ private ResourceLoader resourceLoader;
                                         .getValue())
                         .build();
 
-                        // 2. JSON-Daten serialisieren
-    String feedbackJson = objectMapper.writeValueAsString(feedback);
+        // 2. JSON-Daten serialisieren
+        String feedbackJson = objectMapper.writeValueAsString(feedback);
 
-    // 3. Testdatei laden und als MockMultipartFile vorbereiten
-    org.springframework.core.io.Resource resource = resourceLoader.getResource("classpath:" + TEST_FILE_PATH);
-    byte[] fileContent = FileCopyUtils.copyToByteArray(resource.getInputStream());
+        // 3. Testdatei laden und als MockMultipartFile vorbereiten
+        org.springframework.core.io.Resource resource =
+                resourceLoader.getResource("classpath:" + TEST_FILE_PATH);
+        byte[] fileContent = FileCopyUtils.copyToByteArray(resource.getInputStream());
 
-    MockMultipartFile testFile = new MockMultipartFile(
-        "files",              // WICHTIG: Muss dem Namen des @RequestParam in deinem Controller entsprechen (z.B. @RequestParam("files"))
-        "testfile.pdf",       // Dateiname
-        "application/pdf",    // Content-Type
-        fileContent           // Dateibyte-Inhalt
-    );
+        MockMultipartFile testFile =
+                new MockMultipartFile(
+                        "files", // WICHTIG: Muss dem Namen des @RequestParam in deinem Controller
+                        // entsprechen (z.B. @RequestParam("files"))
+                        "testfile.pdf", // Dateiname
+                        "application/pdf", // Content-Type
+                        fileContent // Dateibyte-Inhalt
+                        );
 
-    // 4. JSON-Teil als MockMultipartFile vorbereiten
-    // WICHTIG: Muss dem Namen des @RequestPart in deinem Controller entsprechen (z.B. @RequestPart("feedbackData"))
-    MockMultipartFile feedbackData = new MockMultipartFile(
-        "feedbackData",
-        "", // Dateiname ist hier leer
-        "application/json",
-        feedbackJson.getBytes(StandardCharsets.UTF_8)
-    );
+        // 4. JSON-Teil als MockMultipartFile vorbereiten
+        // WICHTIG: Muss dem Namen des @RequestPart in deinem Controller entsprechen (z.B.
+        // @RequestPart("feedbackData"))
+        MockMultipartFile feedbackData =
+                new MockMultipartFile(
+                        "feedbackData",
+                        "", // Dateiname ist hier leer
+                        "application/json",
+                        feedbackJson.getBytes(StandardCharsets.UTF_8));
 
-    doNothing().when(feedbackService).saveFeedback(
-    any(FeedbackRequest.class), 
-    any(MultipartFile[].class) // Verwende den korrekten Array-Typ
-);
+        doNothing()
+                .when(feedbackService)
+                .saveFeedback(
+                        any(FeedbackRequest.class),
+                        any(MultipartFile[].class) // Verwende den korrekten Array-Typ
+                        );
         mockMvc.perform(
                         post("/api/v1/feedback")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -157,18 +159,14 @@ private ResourceLoader resourceLoader;
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isCreated());
 
-
         mockMvc.perform(
-        MockMvcRequestBuilders.multipart("/api/v1/feedback")
-            .file(feedbackData) // Fügt den JSON-Teil hinzu
-            .file(testFile)     // Fügt die eigentliche Datei hinzu
-    ).
-    andDo(MockMvcResultHandlers.print())
-    .andExpect(status().isCreated());
+                        MockMvcRequestBuilders.multipart("/api/v1/feedback")
+                                .file(feedbackData) // Fügt den JSON-Teil hinzu
+                                .file(testFile) // Fügt die eigentliche Datei hinzu
+                        )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isCreated());
     }
-    
-
-    
 
     @Test
     void getFeedbackForLecturerShouldReturnListofFeedback() throws Exception {

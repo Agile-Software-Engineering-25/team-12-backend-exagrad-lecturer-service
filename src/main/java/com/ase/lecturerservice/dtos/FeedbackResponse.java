@@ -1,10 +1,8 @@
 package com.ase.lecturerservice.dtos;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.time.LocalDate;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,16 +14,17 @@ import lombok.NoArgsConstructor;
 @Builder
 public class FeedbackResponse {
 
-  private String uuid;
+    private String uuid;
 
-  private LocalDate gradedAt;
-  private String examUuid;
-  private String lecturerUuid;
-  private String studentUuid;
-  private String submissionUuid;
-  private String comment;
-  private int points;
-  private float grade;
-  @JsonInclude(JsonInclude.Include.NON_EMPTY)
-  private List<FeedbackDocumentResponse> fileReference;
+    private LocalDate gradedAt;
+    private String examUuid;
+    private String lecturerUuid;
+    private String studentUuid;
+    private String submissionUuid;
+    private String comment;
+    private int points;
+    private float grade;
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<FeedbackDocumentResponse> fileReference;
 }

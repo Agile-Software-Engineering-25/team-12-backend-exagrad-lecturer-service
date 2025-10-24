@@ -10,8 +10,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import com.ase.lecturerservice.MockValues;
 import com.ase.lecturerservice.dtos.FeedbackRequest;
@@ -20,7 +18,6 @@ import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.Feedback;
 import com.ase.lecturerservice.mappers.FeedbackMapper;
 import com.ase.lecturerservice.repositories.FeedbackRepository;
-
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,10 +45,10 @@ public class FeedbackServiceTest {
     private Exam exam3;
 
     private static final LocalDate DATE =
-        LocalDate.of(
-                MockValues.IntMocks.DATE_YEAR.getValue(),
-                MockValues.IntMocks.DATE_MONTH.getValue(),
-                MockValues.IntMocks.DATE_DAY.getValue());
+            LocalDate.of(
+                    MockValues.IntMocks.DATE_YEAR.getValue(),
+                    MockValues.IntMocks.DATE_MONTH.getValue(),
+                    MockValues.IntMocks.DATE_DAY.getValue());
 
     @BeforeEach
     void setUp() {
@@ -82,15 +79,23 @@ public class FeedbackServiceTest {
     @Test
     void saveFeedbackShouldCallRepository() {
 
-;
+        ;
         Feedback feedback =
-                Feedback.builder().comment("Test comment").points(1).grade(1.0f).gradedAt(DATE).build();
+                Feedback.builder()
+                        .comment("Test comment")
+                        .points(1)
+                        .grade(1.0f)
+                        .gradedAt(DATE)
+                        .build();
         FeedbackRequest feedbackRequest =
-                FeedbackRequest.builder().comment("Test comment").points(1).grade(1.0f).gradedAt(DATE).build();
-        when(feedbackMapper.toEntity(feedbackRequest))
-        .thenReturn(feedback);
-        when(feedbackRepository.save(feedback))
-        .thenReturn(feedback);
+                FeedbackRequest.builder()
+                        .comment("Test comment")
+                        .points(1)
+                        .grade(1.0f)
+                        .gradedAt(DATE)
+                        .build();
+        when(feedbackMapper.toEntity(feedbackRequest)).thenReturn(feedback);
+        when(feedbackRepository.save(feedback)).thenReturn(feedback);
 
         feedbackService.saveFeedback(feedbackRequest, new MultipartFile[0]);
 
@@ -116,14 +121,12 @@ public class FeedbackServiceTest {
         doReturn(exam2).when(spyService).getExam("exam-2");
         doReturn(exam3).when(spyService).getExam("exam-3");
 
-        FeedbackResponse response1 = new FeedbackResponse(); 
+        FeedbackResponse response1 = new FeedbackResponse();
         FeedbackResponse response2 = new FeedbackResponse();
 
-        when(feedbackMapper.toResponse(eq(feedback1), any()))
-        .thenReturn(response1);
+        when(feedbackMapper.toResponse(eq(feedback1), any())).thenReturn(response1);
 
-        when(feedbackMapper.toResponse(eq(feedback2), any()))
-        .thenReturn(response2);
+        when(feedbackMapper.toResponse(eq(feedback2), any())).thenReturn(response2);
 
         List<FeedbackResponse> result = spyService.getFeedbackForLecturer(lecturerUuid);
         System.out.println("Result size: " + result);

@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.ase.lecturerservice.MockValues;
-import com.ase.lecturerservice.entities.FileReference;
 import com.ase.lecturerservice.entities.Submission;
 import com.ase.lecturerservice.services.SubmissionService;
 import java.util.List;

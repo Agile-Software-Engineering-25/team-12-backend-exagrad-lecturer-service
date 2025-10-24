@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class FeedbackDocumentRequest {
-  private String feedbackId;
-  private String lecturerId;
+    private String feedbackId;
+    private String lecturerId;
 }

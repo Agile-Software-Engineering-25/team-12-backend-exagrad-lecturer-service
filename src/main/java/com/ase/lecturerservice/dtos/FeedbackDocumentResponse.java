@@ -8,10 +8,10 @@ import lombok.Data;
 @Data
 @Builder
 public class FeedbackDocumentResponse {
-  private UUID id;
-  private String feedbackId;
-  private String lecturerId;
-  private ZonedDateTime uploadDate;
-  private String downloadUrl;
-  private String fileName;
+    private UUID id;
+    private String feedbackId;
+    private String lecturerId;
+    private ZonedDateTime uploadDate;
+    private String downloadUrl;
+    private String fileName;
 }

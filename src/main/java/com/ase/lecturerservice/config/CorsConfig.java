@@ -1,6 +1,8 @@
 package com.ase.lecturerservice.config;
 
 import java.util.Arrays;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -9,8 +11,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Configuration
@@ -18,29 +18,28 @@ import lombok.extern.slf4j.Slf4j;
 @EnableConfigurationProperties(CorsConfig.CorsConfigurationProperties.class)
 public class CorsConfig {
 
-  private final CorsConfigurationProperties corsConfigurationProperties;
+    private final CorsConfigurationProperties corsConfigurationProperties;
 
-  @Bean
-  CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration corsConfiguration = new CorsConfiguration();
-    corsConfiguration.addAllowedHeader("*");
-    corsConfiguration.addAllowedMethod("*");
-    corsConfiguration.setAllowCredentials(true);
-    Arrays.stream(corsConfigurationProperties.allowedOrigins)
-        .forEach(corsConfiguration::addAllowedOrigin);
-    log.info("Allowed origins:");
-    Arrays.stream(corsConfigurationProperties.allowedOrigins).forEach(System.out::println);
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", corsConfiguration);
-    return source;
-  }
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.setAllowCredentials(true);
+        Arrays.stream(corsConfigurationProperties.allowedOrigins)
+                .forEach(corsConfiguration::addAllowedOrigin);
+        log.info("Allowed origins:");
+        Arrays.stream(corsConfigurationProperties.allowedOrigins).forEach(System.out::println);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return source;
+    }
 
-  @Bean
-  CorsFilter corsFilter() {
-    return new CorsFilter(corsConfigurationSource());
-  }
+    @Bean
+    CorsFilter corsFilter() {
+        return new CorsFilter(corsConfigurationSource());
+    }
 
-  @ConfigurationProperties(prefix = "app.cors")
-  record CorsConfigurationProperties(String[] allowedOrigins) {
-  }
+    @ConfigurationProperties(prefix = "app.cors")
+    record CorsConfigurationProperties(String[] allowedOrigins) {}
 }
