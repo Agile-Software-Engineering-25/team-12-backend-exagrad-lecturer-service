@@ -53,7 +53,7 @@ public class FeedbackService {
               log.info("Processing feedback UUID: {}", feedback.getUuid());
               log.info(
                   "feedback documents: {}",
-                  feedback.getFileReferences().toString());
+                  feedback.getFileReferences());
               return feedbackMapper.toResponse(
                   feedback,
                   feedbackDocumentService.getDocumentsByFeedbackId(

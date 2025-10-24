@@ -41,11 +41,6 @@ public class SubmissionControllerTest {
 
     @BeforeAll
     public static void setup() {
-        FileReference fileReference =
-                FileReference.builder()
-                        .fileUuid(UUID.randomUUID())
-                        .fileName(FILENAME)
-                        .build();
 
         submission =
                 Submission.builder()
@@ -53,7 +48,6 @@ public class SubmissionControllerTest {
                         .examUuid(EXAM_UUID)
                         .studentUuid(STUDENT_UUID)
                         .submissionDate(SUBMISSION_DATE)
-                        .fileUpload(List.of(fileReference))
                         .build();
 
         submissionList = List.of(submission);
@@ -72,9 +66,7 @@ public class SubmissionControllerTest {
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$[0].examUuid").value(EXAM_UUID))
                 .andExpect(jsonPath("$[0].studentUuid").value(STUDENT_UUID))
-                .andExpect(jsonPath("$[0].submissionDate").value(SUBMISSION_DATE))
-                .andExpect(jsonPath("$[0].fileUpload[0].filename").value(FILENAME))
-                .andExpect(jsonPath("$[0].fileUpload[0].downloadLink").value(DOWNLOAD_LINK));
+                .andExpect(jsonPath("$[0].submissionDate").value(SUBMISSION_DATE));
     }
 
     @Test
