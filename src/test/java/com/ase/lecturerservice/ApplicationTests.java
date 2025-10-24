@@ -8,6 +8,7 @@ class ApplicationTests {
     /*   @MockBean
     private MinioClientService minioClientService; */
 
-    @Test
-    void contextLoads() {}
+  @Test
+  void contextLoads() {
+  }
 }

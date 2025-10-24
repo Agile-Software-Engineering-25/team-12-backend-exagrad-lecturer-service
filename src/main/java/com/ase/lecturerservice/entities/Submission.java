@@ -7,9 +7,9 @@ import lombok.Data;
 @Data
 @Builder
 public class Submission {
-    private String uuid;
-    private String examUuid;
-    private String studentUuid;
-    private String submissionDate;
-    private List<FileReference> fileUpload;
+  private String uuid;
+  private String examUuid;
+  private String studentUuid;
+  private String submissionDate;
+  private List<FileReference> fileUpload;
 }
