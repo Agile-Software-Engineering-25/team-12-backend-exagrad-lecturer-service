@@ -33,6 +33,13 @@ mvn spring-boot:run
 ```
 The application will start on http://localhost:8080
 
+## API Documentation
+
+The application includes interactive API documentation using Swagger UI:
+
+- **Swagger UI**: http://localhost:8080/swagger-ui/index.html
+- **OpenAPI Spec**: http://localhost:8080/v3/api-docs
+
 ## Testing
 ### Unit Tests
 Run unit tests using Maven:
@@ -116,3 +123,4 @@ The project uses the following key dependencies:
 - `spring-boot-starter-security`: For securing the application with basic authentication.
 - `springdoc-openapi-ui`: For generating OpenAPI documentation and Swagger UI.
 - `spring-boot-starter-actuator`: For monitoring and managing the application.
+
