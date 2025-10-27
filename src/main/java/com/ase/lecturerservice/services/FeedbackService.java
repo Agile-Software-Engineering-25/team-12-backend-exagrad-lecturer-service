@@ -73,9 +73,9 @@ public class FeedbackService {
     Feedback savedFeedback = feedbackRepository.save(feedbackEntity);
     
     log.info("Saving grade with UUID: {} for lecturer: {}",
-    savedFeedback.getUuid(), feedback.getLecturerUuid());
+        savedFeedback.getUuid(), feedback.getLecturerUuid());
     log.info("files: {}", files.length);
-    
+
     List<FileReference> savedDocuments = new ArrayList<>();
     if (files != null && files.length > 0) {
       for (MultipartFile file : files) {
