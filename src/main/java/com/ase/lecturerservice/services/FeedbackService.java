@@ -39,6 +39,10 @@ public class FeedbackService {
     return feedbackRepository.findByExamUuid(examUuid);
   }
 
+  public List<Feedback> getFeedbackForStudent(String studentUuid) {
+    return feedbackRepository.findByStudentUuid(studentUuid);
+  }
+
   // TODO: change this webclient, when the API Endpoint is ready
   public Exam getExam(String uuid) {
     return DummyData.EXAMS.stream()

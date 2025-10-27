@@ -6,4 +6,5 @@ import com.ase.lecturerservice.entities.Feedback;
 
 public interface FeedbackRepository extends JpaRepository<Feedback, String> {
   List<Feedback> findByExamUuid(String examUuid);
+  List<Feedback> findByStudentUuid(String studentUuid);
 }
