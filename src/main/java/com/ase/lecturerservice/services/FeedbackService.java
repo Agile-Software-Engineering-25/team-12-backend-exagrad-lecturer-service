@@ -71,8 +71,11 @@ public class FeedbackService {
     Feedback feedbackEntity = feedbackMapper.toEntity(feedback);
     feedbackEntity.setGradedAt(LocalDate.now());
     Feedback savedFeedback = feedbackRepository.save(feedbackEntity);
-    log.info("Saving grade with UUID: {} for lecturer: {}", savedFeedback.getUuid(), feedback.getLecturerUuid());
+    
+    log.info("Saving grade with UUID: {} for lecturer: {}",
+    savedFeedback.getUuid(), feedback.getLecturerUuid());
     log.info("files: {}", files.length);
+    
     List<FileReference> savedDocuments = new ArrayList<>();
     if (files != null && files.length > 0) {
       for (MultipartFile file : files) {
@@ -84,7 +87,8 @@ public class FeedbackService {
               feedbackDocumentService.uploadFeedbackDocument(file, metadata);
           savedDocuments.add(feedbackDocumentMapper.toReference(savedDocument));
 
-        } catch (IOException e) {
+        } 
+        catch (IOException e) {
           log.error("Failed to upload file for feedback {}", savedFeedback.getUuid(), e);
           throw new RuntimeException("File upload failed.", e);
         }

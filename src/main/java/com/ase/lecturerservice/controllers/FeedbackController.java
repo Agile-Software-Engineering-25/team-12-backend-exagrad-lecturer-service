@@ -42,7 +42,8 @@ public class FeedbackController {
       feedbackService.saveFeedback(feedbackData, files);
 
       return ResponseEntity.status(HttpStatus.CREATED).build();
-    } catch (RuntimeException e) {
+    }
+    catch (RuntimeException e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
   }
@@ -53,7 +54,8 @@ public class FeedbackController {
       feedbackService.saveFeedback(dto, new MultipartFile[0]);
 
       return ResponseEntity.status(HttpStatus.CREATED).build();
-    } catch (Exception e) {
+    } 
+    catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
   }
