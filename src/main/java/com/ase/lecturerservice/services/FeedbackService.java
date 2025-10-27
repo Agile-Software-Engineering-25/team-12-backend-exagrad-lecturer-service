@@ -41,6 +41,7 @@ public class FeedbackService {
   }
 
   public List<FeedbackResponse> getFeedbackForLecturer(String lecturerUuid) {
+    log.info("lecturer UUID: {}", lecturerUuid);
     List<Feedback> feedbacks = feedbackRepository.findAll();
     return feedbacks.stream()
         .filter(
@@ -50,17 +51,11 @@ public class FeedbackService {
                     .orElse(false))
         .map(
             feedback -> {
-              log.info("Processing feedback UUID: {}", feedback.getUuid());
-              log.info("feedback documents: {}", feedback.getFileReferences());
               return feedbackMapper.toResponse(
                   feedback,
                   feedbackDocumentService.getDocumentsByFeedbackId(
                       feedback.getUuid()));
             })
-        /* feedback.getFileReferences().stream().
-        flatMap(ref ->
-        {log.info("Fetching documents for file reference ID: {}", ref.getId());
-        return feedbackDocumentService.getDocumentsByDocumentId(ref.getId()).stream();}).toList());}) */
         .toList();
   }
 
@@ -76,8 +71,8 @@ public class FeedbackService {
     Feedback feedbackEntity = feedbackMapper.toEntity(feedback);
     feedbackEntity.setGradedAt(LocalDate.now());
     Feedback savedFeedback = feedbackRepository.save(feedbackEntity);
-    log.info("Saving grade with UUID: {}", savedFeedback.getUuid());
-
+    log.info("Saving grade with UUID: {} for lecturer: {}", savedFeedback.getUuid(), feedback.getLecturerUuid());
+    log.info("files: {}", files.length);
     List<FileReference> savedDocuments = new ArrayList<>();
     if (files != null && files.length > 0) {
       for (MultipartFile file : files) {
