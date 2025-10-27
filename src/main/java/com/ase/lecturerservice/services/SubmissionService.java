@@ -20,9 +20,9 @@ import lombok.RequiredArgsConstructor;
 public class SubmissionService {
 
   private final ExamService examService;
+  private final WebClient studentServiceWebClient = WebClient.create();
   @Value("${app.apis.student-service.baseurl}")
   private String studentServiceBaseUrl;
-  private final WebClient studentServiceWebClient = WebClient.create();
 
   private List<Submission> executeApiCall(String apiPath) {
     return parseSubmissions(studentServiceWebClient.get()
@@ -52,10 +52,10 @@ public class SubmissionService {
             .examUuid(references.getLast().getId())
             .studentUuid(references.getLast().getStudentId())
             .fileUpload(references.stream().map(fileRef ->
-                FileReference.builder()
-                    .downloadLink(fileRef.getDownloadUrl())
-                    .filename(fileRef.getFileName())
-                    .fileUuid(fileRef.getId()).build())
+                    FileReference.builder()
+                        .downloadLink(fileRef.getDownloadUrl())
+                        .filename(fileRef.getFileName())
+                        .fileUuid(fileRef.getId()).build())
                 .collect(Collectors.toList())).build())
         .collect(Collectors.toList());
   }

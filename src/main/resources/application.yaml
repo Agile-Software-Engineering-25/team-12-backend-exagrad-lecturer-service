@@ -31,6 +31,10 @@ app:
   apis:
     student-service:
       baseurl: https://sau-portal.de/api/v1/exagrad/student
+    bitfrost:
+      baseurl: https://bitfrost.sau-portal.de/api/v1/messages/publish
+      secret: ${BITFROST_TOPIC_LECTURER_SECRET}
+      tag: ExaGrad-Lecturer-Service
   cors:
     allowed-origins:
       - http://localhost:5173
