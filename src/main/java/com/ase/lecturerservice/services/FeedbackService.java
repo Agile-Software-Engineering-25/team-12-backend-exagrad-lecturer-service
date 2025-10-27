@@ -48,6 +48,11 @@ public class FeedbackService {
   public List<Feedback> getFeedbackForExam(String examUuid) {
     return feedbackRepository.findByExamUuid(examUuid);
   }
+  
+    public List<Feedback> getFeedbackForStudent(String studentUuid) {
+    return feedbackRepository.findByStudentUuid(studentUuid);
+  }
+  
 
   public void saveFeedback(Feedback feedback) {
     feedback.setUuid(null);
