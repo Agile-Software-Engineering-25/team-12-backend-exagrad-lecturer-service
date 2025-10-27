@@ -21,7 +21,7 @@ public class SubmissionController {
   @GetMapping("/for-lecturer/{lecturerUuid}")
   public ResponseEntity<List<Submission>> getRelevantSubmissions(
       @PathVariable String lecturerUuid
-      ) {
+  ) {
     return ResponseEntity.ok(
         submissionService.getAllAccessibleSubmissionsForLecturer(lecturerUuid)
         );
