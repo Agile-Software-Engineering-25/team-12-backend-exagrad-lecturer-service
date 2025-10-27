@@ -19,9 +19,10 @@ public class BitfrostService {
   @Value("${app.apis.bitfrost.secret}")
   private String secret;
 
-  private static final String BASE_URL = "https://bitfrost.sau-portal.de/api/v1/messages/publish";
+  @Value("${app.apis.bitfrost.baseurl}")
+  private String baseUrl;
   public void sendRequest(String topicName, Object payload) {
-    String url = String.format("%s/%s/%s", BASE_URL, lecturerServiceTag, topicName);
+    String url = String.format("%s/%s/%s", baseUrl, lecturerServiceTag, topicName);
 
     try {
       webClient.post()
