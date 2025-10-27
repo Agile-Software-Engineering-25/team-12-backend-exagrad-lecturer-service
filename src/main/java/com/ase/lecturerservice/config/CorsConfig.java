@@ -42,5 +42,6 @@ public class CorsConfig {
 
   @ConfigurationProperties(prefix = "app.cors")
   record CorsConfigurationProperties(String[] allowedOrigins) {
+
   }
 }

@@ -6,11 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Ein Data Transfer Object (DTO), das die Daten für die Erstellung eines neuen Feedbacks vom
- * Frontend zum Backend transportiert. Es enthält keine Datenbank-spezifischen Annotationen oder
- * Logik.
- */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

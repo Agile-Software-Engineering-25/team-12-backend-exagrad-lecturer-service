@@ -31,7 +31,6 @@ public class FeedbackDocumentService {
   public FeedbackDocument uploadFeedbackDocument(
       MultipartFile file, FeedbackDocumentRequest metadata) throws IOException {
     // Validate file before processing
-    fileValidationService.validateFile(file);
 
     String bucketName = storageProperties.getFeedbackDocumentsBucket();
     String sanitizedFilename =

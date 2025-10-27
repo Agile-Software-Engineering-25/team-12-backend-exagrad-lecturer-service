@@ -117,30 +117,24 @@ public class FeedbackControllerTest {
                     .getValue())
             .build();
 
-    // 2. JSON-Daten serialisieren
     String feedbackJson = objectMapper.writeValueAsString(feedback);
 
-    // 3. Testdatei laden und als MockMultipartFile vorbereiten
     org.springframework.core.io.Resource resource =
         resourceLoader.getResource("classpath:" + TEST_FILE_PATH);
     byte[] fileContent = FileCopyUtils.copyToByteArray(resource.getInputStream());
 
     MockMultipartFile testFile =
         new MockMultipartFile(
-            "files", // WICHTIG: Muss dem Namen des @RequestParam in deinem Controller
-            // entsprechen (z.B. @RequestParam("files"))
-            "testfile.pdf", // Dateiname
-            "application/pdf", // Content-Type
-            fileContent // Dateibyte-Inhalt
+            "files", 
+            "testfile.pdf",
+            "application/pdf",
+            fileContent
         );
 
-    // 4. JSON-Teil als MockMultipartFile vorbereiten
-    // WICHTIG: Muss dem Namen des @RequestPart in deinem Controller entsprechen (z.B.
-    // @RequestPart("feedbackData"))
     MockMultipartFile feedbackData =
         new MockMultipartFile(
             "feedbackData",
-            "", // Dateiname ist hier leer
+            "",
             "application/json",
             feedbackJson.getBytes(StandardCharsets.UTF_8));
 
@@ -148,7 +142,7 @@ public class FeedbackControllerTest {
         .when(feedbackService)
         .saveFeedback(
             any(FeedbackRequest.class),
-            any(MultipartFile[].class) // Verwende den korrekten Array-Typ
+            any(MultipartFile[].class)
         );
     mockMvc.perform(
             post("/api/v1/feedback")
@@ -159,8 +153,8 @@ public class FeedbackControllerTest {
 
     mockMvc.perform(
             MockMvcRequestBuilders.multipart("/api/v1/feedback")
-                .file(feedbackData) // Fügt den JSON-Teil hinzu
-                .file(testFile) // Fügt die eigentliche Datei hinzu
+                .file(feedbackData)
+                .file(testFile)
         )
         .andDo(MockMvcResultHandlers.print())
         .andExpect(status().isCreated());

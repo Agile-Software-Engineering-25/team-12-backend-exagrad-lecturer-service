@@ -8,20 +8,10 @@ import com.ase.lecturerservice.dtos.FeedbackRequest;
 import com.ase.lecturerservice.dtos.FeedbackResponse;
 import com.ase.lecturerservice.entities.Feedback;
 
-/**
- * Mapper-Komponente, die für die Umwandlung zwischen Feedback-DTOs und Feedback-Datenbank-Entitäten
- * zuständig ist.
- */
 @Component
 public class FeedbackMapper {
 
-  /**
-   * Wandelt ein FeedbackCreateRequest DTO in ein Feedback Entity um. Diese Methode wird
-   * verwendet, bevor das Feedback in der Datenbank gespeichert wird.
-   *
-   * @param dto Das aus dem Frontend empfangene DTO.
-   * @return Ein neues Feedback-Entity, das bereit zum Speichern ist.
-   */
+
   public Feedback toEntity(FeedbackRequest feedbackRequest) {
     if (feedbackRequest == null) {
       return null;
@@ -29,7 +19,6 @@ public class FeedbackMapper {
 
     Feedback entity = new Feedback();
 
-    // Kopiere alle relevanten Felder vom feedbackRequest zum Entity
     entity.setExamUuid(feedbackRequest.getExamUuid());
     entity.setLecturerUuid(feedbackRequest.getLecturerUuid());
     entity.setStudentUuid(feedbackRequest.getStudentUuid());

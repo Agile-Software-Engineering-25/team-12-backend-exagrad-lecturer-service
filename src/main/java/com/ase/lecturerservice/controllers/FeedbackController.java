@@ -25,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FeedbackController {
   private final FeedbackService feedbackService;
-  private final ObjectMapper objectMapper;
 
   @GetMapping("/for-lecturer/{lecturerUuid}")
   public ResponseEntity<List<FeedbackResponse>> getFeedbacksForLecturer(

@@ -20,8 +20,10 @@ public class SubmissionController {
 
   @GetMapping("/for-lecturer/{lecturerUuid}")
   public ResponseEntity<List<Submission>> getRelevantSubmissions(
-      @PathVariable String lecturerUuid) {
+      @PathVariable String lecturerUuid
+      ) {
     return ResponseEntity.ok(
-        submissionService.getAllAccessibleSubmissionsForLecturer(lecturerUuid));
+        submissionService.getAllAccessibleSubmissionsForLecturer(lecturerUuid)
+        );
   }
 }
