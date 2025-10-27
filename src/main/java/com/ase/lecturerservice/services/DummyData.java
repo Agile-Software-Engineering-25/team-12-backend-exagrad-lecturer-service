@@ -214,8 +214,8 @@ public class DummyData {
           .name("Project 2")
           .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
           .examType(ExamType.PRESENTATION)
-          .date(LocalDate.of(MockValues.IntMocks.DATE_YEAR.getValue(),
-              MockValues.IntMocks.DATE_MONTH2.getValue(),
+          .date(LocalDate.of(MockValues.IntMocks.DATE_YEAR2.getValue(),
+              MockValues.IntMocks.DATE_MONTH.getValue(),
               MockValues.IntMocks.DATE_DAY.getValue()))
           .time(MockValues.IntMocks.TIME_SECONDS.getValue())
           .allowedResources("Notes, Textbook")

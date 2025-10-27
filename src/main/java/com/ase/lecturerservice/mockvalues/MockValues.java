@@ -77,8 +77,8 @@ public class MockValues {
     ATTEMPT(1),
     ETCS(5),
     DATE_YEAR(2025),
+    DATE_YEAR2(2027),
     DATE_MONTH(9),
-    DATE_MONTH2(10),
     DATE_DAY(25),
     DATE_DAY2(10);
 
