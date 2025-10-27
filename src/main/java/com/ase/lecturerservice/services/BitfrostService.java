@@ -21,6 +21,7 @@ public class BitfrostService {
 
   @Value("${app.apis.bitfrost.baseurl}")
   private String baseUrl;
+
   public void sendRequest(String topicName, Object payload) {
     String url = String.format("%s/%s/%s", baseUrl, lecturerServiceTag, topicName);
 
