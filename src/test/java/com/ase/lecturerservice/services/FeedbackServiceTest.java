@@ -88,9 +88,9 @@ public class FeedbackServiceTest {
     when(feedbackRepository.findAll()).thenReturn(allFeedbacks);
 
     FeedbackService spyService = spy(feedbackService);
-    doReturn(exam1).when(spyService).getExam("exam-1");
-    doReturn(exam2).when(spyService).getExam("exam-2");
-    doReturn(exam3).when(spyService).getExam("exam-3");
+    doReturn(exam1).when(spyService).getFeedbackForExam("exam-1");
+    doReturn(exam2).when(spyService).getFeedbackForExam("exam-2");
+    doReturn(exam3).when(spyService).getFeedbackForExam("exam-3");
 
     List<Feedback> result = spyService.getFeedbackForLecturer(lecturerUuid);
 
@@ -100,9 +100,9 @@ public class FeedbackServiceTest {
     assertFalse(result.contains(feedback3));
 
     verify(feedbackRepository).findAll();
-    verify(spyService).getExam("exam-1");
-    verify(spyService).getExam("exam-2");
-    verify(spyService).getExam("exam-3");
+    verify(spyService).getFeedbackForExam("exam-1");
+    verify(spyService).getFeedbackForExam("exam-2");
+    verify(spyService).getFeedbackForExam("exam-3");
   }
 
   @Test
@@ -111,9 +111,9 @@ public class FeedbackServiceTest {
     when(feedbackRepository.findAll()).thenReturn(allFeedbacks);
 
     FeedbackService spyService = spy(feedbackService);
-    doReturn(exam3).when(spyService).getExam("exam-1");
-    doReturn(exam3).when(spyService).getExam("exam-2");
-    doReturn(exam3).when(spyService).getExam("exam-3");
+    doReturn(exam3).when(spyService).getFeedbackForExam("exam-1");
+    doReturn(exam3).when(spyService).getFeedbackForExam("exam-2");
+    doReturn(exam3).when(spyService).getFeedbackForExam("exam-3");
 
     List<Feedback> result = spyService.getFeedbackForLecturer(lecturerUuid);
 

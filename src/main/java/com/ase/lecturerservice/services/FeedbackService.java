@@ -7,9 +7,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
-import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.Feedback;
 import com.ase.lecturerservice.repositories.FeedbackRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class FeedbackService {
   private final FeedbackRepository feedbackRepository;
+  private final ExamService examService;
   private final BitfrostService bitfrostService;
-  private final WebClient feedbackServiceWebClient = WebClient.create();
 
   @EventListener(ApplicationReadyEvent.class)
   public void instantiateDummies() {
@@ -32,17 +30,10 @@ public class FeedbackService {
   public List<Feedback> getFeedbackForLecturer(String lecturerUuid) {
     List<Feedback> feedbacks = feedbackRepository.findAll();
     return feedbacks.stream().filter(feedback ->
-        Optional.ofNullable(getExam(feedback.getExamUuid()))
+        Optional.ofNullable(examService.getExam(feedback.getExamUuid()))
             .map(exam -> exam.getLecturerUuid().equals(lecturerUuid))
             .orElse(false)
     ).toList();
-  }
-
-  // TODO: change this webclient, when the API Endpoint is ready
-  public Exam getExam(String uuid) {
-    return DummyData.EXAMS.stream()
-        .filter(exam -> exam.getUuid().equals(uuid))
-        .findFirst().orElse(null);
   }
 
   public List<Feedback> getFeedbackForExam(String examUuid) {
