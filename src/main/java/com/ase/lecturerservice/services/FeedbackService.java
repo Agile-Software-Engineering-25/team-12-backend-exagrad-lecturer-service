@@ -74,10 +74,10 @@ public class FeedbackService {
     
     log.info("Saving grade with UUID: {} for lecturer: {}",
         savedFeedback.getUuid(), feedback.getLecturerUuid());
-    log.info("files: {}", files.length);
 
     List<FileReference> savedDocuments = new ArrayList<>();
     if (files != null && files.length > 0) {
+      log.info("number of files: {}", files.length);
       for (MultipartFile file : files) {
         try {
           FeedbackDocumentRequest metadata =
