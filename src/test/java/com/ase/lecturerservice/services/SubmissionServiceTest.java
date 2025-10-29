@@ -10,8 +10,8 @@ import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.reactive.function.client.WebClient;
 import com.ase.lecturerservice.MockValues;
@@ -27,7 +27,7 @@ public class SubmissionServiceTest {
   @Autowired
   private SubmissionService submissionService;
 
-  @MockBean
+  @MockitoBean
   private ExamService examService;
 
   @Value("${app.apis.student-service.baseurl:http://student-service}")
@@ -89,10 +89,10 @@ public class SubmissionServiceTest {
         .uuid(MockValues.UuidMocks.EXAM_UUID.getValue())
         .name("Test Exam")
         .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
-        .examType(ExamType.EXAM)
+        .examType(ExamType.KLAUSUR)
         .date(date)
         .time(MockValues.IntMocks.TIME_SECONDS.getValue())
-        .allowedResources("Calculator")
+        .allowedResources(List.of("Calculator"))
         .attempt(MockValues.IntMocks.ATTEMPT.getValue())
         .etcs(MockValues.IntMocks.ETCS.getValue())
         .room("Room A101")

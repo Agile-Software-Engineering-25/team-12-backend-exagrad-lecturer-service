@@ -10,9 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
+import com.ase.lecturerservice.dtos.DataServiceCourseResponse;
 import com.ase.lecturerservice.dtos.ExamServiceExamResponse;
 import com.ase.lecturerservice.dtos.ExamServiceStudentResponse;
-import com.ase.lecturerservice.dtos.MasterdataServiceCourseResponse;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.user.Student;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,11 +38,11 @@ public class ExamService {
     }
 
     log.info("The Exams from {} has been requested", lecturerUuid);
-    List<Exam> exams = executeApiCallForExams("/api/exams");
-    List<MasterdataServiceCourseResponse.MasterdataServiceCourseDto> masterDataCourses =
-        executeApiCallForCourses("/courses/");
+    List<Exam> exams = fetchExamsFromExamService("/api/exams");
+    List<DataServiceCourseResponse.DataServiceCourseDto> masterDataCourses =
+        fetchCoursesFromCourseService("/courses/");
 
-    Map<String, MasterdataServiceCourseResponse.MasterdataServiceCourseDto> lecturerCourses =
+    Map<String, DataServiceCourseResponse.DataServiceCourseDto> lecturerCourses =
         masterDataCourses.stream()
             .filter(course -> course.getTeachers().contains(lecturerUuid))
             .collect(Collectors.toMap(
@@ -59,10 +59,15 @@ public class ExamService {
         })
         .toList();
 
-    return executeApiCallToCompleteExams("/api/students/exams/{examUuid}", lecturerExams);
+    return populateExamsWithStudents("/api/students/exams/{examUuid}", lecturerExams);
   }
 
-  private <T> List<T> executeApiCall(String apiPath, Class<T> responseType, String serviceBaseUrl) {
+  public Exam getExam(String examUuid) {
+    return fetchExamFromExamService("/api/exams", examUuid);
+  }
+
+  private <T> List<T> fetchListFromApi(String apiPath, Class<T> responseType,
+                                       String serviceBaseUrl) {
     List<T> responseDtos =
         examServiceWebClient.get()
             .uri(serviceBaseUrl + apiPath)
@@ -74,9 +79,18 @@ public class ExamService {
     return responseDtos != null ? responseDtos : Collections.emptyList();
   }
 
-  private List<Exam> executeApiCallForExams(String apiPath) {
+  private <T> T fetchSingleFromApi(String apiPath, Class<T> responseType, String serviceBaseUrl,
+                                   String uuid) {
+    return examServiceWebClient.get()
+        .uri(serviceBaseUrl + apiPath, uuid)
+        .retrieve()
+        .bodyToMono(responseType)
+        .block();
+  }
+
+  private List<Exam> fetchExamsFromExamService(String apiPath) {
     List<ExamServiceExamResponse.ExamServiceExamDto> examDtos =
-        executeApiCall(apiPath, ExamServiceExamResponse.ExamServiceExamDto.class,
+        fetchListFromApi(apiPath, ExamServiceExamResponse.ExamServiceExamDto.class,
             examServiceBaseUrl);
 
     return examDtos.stream()
@@ -90,7 +104,14 @@ public class ExamService {
         .toList();
   }
 
-  private List<Exam> executeApiCallToCompleteExams(String apiPath, List<Exam> exams) {
+  private Exam fetchExamFromExamService(String apiPath, String uuid) {
+    ExamServiceExamResponse.ExamServiceExamDto
+        examDto = fetchSingleFromApi(apiPath, ExamServiceExamResponse.ExamServiceExamDto.class,
+        examServiceBaseUrl, uuid);
+    return parseExam(examDto);
+  }
+
+  private List<Exam> populateExamsWithStudents(String apiPath, List<Exam> exams) {
     for (Exam exam : exams) {
       try {
         List<ExamServiceStudentResponse.ExamServiceStudentDto> studentDtos =
@@ -120,15 +141,15 @@ public class ExamService {
     return exams;
   }
 
-  private List<MasterdataServiceCourseResponse.MasterdataServiceCourseDto> executeApiCallForCourses(
+  private List<DataServiceCourseResponse.DataServiceCourseDto> fetchCoursesFromCourseService(
       String apiPath) {
-    List<MasterdataServiceCourseResponse.MasterdataServiceCourseDto> courseDtos =
-        executeApiCall(apiPath, MasterdataServiceCourseResponse.MasterdataServiceCourseDto.class,
+    List<DataServiceCourseResponse.DataServiceCourseDto> courseDtos =
+        fetchListFromApi(apiPath, DataServiceCourseResponse.DataServiceCourseDto.class,
             courseServiceBaseUrl);
 
     return courseDtos.stream()
         .collect(Collectors.toMap(
-            MasterdataServiceCourseResponse.MasterdataServiceCourseDto::getId,
+            DataServiceCourseResponse.DataServiceCourseDto::getId,
             Function.identity(),
             (first, second) -> second))
         .values()
@@ -138,12 +159,6 @@ public class ExamService {
 
   }
 
-  public Exam getExam(String examUuid) {
-    List<Exam> exams = executeApiCallForExams("/api/exams");
-    return exams.stream()
-        .filter(exam -> exam.getUuid().equals(examUuid))
-        .findFirst().orElse(null);
-  }
 
   private Exam parseExam(ExamServiceExamResponse.ExamServiceExamDto examDto) {
     if (examDto == null) {
@@ -178,14 +193,14 @@ public class ExamService {
         .build();
   }
 
-  private MasterdataServiceCourseResponse.MasterdataServiceCourseDto parseCourse(
-      MasterdataServiceCourseResponse.MasterdataServiceCourseDto masterDataDto
+  private DataServiceCourseResponse.DataServiceCourseDto parseCourse(
+      DataServiceCourseResponse.DataServiceCourseDto masterDataDto
   ) {
     if (masterDataDto == null) {
       return null;
     }
 
-    return MasterdataServiceCourseResponse.MasterdataServiceCourseDto.builder()
+    return DataServiceCourseResponse.DataServiceCourseDto.builder()
         .id(masterDataDto.getId())
         .teachers(masterDataDto.getTeachers())
         .template(masterDataDto.getTemplate())

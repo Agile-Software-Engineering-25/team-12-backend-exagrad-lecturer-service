@@ -11,21 +11,21 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MasterdataServiceCourseResponse {
+public class DataServiceCourseResponse {
   private boolean success;
   private int statusCode;
   private String status;
   private String message;
   private String timestamp;
   private String endpoint;
-  private List<MasterdataServiceCourseResponse.MasterdataServiceCourseDto> data;
+  private List<DataServiceCourseResponse.DataServiceCourseDto> data;
   private String error;
 
   @Data
   @Builder
   @NoArgsConstructor
   @AllArgsConstructor
-  public static class MasterdataServiceCourseDto {
+  public static class DataServiceCourseDto {
     private String id;
     private List<Teacher> teachers;
     private TemplateDto template;

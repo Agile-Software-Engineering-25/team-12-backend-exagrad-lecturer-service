@@ -19,7 +19,6 @@ import com.ase.lecturerservice.entities.user.UserType;
 public class ExamServiceTest {
   @Autowired
   private ExamService examService;
-
   private Lecturer lecturer;
   private LocalDate date;
 
@@ -45,10 +44,10 @@ public class ExamServiceTest {
         .uuid(MockValues.UuidMocks.EXAM_UUID.getValue())
         .name("Mathematics Final Exam")
         .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
-        .examType(ExamType.PRESENTATION)
+        .examType(ExamType.PRAESENTATION)
         .date(date)
         .time(MockValues.IntMocks.TIME_SECONDS.getValue())
-        .allowedResources("Calculator, Formula Sheet")
+        .allowedResources(List.of("Calculator", "Formula Sheet"))
         .attempt(MockValues.IntMocks.ATTEMPT.getValue())
         .etcs(MockValues.IntMocks.ETCS.getValue())
         .room("Room A101")
@@ -66,7 +65,7 @@ public class ExamServiceTest {
         .isEqualTo("Mathematics Final Exam");
     Assertions.assertThat(exam.getTotalPoints())
         .isEqualTo(MockValues.IntMocks.TOTAL_POINTS.getValue());
-    Assertions.assertThat(exam.getExamType()).isEqualTo(ExamType.PRESENTATION);
+    Assertions.assertThat(exam.getExamType()).isEqualTo(ExamType.PRAESENTATION);
     Assertions.assertThat(exam.getDate()).isEqualTo(date);
     Assertions.assertThat(exam.getTime())
         .isEqualTo(MockValues.IntMocks.TIME_SECONDS.getValue());

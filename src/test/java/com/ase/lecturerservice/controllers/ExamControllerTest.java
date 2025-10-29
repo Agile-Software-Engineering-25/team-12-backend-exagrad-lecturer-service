@@ -56,10 +56,10 @@ public class ExamControllerTest {
         .uuid(MockValues.UuidMocks.EXAM_UUID.getValue())
         .name("Test")
         .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
-        .examType(ExamType.EXAM)
+        .examType(ExamType.KLAUSUR)
         .date(date)
         .time(MockValues.IntMocks.TIME_SECONDS.getValue())
-        .allowedResources("Calculator, Formula Sheet")
+        .allowedResources(List.of("Calculator, Formula Sheet"))
         .attempt(MockValues.IntMocks.ATTEMPT.getValue())
         .etcs(MockValues.IntMocks.ETCS.getValue())
         .room("Room A101")
@@ -83,7 +83,7 @@ public class ExamControllerTest {
         .andExpect(jsonPath("$[0].date").value("2015-10-25"))
         .andExpect(jsonPath("$[0].module").value("Test"))
         .andExpect(jsonPath("$[0].time").value(MockValues.IntMocks.TIME_SECONDS.getValue()))
-        .andExpect(jsonPath("$[0].examType").value(ExamType.EXAM.toString()))
+        .andExpect(jsonPath("$[0].examType").value(ExamType.KLAUSUR.toString()))
         .andExpect(jsonPath("$[0].assignedStudents").isNotEmpty());
   }
 
