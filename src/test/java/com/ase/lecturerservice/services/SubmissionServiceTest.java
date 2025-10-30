@@ -52,8 +52,6 @@ public class SubmissionServiceTest {
         MockValues.IntMocks.DATE_DAY.getValue());
 
 
-    // Inject a WebClient that points to the same base URL
-    // (it will be intercepted by WebTestClient's mock server if configured)
     WebClient webClient = WebClient.create();
     ReflectionTestUtils.setField(submissionService, "studentServiceBaseUrl", studentServiceBaseUrl);
     ReflectionTestUtils.setField(submissionService, "studentServiceWebClient", webClient);
@@ -63,10 +61,8 @@ public class SubmissionServiceTest {
   void getSubmissionsForExamShouldReturnSubmissionsForSpecificExam() {
     String examId = MockValues.UuidMocks.EXAM_UUID.getValue();
 
-    // Stub examService usage when aggregating (not used here but safe)
     given(examService.getExamsByLecturer(ArgumentMatchers.anyString())).willReturn(List.of());
 
-    // Since actual HTTP is executed, expect an empty result for unknown mock server
     List<Submission> submissions = submissionService.getSubmissionsForExam(examId);
 
     Assertions.assertThat(submissions).isEmpty();

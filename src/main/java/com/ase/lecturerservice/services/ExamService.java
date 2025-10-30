@@ -44,7 +44,8 @@ public class ExamService {
 
     Map<String, DataServiceCourseResponse.DataServiceCourseDto> lecturerCourses =
         masterDataCourses.stream()
-            .filter(course -> course.getTeachers().contains(lecturerUuid))
+            .filter(course -> course.getTeachers().stream()
+                .anyMatch(teacher -> lecturerUuid.equals(teacher.getExternalId())))
             .collect(Collectors.toMap(
                 course -> course.getTemplate().getCode(),
                 course -> course,
@@ -54,16 +55,11 @@ public class ExamService {
     List<Exam> lecturerExams = exams.stream()
         .filter(exam -> lecturerCourses.containsKey(exam.getModule()))
         .peek(exam -> {
-          exam.setModule(lecturerCourses.get(exam.getModule()).getTemplate().getName());
           exam.setLecturerUuid(lecturerUuid);
         })
         .toList();
 
-    return populateExamsWithStudents("/api/students/exams/{examUuid}", lecturerExams);
-  }
-
-  public Exam getExam(String examUuid) {
-    return fetchExamFromExamService("/api/exams", examUuid);
+    return populateExamsWithStudents("/api/students/exam/{examUuid}", lecturerExams);
   }
 
   private <T> List<T> fetchListFromApi(String apiPath, Class<T> responseType,
@@ -77,15 +73,6 @@ public class ExamService {
             .block();
 
     return responseDtos != null ? responseDtos : Collections.emptyList();
-  }
-
-  private <T> T fetchSingleFromApi(String apiPath, Class<T> responseType, String serviceBaseUrl,
-                                   String uuid) {
-    return examServiceWebClient.get()
-        .uri(serviceBaseUrl + apiPath, uuid)
-        .retrieve()
-        .bodyToMono(responseType)
-        .block();
   }
 
   private List<Exam> fetchExamsFromExamService(String apiPath) {
@@ -102,13 +89,6 @@ public class ExamService {
         .stream()
         .map(this::parseExam)
         .toList();
-  }
-
-  private Exam fetchExamFromExamService(String apiPath, String uuid) {
-    ExamServiceExamResponse.ExamServiceExamDto
-        examDto = fetchSingleFromApi(apiPath, ExamServiceExamResponse.ExamServiceExamDto.class,
-        examServiceBaseUrl, uuid);
-    return parseExam(examDto);
   }
 
   private List<Exam> populateExamsWithStudents(String apiPath, List<Exam> exams) {
@@ -158,7 +138,6 @@ public class ExamService {
         .toList();
 
   }
-
 
   private Exam parseExam(ExamServiceExamResponse.ExamServiceExamDto examDto) {
     if (examDto == null) {

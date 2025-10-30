@@ -2,12 +2,14 @@ package com.ase.lecturerservice.services;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.Feedback;
 import com.ase.lecturerservice.repositories.FeedbackRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +31,15 @@ public class FeedbackService {
 
   public List<Feedback> getFeedbackForLecturer(String lecturerUuid) {
     List<Feedback> feedbacks = feedbackRepository.findAll();
-    return feedbacks.stream().filter(feedback ->
-        Optional.ofNullable(examService.getExam(feedback.getExamUuid()))
-            .map(exam -> exam.getLecturerUuid().equals(lecturerUuid))
-            .orElse(false)
-    ).toList();
+    List<Exam> exams = examService.getExamsByLecturer(lecturerUuid);
+
+    Set<String> lecturerExamUuids = exams.stream()
+        .map(Exam::getUuid)
+        .collect(Collectors.toSet());
+
+    return feedbacks.stream()
+        .filter(feedback -> lecturerExamUuids.contains(feedback.getExamUuid()))
+        .toList();
   }
 
   public List<Feedback> getFeedbackForExam(String examUuid) {
@@ -44,14 +50,13 @@ public class FeedbackService {
     return feedbackRepository.findByStudentUuid(studentUuid);
   }
 
-
-  public void saveFeedback(Feedback feedback) {
+  public Feedback saveFeedback(Feedback feedback) {
     feedback.setUuid(null);
-    feedbackRepository.save(feedback);
     log.info("Saving grade with UUID: {}", feedback.getUuid());
+    return feedbackRepository.save(feedback);
   }
 
-  public void updateFeedback(String uuid, Feedback updateFeedback) {
+  public Feedback updateFeedback(String uuid, Feedback updateFeedback) {
     Feedback existing = feedbackRepository.findById(uuid)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Feedback not found"));
 
@@ -61,8 +66,6 @@ public class FeedbackService {
     existing.setFileReference(updateFeedback.getFileReference());
     existing.setGradedAt(LocalDate.now());
 
-    feedbackRepository.save(existing);
-
     log.info("Feedback {} was successfully edited by Lecturer {} "
             + "(Student {}, Points: {}, Grade: {})",
         uuid,
@@ -70,6 +73,8 @@ public class FeedbackService {
         existing.getStudentUuid(),
         existing.getPoints(),
         existing.getGrade());
+
+    return feedbackRepository.save(existing);
   }
 
   public void submitFeedback(List<Feedback> feedbacks) {

@@ -71,6 +71,8 @@ public class SubmissionService {
   public List<Submission> getAllAccessibleSubmissionsForLecturer(String lecturerUuid) {
     Set<String> examsOfLecturer = examService.getExamsByLecturer(lecturerUuid).stream()
         .map(Exam::getUuid).collect(Collectors.toSet());
+    System.out.println("Test");
+    System.out.println(examsOfLecturer);
 
     return examsOfLecturer.stream()
         .map(this::getSubmissionsForExam)

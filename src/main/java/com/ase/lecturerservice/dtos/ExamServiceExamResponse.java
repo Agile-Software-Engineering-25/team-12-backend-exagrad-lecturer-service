@@ -35,6 +35,7 @@ public class ExamServiceExamResponse {
     private int duration;
     private int attemptNumber;
     private boolean fileUploadRequired;
+    private String lecturerUuid;
     private List<String> tools;
   }
 }
