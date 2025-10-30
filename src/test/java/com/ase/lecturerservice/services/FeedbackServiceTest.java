@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.spy;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,8 +21,12 @@ import com.ase.lecturerservice.repositories.FeedbackRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class FeedbackServiceTest {
+
   @Mock
   private FeedbackRepository feedbackRepository;
+
+  @Mock
+  private ExamService examService;
 
   @InjectMocks
   private FeedbackService feedbackService;
@@ -47,7 +51,10 @@ public class FeedbackServiceTest {
     exam2.setUuid("exam-2");
     exam2.setLecturerUuid(lecturerUuid);
 
-    // Create test feedback
+    exam3 = new Exam();
+    exam3.setUuid("exam-3");
+    exam3.setLecturerUuid("different-lecturer");
+
     feedback1 = new Feedback();
     feedback1.setExamUuid("exam-1");
     feedback1.setStudentUuid("student-1");
@@ -77,22 +84,16 @@ public class FeedbackServiceTest {
 
   @Test
   void saveFeedbackShouldHandleNullFeedback() {
-    assertThrows(NullPointerException.class, () -> {
-      feedbackService.saveFeedback(null);
-    });
+    assertThrows(NullPointerException.class, () -> feedbackService.saveFeedback(null));
   }
 
   @Test
   void getFeedbackForLecturerShouldReturnFeedbackForCorrectLecturer() {
     List<Feedback> allFeedbacks = List.of(feedback1, feedback2, feedback3);
     when(feedbackRepository.findAll()).thenReturn(allFeedbacks);
+    when(examService.getExamsByLecturer(lecturerUuid)).thenReturn(List.of(exam1, exam2));
 
-    FeedbackService spyService = spy(feedbackService);
-    doReturn(exam1).when(spyService).getFeedbackForExam("exam-1");
-    doReturn(exam2).when(spyService).getFeedbackForExam("exam-2");
-    doReturn(exam3).when(spyService).getFeedbackForExam("exam-3");
-
-    List<Feedback> result = spyService.getFeedbackForLecturer(lecturerUuid);
+    List<Feedback> result = feedbackService.getFeedbackForLecturer(lecturerUuid);
 
     assertEquals(2, result.size());
     assertTrue(result.contains(feedback1));
@@ -100,22 +101,16 @@ public class FeedbackServiceTest {
     assertFalse(result.contains(feedback3));
 
     verify(feedbackRepository).findAll();
-    verify(spyService).getFeedbackForExam("exam-1");
-    verify(spyService).getFeedbackForExam("exam-2");
-    verify(spyService).getFeedbackForExam("exam-3");
+    verify(examService).getExamsByLecturer(lecturerUuid);
   }
 
   @Test
   void getFeedbackForLecturerShouldReturnEmptyListWhenNoMatchingLecturer() {
     List<Feedback> allFeedbacks = List.of(feedback1, feedback2, feedback3);
     when(feedbackRepository.findAll()).thenReturn(allFeedbacks);
+    when(examService.getExamsByLecturer(anyString())).thenReturn(Collections.emptyList());
 
-    FeedbackService spyService = spy(feedbackService);
-    doReturn(exam3).when(spyService).getFeedbackForExam("exam-1");
-    doReturn(exam3).when(spyService).getFeedbackForExam("exam-2");
-    doReturn(exam3).when(spyService).getFeedbackForExam("exam-3");
-
-    List<Feedback> result = spyService.getFeedbackForLecturer(lecturerUuid);
+    List<Feedback> result = feedbackService.getFeedbackForLecturer(lecturerUuid);
 
     assertTrue(result.isEmpty());
     verify(feedbackRepository).findAll();
