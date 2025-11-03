@@ -44,6 +44,31 @@ spec:
               value: "/exa-grad/grading-service"
             - name: SERVER_SHUTDOWN
               value: "graceful"
+            - name: POSTGRES_URL
+              value: jdbc:postgresql://postgres.db:5432/appdb
+            - name: POSTGRES_USER
+              value: bitfrost
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres.db:5432/appdb
+            - name: SPRING_DATASOURCE_USERNAME
+              value: bitfrost
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ase-12-postgres
+                  key: password
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ase-12-postgres
+                  key: password
+            - name: BITFROST_TOPIC_LECTURER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: bitfrost-topic-lecturer
+                  key: secret
 
           readinessProbe:
             httpGet:

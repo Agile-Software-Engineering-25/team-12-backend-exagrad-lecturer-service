@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.ase.lecturerservice.dtos.FeedbackDocumentRequest;
@@ -100,4 +101,31 @@ public class FeedbackService {
       savedFeedback.setFileReferences(savedDocuments);
     }
   }
+
+  public void updateFeedback(String uuid, Feedback updateFeedback) {
+    Feedback existing = feedbackRepository.findById(uuid)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Feedback not found"));
+
+    existing.setComment(updateFeedback.getComment());
+    existing.setPoints(updateFeedback.getPoints());
+    existing.setGrade(updateFeedback.getGrade());
+    existing.setFileReference(updateFeedback.getFileReference());
+    existing.setGradedAt(LocalDate.now());
+
+    feedbackRepository.save(existing);
+
+    log.info("Feedback {} was successfully edited by Lecturer {} "
+            + "(Student {}, Points: {}, Grade: {})",
+        uuid,
+        existing.getLecturerUuid(),
+        existing.getStudentUuid(),
+        existing.getPoints(),
+        existing.getGrade());
+  }
+
+  public void submitFeedback(List<Feedback> feedbacks) {
+    log.info("submitting feedbacks to the examination office");
+    bitfrostService.sendRequest("feedbacks:submit", feedbacks);
+  }
+
 }
