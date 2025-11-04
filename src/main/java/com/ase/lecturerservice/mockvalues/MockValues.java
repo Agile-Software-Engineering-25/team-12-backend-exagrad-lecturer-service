@@ -34,7 +34,7 @@ public class MockValues {
     SUBMISSION_UUID4("7c9a3542-e93e-4c7c-bdaf-8adf5b1e3b74"),
     SUBMISSION_UUID5("1d61a934-8235-475d-988f-38c94d6fe49c"),
 
-    STUDENT_UUID1("b7acb825-4e70-49e4-84a1-bf5dc7c8f509"),
+    STUDENT_UUID1("d03aa006-6f0b-4939-9287-753798b6d403"),
     STUDENT_UUID2("f2a26e3f-3b50-44ac-a7f9-02fe3b41cf6a"),
     STUDENT_UUID3("7283a092-2b64-4bfa-bf92-4242448b740a"),
     STUDENT_UUID4("a9f5d8b5-2632-42b5-8520-1db4010fc80d"),
@@ -66,7 +66,7 @@ public class MockValues {
     GRADE_UUID24("4b6e1f92-5a3c-46d8-bd14-8e3a7c2f1a88"),
     GRADE_UUID25("b2a7c9f3-9e41-4d3b-83a5-7c4d1e8f2b61"),
 
-    LECTURER_UUID("fc6ac29a-b9dd-4b35-889f-2baff71f3be1"),
+    LECTURER_UUID("5a9cee80-7f1e-4bfb-8d4a-218128b3550f"),
     LECTURER_UUID2("3f8a9c12-7b4e-4d21-9c8a-2e6b7d9f1a23"),
     LECTURER_UUID3("c1d2e3f4-5a6b-4c7d-8e9f-0a1b2c3d4e5f"),
     LECTURER_UUID4("a0b1c2d3-e4f5-4a67-8b9c-d0e1f2a3b4c5"),
