@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.ase.lecturerservice.dtos.FeedbackRequest;
 import com.ase.lecturerservice.dtos.FeedbackResponse;
-import com.ase.lecturerservice.services.FeedbackService;
 import com.ase.lecturerservice.entities.Feedback;
+import com.ase.lecturerservice.services.FeedbackService;
 import lombok.RequiredArgsConstructor;
 
 @RestController

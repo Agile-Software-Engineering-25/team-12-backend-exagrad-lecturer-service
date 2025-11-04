@@ -7,7 +7,6 @@ import com.ase.lecturerservice.dtos.FeedbackRequest;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.ExamType;
 import com.ase.lecturerservice.entities.FileReference;
-import com.ase.lecturerservice.entities.PublishStatus;
 import com.ase.lecturerservice.entities.Submission;
 import com.ase.lecturerservice.entities.user.Student;
 import com.ase.lecturerservice.mockvalues.MockValues;
