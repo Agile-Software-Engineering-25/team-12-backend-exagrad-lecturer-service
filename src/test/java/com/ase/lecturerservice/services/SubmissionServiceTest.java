@@ -82,23 +82,9 @@ public class SubmissionServiceTest {
 
   @Test
   void getAllAccessibleSubmissionsForLecturerShouldReturnOnlyLecturerSubmissions() {
-    Exam exam = Exam.builder()
-        .uuid(MockValues.UuidMocks.EXAM_UUID.getValue())
-        .name("Test Exam")
-        .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
-        .examType(ExamType.KLAUSUR)
-        .date(date)
-        .time(MockValues.IntMocks.TIME_SECONDS.getValue())
-        .allowedResources(List.of("Calculator"))
-        .attempt(MockValues.IntMocks.ATTEMPT.getValue())
-        .etcs(MockValues.IntMocks.ETCS.getValue())
-        .room("Room A101")
-        .lecturerUuid(lecturer.getUuid())
-        .module("Test Module")
-        .build();
-
     // Return one exam for the lecturer; network layer will currently yield empty submissions
-    given(submissionService.getAllAccessibleSubmissionsForLecturer(lecturer.getUuid())).willReturn(Collections.emptyList());
+    given(submissionService.getAllAccessibleSubmissionsForLecturer(lecturer.getUuid()))
+        .willReturn(Collections.emptyList());
 
     List<Submission> submissions = submissionService
         .getAllAccessibleSubmissionsForLecturer(lecturer.getUuid());
