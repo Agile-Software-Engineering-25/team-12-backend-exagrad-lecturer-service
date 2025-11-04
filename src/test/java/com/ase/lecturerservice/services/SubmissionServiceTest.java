@@ -16,8 +16,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.reactive.function.client.WebClient;
 import com.ase.lecturerservice.MockValues;
-import com.ase.lecturerservice.entities.Exam;
-import com.ase.lecturerservice.entities.ExamType;
 import com.ase.lecturerservice.entities.Submission;
 import com.ase.lecturerservice.entities.user.Lecturer;
 import com.ase.lecturerservice.entities.user.UserType;
