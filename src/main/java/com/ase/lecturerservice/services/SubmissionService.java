@@ -53,8 +53,7 @@ public class SubmissionService {
             .studentUuid(references.getLast().getStudentId())
             .fileUpload(references.stream().map(fileRef ->
                     FileReference.builder()
-                        .downloadLink(fileRef.getDownloadUrl())
-                        .filename(fileRef.getFileName())
+                        .fileName(fileRef.getFileName())
                         .fileUuid(fileRef.getId()).build())
                 .collect(Collectors.toList())).build())
         .collect(Collectors.toList());
@@ -69,13 +68,12 @@ public class SubmissionService {
   }
 
   public List<Submission> getAllAccessibleSubmissionsForLecturer(String lecturerUuid) {
-    Set<String> examsOfLecturer =
-        examService.getExamsByLecturer(lecturerUuid).stream()
-            .map(Exam::getUuid)
-            .collect(Collectors.toSet());
+    Set<String> examsOfLecturer = examService.getExamsByLecturer(lecturerUuid).stream()
+        .map(Exam::getUuid).collect(Collectors.toSet());
 
     return examsOfLecturer.stream()
         .map(this::getSubmissionsForExam)
         .flatMap(java.util.Collection::stream).collect(Collectors.toList());
   }
+
 }

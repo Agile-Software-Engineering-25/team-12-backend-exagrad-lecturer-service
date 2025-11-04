@@ -22,7 +22,7 @@ public class DummyData {
               .fileUpload(
                   List.of(
                       FileReference.builder()
-                          .fileUuid(UUID.randomUUID())
+                          .fileUuid(UUID.randomUUID().toString())
                           .fileName("submission1.pdf")
                           .build()))
               .build(),
@@ -33,7 +33,7 @@ public class DummyData {
               .fileUpload(
                   List.of(
                       FileReference.builder()
-                          .fileUuid(UUID.randomUUID())
+                          .fileUuid(UUID.randomUUID().toString())
                           .fileName("submission2.pdf")
                           .build()))
               .build(),
@@ -44,7 +44,7 @@ public class DummyData {
               .fileUpload(
                   List.of(
                       FileReference.builder()
-                          .fileUuid(UUID.randomUUID())
+                          .fileUuid(UUID.randomUUID().toString())
                           .fileName("physics_midterm_attempt1.zip")
                           .build()))
               .build(),
@@ -55,7 +55,7 @@ public class DummyData {
               .fileUpload(
                   List.of(
                       FileReference.builder()
-                          .fileUuid(UUID.randomUUID())
+                          .fileUuid(UUID.randomUUID().toString())
                           .fileName("software_project_demo.mp4")
                           .build()))
               .build(),
@@ -66,7 +66,7 @@ public class DummyData {
               .fileUpload(
                   List.of(
                       FileReference.builder()
-                          .fileUuid(UUID.randomUUID())
+                          .fileUuid(UUID.randomUUID().toString())
                           .fileName("chemistry_lab_report.docx")
                           .build()))
               .build());
@@ -274,11 +274,11 @@ public class DummyData {
   static List<FileReference> fileReferencesList =
       List.of(
           FileReference.builder()
-              .fileUuid(UUID.randomUUID())
+              .fileUuid(UUID.randomUUID().toString())
               .fileName("dummy_file")
               .build(),
           FileReference.builder()
-              .fileUuid(UUID.randomUUID())
+              .fileUuid(UUID.randomUUID().toString())
               .fileName("dummy_file2")
               .build());
 }

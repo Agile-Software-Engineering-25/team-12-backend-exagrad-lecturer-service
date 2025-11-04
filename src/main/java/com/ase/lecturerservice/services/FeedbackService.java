@@ -22,6 +22,7 @@ import com.ase.lecturerservice.mappers.FeedbackMapper;
 import com.ase.lecturerservice.repositories.FeedbackRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @Service
@@ -31,6 +32,7 @@ public class FeedbackService {
   private final FeedbackDocumentService feedbackDocumentService;
   private final FeedbackMapper feedbackMapper;
   private final FeedbackDocumentMapper feedbackDocumentMapper;
+  private final BitfrostService bitfrostService;
 
   @EventListener(ApplicationReadyEvent.class)
   public void instantiateDummies() {
@@ -66,6 +68,10 @@ public class FeedbackService {
         .filter(exam -> exam.getUuid().equals(uuid))
         .findFirst()
         .orElse(null);
+  }
+
+    public List<Feedback> getFeedbackForStudent(String studentUuid) {
+    return feedbackRepository.findByStudentUuid(studentUuid);
   }
 
   public void saveFeedback(FeedbackRequest feedback, MultipartFile[] files) {
@@ -109,7 +115,7 @@ public class FeedbackService {
     existing.setComment(updateFeedback.getComment());
     existing.setPoints(updateFeedback.getPoints());
     existing.setGrade(updateFeedback.getGrade());
-    existing.setFileReference(updateFeedback.getFileReference());
+   // existing.setFileReference(updateFeedback.getFileReferences());
     existing.setGradedAt(LocalDate.now());
 
     feedbackRepository.save(existing);

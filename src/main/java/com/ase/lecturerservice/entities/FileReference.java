@@ -13,6 +13,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Embeddable
 public class FileReference {
-  private UUID fileUuid;
+  private String fileUuid;
   private String fileName;
 }

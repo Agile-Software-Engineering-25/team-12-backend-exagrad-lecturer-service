@@ -54,11 +54,11 @@ public class FeedbackControllerTest {
   static List<FileReference> fileReferencesList =
       List.of(
           FileReference.builder()
-              .fileUuid(UUID.randomUUID())
+              .fileUuid(UUID.randomUUID().toString())
               .fileName("dummy_file")
               .build(),
           FileReference.builder()
-              .fileUuid(UUID.randomUUID())
+              .fileUuid(UUID.randomUUID().toString())
               .fileName("dummy_file2")
               .build());
   private static Feedback feedback;

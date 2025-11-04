@@ -26,7 +26,7 @@ public class FeedbackDocumentMapper {
 
   public FileReference toReference(FeedbackDocument entity) {
     return FileReference.builder()
-        .fileUuid(entity.getId())
+        .fileUuid(entity.getId().toString())
         .fileName(entity.getFileName())
         .build();
   }
