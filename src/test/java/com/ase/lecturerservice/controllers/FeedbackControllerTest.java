@@ -1,5 +1,6 @@
 package com.ase.lecturerservice.controllers;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -74,23 +75,27 @@ public class FeedbackControllerTest {
   @Test
   void saveFeedbackShouldSave() throws Exception {
     Feedback feedback = Feedback.builder()
-        .uuid(com.ase.lecturerservice.mockvalues.MockValues.UuidMocks.GRADE_UUID2.getValue())
+        .uuid(MockValues.UuidMocks.GRADE_UUID2.getValue())
         .gradedAt(date)
         .lecturerUuid(UUID.randomUUID().toString())
-        .studentUuid(
-            com.ase.lecturerservice.mockvalues.MockValues.UuidMocks.STUDENT_UUID2.getValue())
+        .studentUuid(MockValues.UuidMocks.STUDENT_UUID2.getValue())
         .submissionUuid(UUID.randomUUID().toString())
-        .examUuid(com.ase.lecturerservice.mockvalues.MockValues.UuidMocks.EXAM_UUID.getValue())
+        .examUuid(MockValues.UuidMocks.EXAM_UUID.getValue())
         .comment("Great effort! Check feedback in files.")
         .fileReference(fileReferencesList)
-        .points(com.ase.lecturerservice.mockvalues.MockValues.IntMocks.ACHIEVED_POINTS.getValue())
-        .grade(com.ase.lecturerservice.mockvalues.MockValues.FloatMocks.GRADE.getValue())
+        .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
+        .grade(MockValues.FloatMocks.GRADE.getValue())
         .build();
+
+    when(feedbackService.saveFeedback(any(Feedback.class))).thenReturn(feedback);
 
     mockMvc.perform(post("/api/v1/feedback")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(feedback)))
-        .andExpect(status().isNoContent());
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.uuid").value(feedback.getUuid()))
+        .andExpect(jsonPath("$.comment").value("Great effort! Check feedback in files."))
+        .andExpect(jsonPath("$.examUuid").value(MockValues.UuidMocks.EXAM_UUID.getValue()));
   }
 
   @Test

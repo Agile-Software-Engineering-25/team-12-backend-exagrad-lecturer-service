@@ -31,18 +31,16 @@ public class FeedbackController {
   }
 
   @PostMapping
-  public ResponseEntity<Void> saveFeedback(@RequestBody Feedback feedback) {
-    feedbackService.saveFeedback(feedback);
-    return ResponseEntity.noContent().build();
+  public ResponseEntity<Feedback> saveFeedback(@RequestBody Feedback feedback) {
+    return ResponseEntity.ok(feedbackService.saveFeedback(feedback));
   }
 
   @PutMapping("/{uuid}")
-  public ResponseEntity<Void> updateFeedback(
+  public ResponseEntity<Feedback> updateFeedback(
       @PathVariable String uuid,
       @RequestBody Feedback updateFeedback
   ) {
-    feedbackService.updateFeedback(uuid, updateFeedback);
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.ok(feedbackService.updateFeedback(uuid, updateFeedback));
   }
 
   @PostMapping("/submit")
