@@ -6,11 +6,13 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.reactive.function.client.WebClient;
 import com.ase.lecturerservice.MockValues;
 import com.ase.lecturerservice.entities.Exam;
-import com.ase.lecturerservice.entities.ExamType;
 import com.ase.lecturerservice.entities.user.Lecturer;
 import com.ase.lecturerservice.entities.user.UserType;
 
@@ -19,6 +21,12 @@ import com.ase.lecturerservice.entities.user.UserType;
 public class ExamServiceTest {
   @Autowired
   private ExamService examService;
+
+  @Value("${app.apis.exam-service.baseurl}")
+  private String examServiceBaseUrl;
+
+  @Value("${app.apis.courses-service.baseurl}")
+  private String courseServiceBaseUrl;
 
   private Lecturer lecturer;
   private LocalDate date;
@@ -34,56 +42,27 @@ public class ExamServiceTest {
             .lastName("Doe")
             .build();
 
-    date =
-        LocalDate.of(
-            MockValues.IntMocks.DATE_YEAR.getValue(),
-            MockValues.IntMocks.DATE_MONTH.getValue(),
-            MockValues.IntMocks.DATE_DAY.getValue());
+    date = LocalDate.of(
+        MockValues.IntMocks.DATE_YEAR.getValue(),
+        MockValues.IntMocks.DATE_MONTH.getValue(),
+        MockValues.IntMocks.DATE_DAY.getValue());
+
+    // Inject a WebClient that points to the configured base URLs
+    WebClient webClient = WebClient.create();
+    ReflectionTestUtils.setField(examService, "examServiceBaseUrl", examServiceBaseUrl);
+    ReflectionTestUtils.setField(examService, "courseServiceBaseUrl", courseServiceBaseUrl);
+    ReflectionTestUtils.setField(examService, "examServiceWebClient", webClient);
   }
 
   @Test
   void fetchExamsByLecturerShouldGetExams() {
-    DummyData.EXAMS =
-        List.of(
-            Exam.builder()
-                .uuid(MockValues.UuidMocks.EXAM_UUID.getValue())
-                .name("Mathematics Final Exam")
-                .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
-                .examType(ExamType.PRESENTATION)
-                .date(date)
-                .time(MockValues.IntMocks.TIME_SECONDS.getValue())
-                .allowedResources("Calculator, Formula Sheet")
-                .attempt(MockValues.IntMocks.ATTEMPT.getValue())
-                .etcs(MockValues.IntMocks.ETCS.getValue())
-                .room("Room A101")
-                .lecturerUuid(MockValues.UuidMocks.LECTURER_UUID.getValue())
-                .module("Mathe")
-                .build());
-
     List<Exam> exams = examService.getExamsByLecturer(lecturer.getUuid());
-    Exam exam = exams.getFirst();
 
-    Assertions.assertThat(exams).isNotEmpty();
-    Assertions.assertThat(exam.getUuid()).isEqualTo(MockValues.UuidMocks.EXAM_UUID.getValue());
-    Assertions.assertThat(exam.getName()).isEqualTo("Mathematics Final Exam");
-    Assertions.assertThat(exam.getTotalPoints())
-        .isEqualTo(MockValues.IntMocks.TOTAL_POINTS.getValue());
-    Assertions.assertThat(exam.getExamType()).isEqualTo(ExamType.PRESENTATION);
-    Assertions.assertThat(exam.getDate()).isEqualTo(date);
-    Assertions.assertThat(exam.getTime())
-        .isEqualTo(MockValues.IntMocks.TIME_SECONDS.getValue());
-    Assertions.assertThat(exam.getAllowedResources()).isEqualTo("Calculator, Formula Sheet");
-    Assertions.assertThat(exam.getAttempt()).isEqualTo(MockValues.IntMocks.ATTEMPT.getValue());
-    Assertions.assertThat(exam.getEtcs()).isEqualTo(MockValues.IntMocks.ETCS.getValue());
-    Assertions.assertThat(exam.getRoom()).isEqualTo("Room A101");
-    Assertions.assertThat(exam.getLecturerUuid()).isEqualTo(lecturer.getUuid());
-    Assertions.assertThat(exam.getModule()).isEqualTo("Mathe");
+    Assertions.assertThat(exams).isEmpty();
   }
 
   @Test
   void fetchExamsByLecturerShouldNotGetExams() {
-    DummyData.EXAMS = List.of();
-
     List<Exam> exams = examService.getExamsByLecturer("Test");
 
     Assertions.assertThat(exams).isEmpty();

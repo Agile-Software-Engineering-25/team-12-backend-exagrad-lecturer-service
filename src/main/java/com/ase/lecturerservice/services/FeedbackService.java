@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,7 @@ public class FeedbackService {
   private final FeedbackDocumentService feedbackDocumentService;
   private final FeedbackMapper feedbackMapper;
   private final FeedbackDocumentMapper feedbackDocumentMapper;
+  private final ExamService examService;
   private final BitfrostService bitfrostService;
 
   @EventListener(ApplicationReadyEvent.class)
@@ -108,7 +110,7 @@ public class FeedbackService {
     }
   }
 
-  public void updateFeedback(String uuid, Feedback updateFeedback) {
+  public Feedback updateFeedback(String uuid, Feedback updateFeedback) {
     Feedback existing = feedbackRepository.findById(uuid)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Feedback not found"));
 
@@ -118,8 +120,6 @@ public class FeedbackService {
    // existing.setFileReference(updateFeedback.getFileReferences());
     existing.setGradedAt(LocalDate.now());
 
-    feedbackRepository.save(existing);
-
     log.info("Feedback {} was successfully edited by Lecturer {} "
             + "(Student {}, Points: {}, Grade: {})",
         uuid,
@@ -127,6 +127,8 @@ public class FeedbackService {
         existing.getStudentUuid(),
         existing.getPoints(),
         existing.getGrade());
+
+    return feedbackRepository.save(existing);
   }
 
   public void submitFeedback(List<Feedback> feedbacks) {

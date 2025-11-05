@@ -61,12 +61,11 @@ public class FeedbackController {
   }
 
   @PutMapping("/{uuid}")
-  public ResponseEntity<Void> updateFeedback(
+  public ResponseEntity<Feedback> updateFeedback(
       @PathVariable String uuid,
       @RequestBody Feedback updateFeedback
   ) {
-    feedbackService.updateFeedback(uuid, updateFeedback);
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.ok(feedbackService.updateFeedback(uuid, updateFeedback));
   }
 
   @PostMapping("/submit")

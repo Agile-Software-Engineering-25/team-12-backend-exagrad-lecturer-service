@@ -95,7 +95,7 @@ public class ExamControllerTest {
         .andExpect(jsonPath("$[0].date").value("2015-10-25"))
         .andExpect(jsonPath("$[0].module").value("Test"))
         .andExpect(jsonPath("$[0].time").value(MockValues.IntMocks.TIME_SECONDS.getValue()))
-        .andExpect(jsonPath("$[0].examType").value(ExamType.EXAM.toString()))
+        .andExpect(jsonPath("$[0].examType").value(ExamType.KLAUSUR.toString()))
         .andExpect(jsonPath("$[0].assignedStudents").isNotEmpty());
   }
 

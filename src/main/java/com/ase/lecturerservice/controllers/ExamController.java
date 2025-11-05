@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.ase.lecturerservice.dtos.ExamDto;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.services.ExamService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,12 +23,12 @@ public class ExamController {
   private final ObjectMapper objectMapper;
 
   @GetMapping
-  public ResponseEntity<List<ExamDto>> getExams(@RequestParam String lecturerUuid)
+  public ResponseEntity<List<Exam>> getExams(@RequestParam String lecturerUuid)
       throws IllegalArgumentException {
     List<Exam> exams = examService.getExamsByLecturer(lecturerUuid);
 
-    List<ExamDto> examDtoList = exams.stream()
-        .map(exam -> objectMapper.convertValue(exam, ExamDto.class))
+    List<Exam> examDtoList = exams.stream()
+        .map(exam -> objectMapper.convertValue(exam, Exam.class))
         .collect(Collectors.toList());
 
     return ResponseEntity.ok(examDtoList);

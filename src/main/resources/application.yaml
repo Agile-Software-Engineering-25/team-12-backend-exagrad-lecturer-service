@@ -36,6 +36,10 @@ app:
   apis:
     student-service:
       baseurl: https://sau-portal.de/api/v1/exagrad/student
+    exam-service:
+      baseurl: https://sau-portal.de/exa-grad/exam-service
+    courses-service:
+      baseurl: https://sau-portal.de/api/masterdata/studies
     bitfrost:
       baseurl: https://bitfrost.sau-portal.de/api/v1/messages/publish
       secret: ${BITFROST_TOPIC_LECTURER_SECRET}

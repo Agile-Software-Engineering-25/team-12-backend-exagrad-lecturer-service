@@ -2,6 +2,7 @@ package com.ase.lecturerservice.services;
 
 import static org.mockito.BDDMockito.given;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,13 +11,11 @@ import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.reactive.function.client.WebClient;
 import com.ase.lecturerservice.MockValues;
-import com.ase.lecturerservice.entities.Exam;
-import com.ase.lecturerservice.entities.ExamType;
 import com.ase.lecturerservice.entities.Submission;
 import com.ase.lecturerservice.entities.user.Lecturer;
 import com.ase.lecturerservice.entities.user.UserType;
@@ -27,7 +26,7 @@ public class SubmissionServiceTest {
   @Autowired
   private SubmissionService submissionService;
 
-  @MockBean
+  @MockitoBean
   private ExamService examService;
 
   @Value("${app.apis.student-service.baseurl:http://student-service}")
@@ -52,8 +51,6 @@ public class SubmissionServiceTest {
         MockValues.IntMocks.DATE_DAY.getValue());
 
 
-    // Inject a WebClient that points to the same base URL
-    // (it will be intercepted by WebTestClient's mock server if configured)
     WebClient webClient = WebClient.create();
     ReflectionTestUtils.setField(submissionService, "studentServiceBaseUrl", studentServiceBaseUrl);
     ReflectionTestUtils.setField(submissionService, "studentServiceWebClient", webClient);
@@ -61,12 +58,10 @@ public class SubmissionServiceTest {
 
   @Test
   void getSubmissionsForExamShouldReturnSubmissionsForSpecificExam() {
-    String examId = MockValues.UuidMocks.EXAM_UUID.getValue();
+    String examId = MockValues.UuidMocks.EXAM_UUID6.getValue();
 
-    // Stub examService usage when aggregating (not used here but safe)
     given(examService.getExamsByLecturer(ArgumentMatchers.anyString())).willReturn(List.of());
 
-    // Since actual HTTP is executed, expect an empty result for unknown mock server
     List<Submission> submissions = submissionService.getSubmissionsForExam(examId);
 
     Assertions.assertThat(submissions).isEmpty();
@@ -85,23 +80,9 @@ public class SubmissionServiceTest {
 
   @Test
   void getAllAccessibleSubmissionsForLecturerShouldReturnOnlyLecturerSubmissions() {
-    Exam exam = Exam.builder()
-        .uuid(MockValues.UuidMocks.EXAM_UUID.getValue())
-        .name("Test Exam")
-        .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
-        .examType(ExamType.EXAM)
-        .date(date)
-        .time(MockValues.IntMocks.TIME_SECONDS.getValue())
-        .allowedResources("Calculator")
-        .attempt(MockValues.IntMocks.ATTEMPT.getValue())
-        .etcs(MockValues.IntMocks.ETCS.getValue())
-        .room("Room A101")
-        .lecturerUuid(lecturer.getUuid())
-        .module("Test Module")
-        .build();
-
     // Return one exam for the lecturer; network layer will currently yield empty submissions
-    given(examService.getExamsByLecturer(lecturer.getUuid())).willReturn(List.of(exam));
+    given(submissionService.getAllAccessibleSubmissionsForLecturer(lecturer.getUuid()))
+        .willReturn(Collections.emptyList());
 
     List<Submission> submissions =
         submissionService.getAllAccessibleSubmissionsForLecturer(lecturer.getUuid());

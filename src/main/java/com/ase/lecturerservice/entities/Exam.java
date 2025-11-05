@@ -27,8 +27,6 @@ public class Exam {
 
   private int time;
 
-  private String allowedResources;
-
   private int attempt;
 
   private int etcs;
@@ -38,6 +36,8 @@ public class Exam {
   private String module;
 
   private String lecturerUuid;
+
+  private List<String> allowedResources;
 
   private List<Student> assignedStudents;
 
