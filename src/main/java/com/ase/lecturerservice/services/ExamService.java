@@ -121,7 +121,7 @@ public class ExamService {
     log.debug("Populate exams with {} students", allStudents.size());
 
     for (Exam exam : exams) {
-      List<Student> studentsForExam = getStudentsForExam("/api/students/exam/" + exam.getUuid(), studentMap);
+      List<Student> studentsForExam = getStudentsForExam(exam.getUuid(), studentMap);
       exam.setAssignedStudents(studentsForExam);
       log.debug("Exam {} assigned to {} students", exam.getUuid(), exam.getAssignedStudents().size());
     }
@@ -209,7 +209,7 @@ public class ExamService {
 
   private List<StudentDataResponse.StudentDto> getAllStudentsDetails() {
     try {
-      String url = examServiceBaseUrl + "/api/students";
+      String url = studentDataServiceBaseUrl + "/api/student";
       return fetchListFromApi(url, StudentDataResponse.StudentDto.class);
     }
     catch (Exception e) {
