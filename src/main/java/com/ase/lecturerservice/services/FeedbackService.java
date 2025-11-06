@@ -9,6 +9,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import com.ase.lecturerservice.dtos.StudentExamStateDto;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.Feedback;
 import com.ase.lecturerservice.repositories.FeedbackRepository;
@@ -82,4 +83,14 @@ public class FeedbackService {
     bitfrostService.sendRequest("feedbacks:submit", feedbacks);
   }
 
+  public void updateFeedbackStatus(StudentExamStateDto studentExamStateDto) {
+    List<Feedback> updatedFeebacks = feedbackRepository.findAll()
+        .stream()
+        .filter(feedback -> feedback.getStudentUuid().equals(studentExamStateDto.getStudentUuid())
+            && feedback.getExamUuid().equals(studentExamStateDto.getExamUuid()))
+        .peek(feedback -> feedback.setPublishStatus(studentExamStateDto.getPublishStatus()))
+        .toList();
+
+    feedbackRepository.saveAll(updatedFeebacks);
+  }
 }
