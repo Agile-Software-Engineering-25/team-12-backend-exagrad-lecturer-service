@@ -7,8 +7,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import com.ase.lecturerservice.dtos.StudentDataResponse;
-import com.ase.lecturerservice.dtos.StudentExamStateDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,12 +14,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 import com.ase.lecturerservice.dtos.DataServiceCourseResponse;
 import com.ase.lecturerservice.dtos.ExamServiceExamResponse;
+import com.ase.lecturerservice.dtos.StudentDataResponse;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.user.Student;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import reactor.core.publisher.Mono;
 
 @Slf4j
 @Service
@@ -86,7 +84,7 @@ public class ExamService {
   }
 
   private <T> List<T> fetchListFromApi(String apiPath, Class<T> responseType) {
-    try{
+    try {
       List<T> responseDtos =
           examServiceWebClient.get()
               .uri(apiPath)
@@ -101,8 +99,7 @@ public class ExamService {
               .collectList()
               .block();
       return responseDtos != null ? responseDtos : Collections.emptyList();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       log.error("Failed to fetch data from {}: {}", apiPath, e.getMessage(), e);
       throw new ResponseStatusException(
           HttpStatus.SERVICE_UNAVAILABLE,
@@ -200,8 +197,7 @@ public class ExamService {
           .filter(Objects::nonNull)
           .map(studentDto -> objectMapper.convertValue(studentDto, Student.class))
           .toList();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       log.error("Failed to fetch data from {}: {}", examUuid, e.getMessage(), e);
       return Collections.emptyList();
     }
@@ -211,8 +207,7 @@ public class ExamService {
     try {
       String url = studentDataServiceBaseUrl + "/api/student";
       return fetchListFromApi(url, StudentDataResponse.StudentDto.class);
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       log.error("Failed to fetch students details: {}", e.getMessage());
       return Collections.emptyList();
     }
