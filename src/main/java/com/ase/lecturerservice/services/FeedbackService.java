@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import com.ase.lecturerservice.dtos.StudentExamStateDto;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
@@ -82,4 +83,14 @@ public class FeedbackService {
     bitfrostService.sendRequest("feedbacks:submit", feedbacks);
   }
 
+  public void updateFeedbackStatus(StudentExamStateDto  studentExamStateDto) {
+    List<Feedback> updatedFeebacks = feedbackRepository.findAll()
+        .stream()
+        .filter(feedback -> feedback.getStudentUuid().equals(studentExamStateDto.getStudentUuid())
+           && feedback.getExamUuid().equals(studentExamStateDto.getExamUuid()))
+        .peek(feedback -> feedback.setPublishStatus(studentExamStateDto.getPublishStatus()))
+        .toList();
+
+    feedbackRepository.saveAll(updatedFeebacks);
+  }
 }
