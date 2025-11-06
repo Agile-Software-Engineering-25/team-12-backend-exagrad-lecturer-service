@@ -2,6 +2,7 @@ package com.ase.lecturerservice.dtos;
 
 import java.time.LocalDate;
 import java.util.List;
+import com.ase.lecturerservice.entities.PublishStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,6 +25,7 @@ public class FeedbackResponse {
   private String comment;
   private int points;
   private float grade;
+  private PublishStatus publishStatus;
 
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private List<FeedbackDocumentResponse> fileReference;

@@ -46,14 +46,15 @@ public class FeedbackService {
   }
 
   public List<FeedbackResponse> getFeedbackForLecturer(String lecturerUuid) {
-    log.info("lecturer UUID: {}", lecturerUuid);
     List<Feedback> feedbacks = feedbackRepository.findAll();
+    List<Exam> exams = examService.getExamsByLecturer(lecturerUuid);
+
+    Set<String> lecturerExamUuids = exams.stream()
+        .map(Exam::getUuid)
+        .collect(Collectors.toSet());
+
     return feedbacks.stream()
-        .filter(
-            feedback ->
-                Optional.ofNullable(getExam(feedback.getExamUuid()))
-                    .map(exam -> exam.getLecturerUuid().equals(lecturerUuid))
-                    .orElse(false))
+        .filter(feedback -> lecturerExamUuids.contains(feedback.getExamUuid()))
         .map(
             feedback -> {
               return feedbackMapper.toResponse(
@@ -62,14 +63,6 @@ public class FeedbackService {
                       feedback.getUuid()));
             })
         .toList();
-  }
-
-  // TODO: change this webclient, when the API Endpoint is ready
-  public Exam getExam(String uuid) {
-    return DummyData.EXAMS.stream()
-        .filter(exam -> exam.getUuid().equals(uuid))
-        .findFirst()
-        .orElse(null);
   }
 
   public List<Feedback> getFeedbackForStudent(String studentUuid) {

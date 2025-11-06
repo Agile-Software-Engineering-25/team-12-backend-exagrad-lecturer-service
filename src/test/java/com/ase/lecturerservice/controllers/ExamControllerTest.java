@@ -63,22 +63,21 @@ public class ExamControllerTest {
             MockValues.IntMocks.DATE_MONTH.getValue(),
             MockValues.IntMocks.DATE_DAY.getValue());
 
-    exam =
-        Exam.builder()
-            .uuid(MockValues.UuidMocks.EXAM_UUID.getValue())
-            .name("Test")
-            .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
-            .examType(ExamType.EXAM)
-            .date(date)
-            .time(MockValues.IntMocks.TIME_SECONDS.getValue())
-            .allowedResources("Calculator, Formula Sheet")
-            .attempt(MockValues.IntMocks.ATTEMPT.getValue())
-            .etcs(MockValues.IntMocks.ETCS.getValue())
-            .room("Room A101")
-            .lecturerUuid(MockValues.UuidMocks.LECTURER_UUID.getValue())
-            .module("Test")
-            .assignedStudents(STUDENT_LIST)
-            .build();
+    exam = Exam.builder()
+        .uuid(MockValues.UuidMocks.EXAM_UUID.getValue())
+        .name("Test")
+        .totalPoints(MockValues.IntMocks.TOTAL_POINTS.getValue())
+        .examType(ExamType.KLAUSUR)
+        .date(date)
+        .time(MockValues.IntMocks.TIME_SECONDS.getValue())
+        .allowedResources(List.of("Calculator, Formula Sheet"))
+        .attempt(MockValues.IntMocks.ATTEMPT.getValue())
+        .etcs(MockValues.IntMocks.ETCS.getValue())
+        .room("Room A101")
+        .lecturerUuid(MockValues.UuidMocks.LECTURER_UUID.getValue())
+        .module("Test")
+        .assignedStudents(STUDENT_LIST)
+        .build();
   }
 
   @Test

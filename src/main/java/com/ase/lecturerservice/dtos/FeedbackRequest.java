@@ -1,6 +1,7 @@
 package com.ase.lecturerservice.dtos;
 
 import java.time.LocalDate;
+import com.ase.lecturerservice.entities.PublishStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,4 +22,5 @@ public class FeedbackRequest {
   private String comment;
   private int points;
   private float grade;
+  private PublishStatus publishStatus;
 }

@@ -92,30 +92,17 @@ public class FeedbackControllerTest {
 
   @Test
   void saveFeedbackShouldSave() throws Exception {
-    Feedback feedback =
-        Feedback.builder()
-            .uuid(
-                com.ase.lecturerservice.mockvalues.MockValues.UuidMocks.GRADE_UUID2
-                    .getValue())
-            .gradedAt(date)
-            .lecturerUuid(UUID.randomUUID().toString())
-            .studentUuid(
-                com.ase.lecturerservice.mockvalues.MockValues.UuidMocks
-                    .STUDENT_UUID2
-                    .getValue())
-            .submissionUuid(UUID.randomUUID().toString())
-            .examUuid(
-                com.ase.lecturerservice.mockvalues.MockValues.UuidMocks.EXAM_UUID
-                    .getValue())
-            .comment("Great effort! Check feedback in files.")
-            .points(
-                com.ase.lecturerservice.mockvalues.MockValues.IntMocks
-                    .ACHIEVED_POINTS
-                    .getValue())
-            .grade(
-                com.ase.lecturerservice.mockvalues.MockValues.FloatMocks.GRADE
-                    .getValue())
-            .build();
+    Feedback feedback = Feedback.builder()
+        .uuid(MockValues.UuidMocks.GRADE_UUID2.getValue())
+        .gradedAt(date)
+        .lecturerUuid(UUID.randomUUID().toString())
+        .studentUuid(MockValues.UuidMocks.STUDENT_UUID2.getValue())
+        .submissionUuid(UUID.randomUUID().toString())
+        .examUuid(MockValues.UuidMocks.EXAM_UUID.getValue())
+        .comment("Great effort! Check feedback in files.")
+        .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
+        .grade(MockValues.FloatMocks.GRADE.getValue())
+        .build();
 
     String feedbackJson = objectMapper.writeValueAsString(feedback);
 

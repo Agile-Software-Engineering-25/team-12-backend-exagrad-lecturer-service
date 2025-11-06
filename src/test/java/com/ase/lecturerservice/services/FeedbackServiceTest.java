@@ -7,13 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.time.LocalDate;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +26,9 @@ import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.Feedback;
 import com.ase.lecturerservice.mappers.FeedbackMapper;
 import com.ase.lecturerservice.repositories.FeedbackRepository;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @ExtendWith(MockitoExtension.class)
 public class FeedbackServiceTest {
   private static final LocalDate DATE =
@@ -53,6 +51,9 @@ public class FeedbackServiceTest {
   private Feedback feedback1;
   private Feedback feedback2;
   private Feedback feedback3;
+  private FeedbackResponse response1;
+  private FeedbackResponse response2;
+  private FeedbackResponse response3;
   private Exam exam1;
   private Exam exam2;
   private Exam exam3;
@@ -84,6 +85,18 @@ public class FeedbackServiceTest {
     feedback3 = new Feedback();
     feedback3.setExamUuid("exam-3");
     feedback3.setStudentUuid("student-3");
+
+    response1 = new FeedbackResponse();
+    response1.setExamUuid("exam-1");
+    response1.setStudentUuid("student-1");
+
+    response2 = new FeedbackResponse();
+    response2.setExamUuid("exam-2");
+    response2.setStudentUuid("student-2");
+
+    response3 = new FeedbackResponse();
+    response3.setExamUuid("exam-3");
+    response3.setStudentUuid("student-3");
   }
 
   @Test
@@ -126,31 +139,21 @@ public class FeedbackServiceTest {
     when(feedbackRepository.findAll()).thenReturn(allFeedbacks);
     when(examService.getExamsByLecturer(lecturerUuid)).thenReturn(List.of(exam1, exam2));
 
-    FeedbackService spyService = spy(feedbackService);
-    doReturn(exam1).when(spyService).getExam("exam-1");
-    doReturn(exam2).when(spyService).getExam("exam-2");
-    doReturn(exam3).when(spyService).getExam("exam-3");
-
-    FeedbackResponse response1 = new FeedbackResponse();
-    FeedbackResponse response2 = new FeedbackResponse();
-
     when(feedbackMapper.toResponse(eq(feedback1), any())).thenReturn(response1);
-
     when(feedbackMapper.toResponse(eq(feedback2), any())).thenReturn(response2);
 
-    List<FeedbackResponse> result = spyService.getFeedbackForLecturer(lecturerUuid);
-    System.out.println("Result size: " + result);
-
-    List<FeedbackResponse> expectedResponses = List.of(response1, response2);
-    List<Feedback> result = feedbackService.getFeedbackForLecturer(lecturerUuid); // TODO: need to check that later
+    List<FeedbackResponse> result = feedbackService.getFeedbackForLecturer(lecturerUuid);
 
     assertEquals(2, result.size());
-    assertTrue(result.containsAll(expectedResponses));
-    assertFalse(result.contains(feedback3));
+    log.info(result.toString());
+    assertTrue(result.contains(response1));
+    assertTrue(result.contains(response2));
+    assertFalse(result.contains(response3));
 
     verify(feedbackRepository).findAll();
     verify(examService).getExamsByLecturer(lecturerUuid);
   }
+
 
   @Test
   void getFeedbackForLecturerShouldReturnEmptyListWhenNoMatchingLecturer() {
@@ -158,7 +161,7 @@ public class FeedbackServiceTest {
     when(feedbackRepository.findAll()).thenReturn(allFeedbacks);
     when(examService.getExamsByLecturer(anyString())).thenReturn(Collections.emptyList());
 
-    List<Feedback> result = feedbackService.getFeedbackForLecturer(lecturerUuid);
+    List<FeedbackResponse> result = feedbackService.getFeedbackForLecturer(lecturerUuid);
 
     assertTrue(result.isEmpty());
     verify(feedbackRepository).findAll();

@@ -26,6 +26,7 @@ public class FeedbackMapper {
     entity.setComment(feedbackRequest.getComment());
     entity.setGrade(feedbackRequest.getGrade());
     entity.setPoints(feedbackRequest.getPoints());
+    entity.setPublishStatus(feedbackRequest.getPublishStatus());
 
     return entity;
   }
@@ -47,6 +48,7 @@ public class FeedbackMapper {
     response.setComment(feedback.getComment());
     response.setPoints(feedback.getPoints());
     response.setGrade(feedback.getGrade());
+    response.setPublishStatus(feedback.getPublishStatus());
     response.setFileReference(fileReferences);
 
     return response;
