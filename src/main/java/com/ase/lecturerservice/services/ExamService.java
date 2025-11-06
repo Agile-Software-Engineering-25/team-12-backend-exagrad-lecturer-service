@@ -101,7 +101,8 @@ public class ExamService {
               .collectList()
               .block();
       return responseDtos != null ? responseDtos : Collections.emptyList();
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       log.error("Failed to fetch data from {}: {}", apiPath, e.getMessage(), e);
       throw new ResponseStatusException(
           HttpStatus.SERVICE_UNAVAILABLE,
@@ -201,7 +202,8 @@ public class ExamService {
           .filter(Objects::nonNull)
           .map(studentDto -> objectMapper.convertValue(studentDto, Student.class))
           .toList();
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       log.error("Failed to fetch data from {}: {}", examUuid, e.getMessage(), e);
       return Collections.emptyList();
     }
@@ -211,7 +213,8 @@ public class ExamService {
     try {
       String url = studentDataServiceBaseUrl + "/api/student";
       return fetchListFromApi(url, StudentDataResponse.StudentDto.class);
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       log.error("Failed to fetch students details: {}", e.getMessage());
       return Collections.emptyList();
     }
