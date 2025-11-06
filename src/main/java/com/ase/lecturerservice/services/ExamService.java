@@ -41,11 +41,13 @@ public class ExamService {
     log.info("The Exams from {} has been requested", lecturerUuid);
 
     List<Exam> allExams = fetchExamsFromExamService();
-    List<DataServiceCourseResponse.DataServiceCourseDto> allCourses = fetchCoursesFromCourseService();
+    List<DataServiceCourseResponse.DataServiceCourseDto> allCourses =
+        fetchCoursesFromCourseService();
 
     Set<String> lecuturerModuleCodes = extractLecturerModuleCodes(allCourses, lecturerUuid);
 
-    List<Exam> lecturerExams = filterExamsByModuleCodes(allExams, lecuturerModuleCodes, lecturerUuid);
+    List<Exam> lecturerExams =
+        filterExamsByModuleCodes(allExams, lecuturerModuleCodes, lecturerUuid);
 
     return populateExamsWithStudents(lecturerExams);
   }
@@ -120,7 +122,8 @@ public class ExamService {
     for (Exam exam : exams) {
       List<Student> studentsForExam = getStudentsForExam(exam.getUuid(), studentMap);
       exam.setAssignedStudents(studentsForExam);
-      log.debug("Exam {} assigned to {} students", exam.getUuid(), exam.getAssignedStudents().size());
+      log.debug("Exam {} assigned to {} students", exam.getUuid(),
+          exam.getAssignedStudents().size());
     }
 
     return exams;
@@ -187,7 +190,8 @@ public class ExamService {
         .build();
   }
 
-  private List<Student> getStudentsForExam(String examUuid, Map<String, StudentDataResponse.StudentDto> studentMap) {
+  private List<Student> getStudentsForExam(String examUuid,
+                                           Map<String, StudentDataResponse.StudentDto> studentMap) {
     try {
       String url = examServiceBaseUrl + "/api/students/exam/" + examUuid;
       List<String> studentsIds = fetchListFromApi(url, String.class);
