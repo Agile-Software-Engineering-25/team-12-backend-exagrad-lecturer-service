@@ -1,6 +1,5 @@
 package com.ase.lecturerservice.services;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -10,8 +9,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.util.Collections;
 import java.util.List;
-import com.ase.lecturerservice.dtos.StudentExamStateDto;
-import com.ase.lecturerservice.entities.PublishStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,8 +16,10 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import com.ase.lecturerservice.dtos.StudentExamStateDto;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.Feedback;
+import com.ase.lecturerservice.entities.PublishStatus;
 import com.ase.lecturerservice.repositories.FeedbackRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -87,7 +86,7 @@ public class FeedbackServiceTest {
     dto2.setExamUuid("exam-2");
     dto2.setPublishStatus(PublishStatus.REJECTED);
 
-    dto3 =  new StudentExamStateDto();
+    dto3 = new StudentExamStateDto();
     dto3.setStudentUuid("Test");
     dto3.setExamUuid("Test");
     dto3.setPublishStatus(PublishStatus.PUBLISHED);
