@@ -26,9 +26,9 @@ import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.Feedback;
 import com.ase.lecturerservice.mappers.FeedbackMapper;
 import com.ase.lecturerservice.repositories.FeedbackRepository;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+
+
 @ExtendWith(MockitoExtension.class)
 public class FeedbackServiceTest {
   private static final LocalDate DATE =
@@ -145,7 +145,6 @@ public class FeedbackServiceTest {
     List<FeedbackResponse> result = feedbackService.getFeedbackForLecturer(lecturerUuid);
 
     assertEquals(2, result.size());
-    log.info(result.toString());
     assertTrue(result.contains(response1));
     assertTrue(result.contains(response2));
     assertFalse(result.contains(response3));
