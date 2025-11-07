@@ -15,6 +15,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -25,6 +26,10 @@ import com.ase.lecturerservice.dtos.FeedbackResponse;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.Feedback;
 import com.ase.lecturerservice.mappers.FeedbackMapper;
+import com.ase.lecturerservice.dtos.StudentExamStateDto;
+import com.ase.lecturerservice.entities.Exam;
+import com.ase.lecturerservice.entities.Feedback;
+import com.ase.lecturerservice.entities.PublishStatus;
 import com.ase.lecturerservice.repositories.FeedbackRepository;
 
 
@@ -47,6 +52,9 @@ public class FeedbackServiceTest {
 
   @InjectMocks
   private FeedbackService feedbackService;
+  private StudentExamStateDto dto;
+  private StudentExamStateDto dto2;
+  private StudentExamStateDto dto3;
   private String lecturerUuid;
   private Feedback feedback1;
   private Feedback feedback2;
@@ -77,15 +85,18 @@ public class FeedbackServiceTest {
     feedback1 = new Feedback();
     feedback1.setExamUuid("exam-1");
     feedback1.setStudentUuid("student-1");
+    feedback1.setPublishStatus(PublishStatus.PUBLISHED);
 
     feedback2 = new Feedback();
     feedback2.setExamUuid("exam-2");
     feedback2.setStudentUuid("student-2");
+    feedback2.setPublishStatus(PublishStatus.PUBLISHED);
 
     feedback3 = new Feedback();
     feedback3.setExamUuid("exam-3");
     feedback3.setStudentUuid("student-3");
-
+    feedback3.setPublishStatus(PublishStatus.PUBLISHED);
+    
     response1 = new FeedbackResponse();
     response1.setExamUuid("exam-1");
     response1.setStudentUuid("student-1");
@@ -97,6 +108,21 @@ public class FeedbackServiceTest {
     response3 = new FeedbackResponse();
     response3.setExamUuid("exam-3");
     response3.setStudentUuid("student-3");
+
+    dto = new StudentExamStateDto();
+    dto.setStudentUuid("student-1");
+    dto.setExamUuid("exam-1");
+    dto.setPublishStatus(PublishStatus.APPROVED);
+
+    dto2 = new StudentExamStateDto();
+    dto2.setStudentUuid("student-2");
+    dto2.setExamUuid("exam-2");
+    dto2.setPublishStatus(PublishStatus.REJECTED);
+
+    dto3 = new StudentExamStateDto();
+    dto3.setStudentUuid("Test");
+    dto3.setExamUuid("Test");
+    dto3.setPublishStatus(PublishStatus.PUBLISHED);
   }
 
   @Test
@@ -164,5 +190,47 @@ public class FeedbackServiceTest {
 
     assertTrue(result.isEmpty());
     verify(feedbackRepository).findAll();
+  }
+
+  @Test
+  void shouldUpdateFeedbackStatusToApproved() {
+    when(feedbackRepository.findAll()).thenReturn(List.of(feedback1, feedback2));
+
+    feedbackService.updateFeedbackStatus(dto);
+
+    ArgumentCaptor<List<Feedback>> captor = ArgumentCaptor.forClass(List.class);
+    verify(feedbackRepository).saveAll(captor.capture());
+
+    List<Feedback> savedFeedbacks = captor.getValue();
+
+    assertEquals(PublishStatus.APPROVED, savedFeedbacks.getFirst().getPublishStatus());
+  }
+
+  @Test
+  void shouldUpdateFeedbackStatusToRejected() {
+    when(feedbackRepository.findAll()).thenReturn(List.of(feedback1, feedback2));
+
+    feedbackService.updateFeedbackStatus(dto2);
+
+    ArgumentCaptor<List<Feedback>> captor = ArgumentCaptor.forClass(List.class);
+    verify(feedbackRepository).saveAll(captor.capture());
+
+    List<Feedback> savedFeedbacks = captor.getValue();
+
+    assertEquals(PublishStatus.REJECTED, savedFeedbacks.getFirst().getPublishStatus());
+  }
+
+  @Test
+  void shouldNotUpdateFeedbackStatus() {
+    when(feedbackRepository.findAll()).thenReturn(List.of(feedback1, feedback2));
+
+    feedbackService.updateFeedbackStatus(dto3);
+
+    ArgumentCaptor<List<Feedback>> captor = ArgumentCaptor.forClass(List.class);
+    verify(feedbackRepository).saveAll(captor.capture());
+
+    List<Feedback> savedFeedbacks = captor.getValue();
+
+    assertTrue(savedFeedbacks.isEmpty());
   }
 }
