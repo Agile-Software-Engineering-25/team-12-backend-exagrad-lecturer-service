@@ -111,6 +111,8 @@ public class FeedbackService {
     existing.setComment(updateFeedback.getComment());
     existing.setPoints(updateFeedback.getPoints());
     existing.setGrade(updateFeedback.getGrade());
+   // TODO: change this to new filereference procedure 
+   // (send new files to service and return filereference for repo)
    // existing.setFileReference(updateFeedback.getFileReferences());
     existing.setGradedAt(LocalDate.now());
 

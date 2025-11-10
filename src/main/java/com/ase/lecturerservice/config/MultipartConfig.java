@@ -7,6 +7,7 @@ import org.springframework.util.unit.DataSize;
 import jakarta.servlet.MultipartConfigElement;
 
 @Configuration
+@RequiredArgsConstructor
 public class MultipartConfig {
 
   private final FileProperties fileProperties;

@@ -24,6 +24,6 @@ public class SubmissionController {
   ) {
     return ResponseEntity.ok(
         submissionService.getAllAccessibleSubmissionsForLecturer(lecturerUuid)
-        );
+    );
   }
 }
