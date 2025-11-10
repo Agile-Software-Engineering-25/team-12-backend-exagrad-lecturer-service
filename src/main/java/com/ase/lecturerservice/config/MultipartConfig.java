@@ -13,10 +13,6 @@ public class MultipartConfig {
 
   private final FileProperties fileProperties;
 
-  public MultipartConfig(FileProperties fileProperties) {
-    this.fileProperties = fileProperties;
-  }
-
   @Bean
   public MultipartConfigElement multipartConfigElement() {
     MultipartConfigFactory factory = new MultipartConfigFactory();
