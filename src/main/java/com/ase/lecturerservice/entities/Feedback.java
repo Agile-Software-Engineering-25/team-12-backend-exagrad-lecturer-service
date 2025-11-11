@@ -52,12 +52,11 @@ public class Feedback {
   private String comment;
 
   @ElementCollection
-  @JsonProperty("fileReference")
+  @JsonProperty("fileReferences")
   @CollectionTable(
       name = "feedback_file_references",
-      joinColumns = @JoinColumn(name = "feedback_id")
-  )
-  private List<FileReference> fileReference;
+      joinColumns = @JoinColumn(name = "feedback_id"))
+  private List<FileReference> fileReferences;
 
   @Column(name = "points")
   @JsonProperty("points")

@@ -53,8 +53,7 @@ public class SubmissionService {
             .studentUuid(references.getLast().getStudentId())
             .fileUpload(references.stream().map(fileRef ->
                     FileReference.builder()
-                        .downloadLink(fileRef.getDownloadUrl())
-                        .filename(fileRef.getFileName())
+                        .fileName(fileRef.getFileName())
                         .fileUuid(fileRef.getId()).build())
                 .collect(Collectors.toList())).build())
         .collect(Collectors.toList());

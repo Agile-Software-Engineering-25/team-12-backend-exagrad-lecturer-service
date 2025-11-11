@@ -18,8 +18,7 @@ public class CustomExceptionHandler {
 
   @ExceptionHandler(NoResourceFoundException.class)
   public ResponseEntity<String> handleNoResourceFoundException(
-      NoResourceFoundException noResourceFoundException
-  ) {
+      NoResourceFoundException noResourceFoundException) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This page could not be found");
   }
 

@@ -54,8 +54,7 @@ public class ExamService {
 
   private void validateLecturerUuid(String lecturerUuid) {
     if (lecturerUuid == null || lecturerUuid.isBlank()) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-          "Lecturer name is required");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Lecturer name is required");
     }
   }
 

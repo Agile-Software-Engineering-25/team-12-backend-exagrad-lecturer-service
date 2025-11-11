@@ -13,9 +13,5 @@ import lombok.experimental.SuperBuilder;
 @Embeddable
 public class FileReference {
   private String fileUuid;
-
-  private String filename;
-
-  private String downloadLink;
-
+  private String fileName;
 }

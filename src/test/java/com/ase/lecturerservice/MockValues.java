@@ -30,7 +30,6 @@ public class MockValues {
     LECTURER_UUID5("9d8c7b6a-5e4f-4a3b-9c8d-7e6f5a4b3c2d"),
     LECTURER_UUID6("f0e1d2c3-b4a5-49c6-8d7e-6f5a4b3c2d1e");
 
-
     private final String value;
 
     UuidMocks(String value) {

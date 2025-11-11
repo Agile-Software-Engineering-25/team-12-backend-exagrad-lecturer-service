@@ -1,6 +1,8 @@
 package com.ase.lecturerservice.services;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -8,10 +10,18 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import com.ase.lecturerservice.dtos.FeedbackDocumentRequest;
+import com.ase.lecturerservice.dtos.FeedbackRequest;
+import com.ase.lecturerservice.dtos.FeedbackResponse;
 import com.ase.lecturerservice.dtos.StudentExamStateDto;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.Feedback;
+import com.ase.lecturerservice.entities.FeedbackDocument;
+import com.ase.lecturerservice.entities.FileReference;
+import com.ase.lecturerservice.mappers.FeedbackDocumentMapper;
+import com.ase.lecturerservice.mappers.FeedbackMapper;
 import com.ase.lecturerservice.repositories.FeedbackRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,16 +31,22 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class FeedbackService {
   private final FeedbackRepository feedbackRepository;
+  private final FeedbackDocumentService feedbackDocumentService;
+  private final FeedbackMapper feedbackMapper;
+  private final FeedbackDocumentMapper feedbackDocumentMapper;
   private final ExamService examService;
   private final BitfrostService bitfrostService;
 
   @EventListener(ApplicationReadyEvent.class)
   public void instantiateDummies() {
     log.info("Creating Dummies...");
-    DummyData.Feedbacks.forEach(this::saveFeedback);
+    DummyData.Feedbacks.forEach(
+        feedbackRequest -> {
+          this.saveFeedback(feedbackRequest, new MultipartFile[0]);
+        });
   }
 
-  public List<Feedback> getFeedbackForLecturer(String lecturerUuid) {
+  public List<FeedbackResponse> getFeedbackForLecturer(String lecturerUuid) {
     List<Feedback> feedbacks = feedbackRepository.findAll();
     List<Exam> exams = examService.getExamsByLecturer(lecturerUuid);
 
@@ -40,6 +56,13 @@ public class FeedbackService {
 
     return feedbacks.stream()
         .filter(feedback -> lecturerExamUuids.contains(feedback.getExamUuid()))
+        .map(
+            feedback -> {
+              return feedbackMapper.toResponse(
+                  feedback,
+                  feedbackDocumentService.getDocumentsByFeedbackId(
+                      feedback.getUuid()));
+            })
         .toList();
   }
 
@@ -51,10 +74,40 @@ public class FeedbackService {
     return feedbackRepository.findByStudentUuid(studentUuid);
   }
 
-  public Feedback saveFeedback(Feedback feedback) {
-    feedback.setUuid(null);
-    log.info("Saving grade with UUID: {}", feedback.getUuid());
-    return feedbackRepository.save(feedback);
+  public Feedback saveFeedback(FeedbackRequest feedback, MultipartFile[] files) {
+    Feedback feedbackEntity = feedbackMapper.toEntity(feedback);
+    feedbackEntity.setGradedAt(LocalDate.now());
+    Feedback savedFeedback = feedbackRepository.save(feedbackEntity);
+    
+    log.info("Saving grade with UUID: {} for lecturer: {}",
+        savedFeedback.getUuid(), feedback.getLecturerUuid());
+
+    List<FileReference> savedDocuments = new ArrayList<>();
+    if (files != null && files.length > 0) {
+      log.info("number of files: {}", files.length);
+      for (MultipartFile file : files) {
+        try {
+          FeedbackDocumentRequest metadata =
+              new FeedbackDocumentRequest(
+                  savedFeedback.getUuid(), feedback.getLecturerUuid());
+          FeedbackDocument savedDocument =
+              feedbackDocumentService.uploadFeedbackDocument(file, metadata);
+          savedDocuments.add(feedbackDocumentMapper.toReference(savedDocument));
+
+          log.info(
+              "Uploaded {} files associated with feedback UUID: {}",
+              files.length,
+                    savedFeedback.getUuid());
+          savedFeedback.setFileReferences(savedDocuments);
+
+        } 
+        catch (IOException e) {
+          log.error("Failed to upload file for feedback {}", savedFeedback.getUuid(), e);
+          throw new RuntimeException("File upload failed.", e);
+        }
+      }
+    }
+    return savedFeedback;
   }
 
   public Feedback updateFeedback(String uuid, Feedback updateFeedback) {
@@ -64,7 +117,9 @@ public class FeedbackService {
     existing.setComment(updateFeedback.getComment());
     existing.setPoints(updateFeedback.getPoints());
     existing.setGrade(updateFeedback.getGrade());
-    existing.setFileReference(updateFeedback.getFileReference());
+   // TODO: change this to new filereference procedure 
+   // (send new files to service and return filereference for repo)
+   // existing.setFileReference(updateFeedback.getFileReferences());
     existing.setGradedAt(LocalDate.now());
 
     log.info("Feedback {} was successfully edited by Lecturer {} "

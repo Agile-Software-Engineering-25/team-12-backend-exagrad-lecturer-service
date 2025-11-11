@@ -17,7 +17,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import com.ase.lecturerservice.MockValues;
-import com.ase.lecturerservice.entities.FileReference;
 import com.ase.lecturerservice.entities.Submission;
 import com.ase.lecturerservice.services.SubmissionService;
 
@@ -42,19 +41,14 @@ public class SubmissionControllerTest {
 
   @BeforeAll
   public static void setup() {
-    FileReference fileReference = FileReference.builder()
-        .fileUuid(UUID.randomUUID().toString())
-        .filename(FILENAME)
-        .downloadLink(DOWNLOAD_LINK)
-        .build();
 
-    submission = Submission.builder()
-        .uuid(UUID.randomUUID().toString())
-        .examUuid(EXAM_UUID)
-        .studentUuid(STUDENT_UUID)
-        .submissionDate(SUBMISSION_DATE)
-        .fileUpload(List.of(fileReference))
-        .build();
+    submission =
+        Submission.builder()
+            .uuid(UUID.randomUUID().toString())
+            .examUuid(EXAM_UUID)
+            .studentUuid(STUDENT_UUID)
+            .submissionDate(SUBMISSION_DATE)
+            .build();
 
     submissionList = List.of(submission);
   }
@@ -64,16 +58,15 @@ public class SubmissionControllerTest {
     when(submissionService.getAllAccessibleSubmissionsForLecturer(LECTURER_UUID))
         .thenReturn(submissionList);
 
-    mockMvc.perform(get("/api/v1/submissions/for-lecturer/{lecturerUuid}", LECTURER_UUID)
-            .contentType(MediaType.APPLICATION_JSON))
+    mockMvc.perform(
+            get("/api/v1/submissions/for-lecturer/{lecturerUuid}", LECTURER_UUID)
+                .contentType(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$").isArray())
         .andExpect(jsonPath("$[0].examUuid").value(EXAM_UUID))
         .andExpect(jsonPath("$[0].studentUuid").value(STUDENT_UUID))
-        .andExpect(jsonPath("$[0].submissionDate").value(SUBMISSION_DATE))
-        .andExpect(jsonPath("$[0].fileUpload[0].filename").value(FILENAME))
-        .andExpect(jsonPath("$[0].fileUpload[0].downloadLink").value(DOWNLOAD_LINK));
+        .andExpect(jsonPath("$[0].submissionDate").value(SUBMISSION_DATE));
   }
 
   @Test
@@ -81,8 +74,9 @@ public class SubmissionControllerTest {
     when(submissionService.getAllAccessibleSubmissionsForLecturer(LECTURER_UUID))
         .thenReturn(List.of());
 
-    mockMvc.perform(get("/api/v1/submissions/for-lecturer/{lecturerUuid}", LECTURER_UUID)
-            .contentType(MediaType.APPLICATION_JSON))
+    mockMvc.perform(
+            get("/api/v1/submissions/for-lecturer/{lecturerUuid}", LECTURER_UUID)
+                .contentType(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$").isArray())
@@ -95,8 +89,9 @@ public class SubmissionControllerTest {
     when(submissionService.getAllAccessibleSubmissionsForLecturer(invalidLecturerUuid))
         .thenReturn(List.of());
 
-    mockMvc.perform(get("/api/v1/submissions/for-lecturer/{lecturerUuid}", invalidLecturerUuid)
-            .contentType(MediaType.APPLICATION_JSON))
+    mockMvc.perform(
+            get("/api/v1/submissions/for-lecturer/{lecturerUuid}", invalidLecturerUuid)
+                .contentType(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$").isArray())

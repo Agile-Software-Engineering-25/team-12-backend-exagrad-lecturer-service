@@ -84,8 +84,8 @@ public class SubmissionServiceTest {
     given(submissionService.getAllAccessibleSubmissionsForLecturer(lecturer.getUuid()))
         .willReturn(Collections.emptyList());
 
-    List<Submission> submissions = submissionService
-        .getAllAccessibleSubmissionsForLecturer(lecturer.getUuid());
+    List<Submission> submissions =
+        submissionService.getAllAccessibleSubmissionsForLecturer(lecturer.getUuid());
 
     Assertions.assertThat(submissions).isEmpty();
   }

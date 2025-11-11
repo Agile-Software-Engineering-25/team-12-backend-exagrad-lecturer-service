@@ -33,13 +33,14 @@ public class ExamServiceTest {
 
   @BeforeEach
   public void setUpLecturer() {
-    lecturer = Lecturer.builder()
-        .uuid(MockValues.UuidMocks.LECTURER_UUID.getValue())
-        .email("lecturer@example.com")
-        .type(UserType.LECTURER)
-        .firstName("John")
-        .lastName("Doe")
-        .build();
+    lecturer =
+        Lecturer.builder()
+            .uuid(MockValues.UuidMocks.LECTURER_UUID.getValue())
+            .email("lecturer@example.com")
+            .type(UserType.LECTURER)
+            .firstName("John")
+            .lastName("Doe")
+            .build();
 
     date = LocalDate.of(
         MockValues.IntMocks.DATE_YEAR.getValue(),
