@@ -66,11 +66,15 @@ public class FeedbackService {
         .toList();
   }
 
+  public List<Feedback> getFeedbackForExam(String examUuid) {
+    return feedbackRepository.findByExamUuid(examUuid);
+  }
+
   public List<Feedback> getFeedbackForStudent(String studentUuid) {
     return feedbackRepository.findByStudentUuid(studentUuid);
   }
 
-  public void saveFeedback(FeedbackRequest feedback, MultipartFile[] files) {
+  public Feedback saveFeedback(FeedbackRequest feedback, MultipartFile[] files) {
     Feedback feedbackEntity = feedbackMapper.toEntity(feedback);
     feedbackEntity.setGradedAt(LocalDate.now());
     Feedback savedFeedback = feedbackRepository.save(feedbackEntity);
@@ -90,18 +94,20 @@ public class FeedbackService {
               feedbackDocumentService.uploadFeedbackDocument(file, metadata);
           savedDocuments.add(feedbackDocumentMapper.toReference(savedDocument));
 
+                log.info(
+          "Uploaded {} files associated with feedback UUID: {}",
+          files.length,
+          savedFeedback.getUuid());
+      savedFeedback.setFileReferences(savedDocuments);
+
         } 
         catch (IOException e) {
           log.error("Failed to upload file for feedback {}", savedFeedback.getUuid(), e);
           throw new RuntimeException("File upload failed.", e);
         }
       }
-      log.info(
-          "Uploaded {} files associated with feedback UUID: {}",
-          files.length,
-          savedFeedback.getUuid());
-      savedFeedback.setFileReferences(savedDocuments);
     }
+        return savedFeedback;
   }
 
   public Feedback updateFeedback(String uuid, Feedback updateFeedback) {
