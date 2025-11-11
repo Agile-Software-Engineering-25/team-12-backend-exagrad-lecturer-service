@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 @Component
 @RequiredArgsConstructor
 public class TokenManager {
+  private static final long TOKEN_REFRESH_BUFFER = 30;
   @Qualifier("tokenWebClient")
   private final WebClient tokenWebClient;
   private String accessToken;
@@ -24,7 +25,8 @@ public class TokenManager {
   private String clientSecret;
 
   public synchronized Mono<String> getAccessToken() {
-    if (accessToken == null || Instant.now().isAfter(expiryTime.minusSeconds(30))) {
+    if (accessToken == null || Instant.now().isAfter(
+        expiryTime.minusSeconds(TOKEN_REFRESH_BUFFER))) {
       return refreshToken();
     }
     return Mono.just(accessToken);
@@ -35,8 +37,8 @@ public class TokenManager {
         .uri(tokenUrl)
         .header("Content-Type", "application/x-www-form-urlencoded")
         .bodyValue("grant_type=client_credentials"
-            + "&client_id="+ clientId
-            + "&client_secret="+ clientSecret)
+            + "&client_id=" + clientId
+            + "&client_secret=" + clientSecret)
         .retrieve()
         .bodyToMono(Map.class)
         .map(response -> {
