@@ -16,7 +16,7 @@ public class TokenManager {
   @Qualifier("tokenWebClient")
   private final WebClient tokenWebClient;
   private String accessToken;
-  private Instant expiryTime = Instant.EPOCH;
+  private Instant expirationTime = Instant.EPOCH;
   @Value("${app.apis.auth.url}")
   private String tokenUrl;
   @Value("${app.apis.auth.client-id}")
@@ -26,7 +26,7 @@ public class TokenManager {
 
   public synchronized Mono<String> getAccessToken() {
     if (accessToken == null || Instant.now().isAfter(
-        expiryTime.minusSeconds(TOKEN_REFRESH_BUFFER))) {
+        expirationTime.minusSeconds(TOKEN_REFRESH_BUFFER))) {
       return refreshToken();
     }
     return Mono.just(accessToken);
@@ -44,7 +44,7 @@ public class TokenManager {
         .map(response -> {
           this.accessToken = (String) response.get("access_token");
           int expiresIn = (int) response.get("expires_in");
-          this.expiryTime = Instant.now().plusSeconds(expiresIn);
+          this.expirationTime = Instant.now().plusSeconds(expiresIn);
           return this.accessToken;
         });
   }
