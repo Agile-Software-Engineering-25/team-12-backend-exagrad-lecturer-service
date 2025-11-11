@@ -34,28 +34,13 @@ public class FeedbackController {
   }
 
   @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-  public ResponseEntity<Void> saveFeedback(
+  public ResponseEntity<Feedback> saveFeedback(
       @RequestParam(value = "files", required = false) MultipartFile[] files,
       @RequestPart("feedbackData") FeedbackRequest feedbackData) {
     try {
-
-      feedbackService.saveFeedback(feedbackData, files);
-
-      return ResponseEntity.status(HttpStatus.CREATED).build();
+      return ResponseEntity.ok(feedbackService.saveFeedback(feedbackData, files));
     }
     catch (RuntimeException e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
-  }
-
-  @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
-  public ResponseEntity<Void> saveFeedback(@RequestBody FeedbackRequest dto) {
-    try {
-      feedbackService.saveFeedback(dto, new MultipartFile[0]);
-
-      return ResponseEntity.status(HttpStatus.CREATED).build();
-    } 
-    catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
   }

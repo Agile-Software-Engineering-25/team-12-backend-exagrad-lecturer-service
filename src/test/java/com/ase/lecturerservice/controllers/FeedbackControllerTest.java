@@ -91,17 +91,6 @@ public class FeedbackControllerTest {
 
   @Test
   void saveFeedbackShouldSave() throws Exception {
-    Feedback feedback = Feedback.builder()
-        .uuid(MockValues.UuidMocks.GRADE_UUID2.getValue())
-        .gradedAt(date)
-        .lecturerUuid(UUID.randomUUID().toString())
-        .studentUuid(MockValues.UuidMocks.STUDENT_UUID2.getValue())
-        .submissionUuid(UUID.randomUUID().toString())
-        .examUuid(MockValues.UuidMocks.EXAM_UUID.getValue())
-        .comment("Great effort! Check feedback in files.")
-        .points(MockValues.IntMocks.ACHIEVED_POINTS.getValue())
-        .grade(MockValues.FloatMocks.GRADE.getValue())
-        .build();
 
     String feedbackJson = objectMapper.writeValueAsString(feedback);
 
@@ -128,11 +117,11 @@ public class FeedbackControllerTest {
     when(feedbackService.saveFeedback(any(FeedbackRequest.class), any(MultipartFile[].class)))
         .thenReturn(mockSavedFeedback);
     mockMvc.perform(
-            post("/api/v1/feedback")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(feedbackJson))
+            MockMvcRequestBuilders.multipart("/api/v1/feedback")
+                .file(feedbackData)
+            )
         .andDo(MockMvcResultHandlers.print())
-        .andExpect(status().isCreated());
+        .andExpect(status().isOk());
 
     mockMvc.perform(
             MockMvcRequestBuilders.multipart("/api/v1/feedback")
@@ -140,7 +129,7 @@ public class FeedbackControllerTest {
                 .file(testFile)
         )
         .andDo(MockMvcResultHandlers.print())
-        .andExpect(status().isCreated());
+        .andExpect(status().isOk());
   }
 
   @Test
