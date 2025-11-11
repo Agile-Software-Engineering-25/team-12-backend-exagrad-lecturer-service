@@ -50,6 +50,26 @@ spec:
               value: bitfrost
             - name: SPRING_PROFILES_ACTIVE
               value: prod
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: auth
+                  key: client-secret
+            - name: MINIO_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: minio-connection
+                  key: MINIO_ENDPOINT
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-connection
+                  key: MINIO_ACCESS_KEY
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-connection
+                  key: MINIO_SECRET_KEY
             - name: SPRING_DATASOURCE_URL
               value: jdbc:postgresql://postgres.db:5432/appdb
             - name: SPRING_DATASOURCE_USERNAME
