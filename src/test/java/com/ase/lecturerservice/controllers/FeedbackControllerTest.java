@@ -1,7 +1,6 @@
 package com.ase.lecturerservice.controllers;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -128,7 +127,7 @@ public class FeedbackControllerTest {
     Feedback mockSavedFeedback = Feedback.builder().uuid(UUID.randomUUID().toString()).build();
     when(feedbackService.saveFeedback(any(FeedbackRequest.class), any(MultipartFile[].class)))
     .thenReturn(mockSavedFeedback);
-    mockMvc.perform(
+            mockMvc.perform(
             post("/api/v1/feedback")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(feedbackJson))

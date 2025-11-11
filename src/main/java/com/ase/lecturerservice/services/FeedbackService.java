@@ -94,11 +94,11 @@ public class FeedbackService {
               feedbackDocumentService.uploadFeedbackDocument(file, metadata);
           savedDocuments.add(feedbackDocumentMapper.toReference(savedDocument));
 
-                log.info(
-          "Uploaded {} files associated with feedback UUID: {}",
-          files.length,
-          savedFeedback.getUuid());
-      savedFeedback.setFileReferences(savedDocuments);
+          log.info(
+            "Uploaded {} files associated with feedback UUID: {}",
+            files.length,
+                    savedFeedback.getUuid());
+          savedFeedback.setFileReferences(savedDocuments);
 
         } 
         catch (IOException e) {
@@ -107,7 +107,7 @@ public class FeedbackService {
         }
       }
     }
-        return savedFeedback;
+    return savedFeedback;
   }
 
   public Feedback updateFeedback(String uuid, Feedback updateFeedback) {
