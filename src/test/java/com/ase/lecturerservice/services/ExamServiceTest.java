@@ -51,7 +51,7 @@ public class ExamServiceTest {
     WebClient webClient = WebClient.create();
     ReflectionTestUtils.setField(examService, "examServiceBaseUrl", examServiceBaseUrl);
     ReflectionTestUtils.setField(examService, "courseServiceBaseUrl", courseServiceBaseUrl);
-    ReflectionTestUtils.setField(examService, "examServiceWebClient", webClient);
+    ReflectionTestUtils.setField(examService, "webClient", webClient);
   }
 
   @Test

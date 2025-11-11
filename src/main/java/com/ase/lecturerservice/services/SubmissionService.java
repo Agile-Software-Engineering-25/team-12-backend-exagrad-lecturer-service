@@ -18,14 +18,13 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class SubmissionService {
-
   private final ExamService examService;
-  private final WebClient studentServiceWebClient = WebClient.create();
+  private final WebClient webClient;
   @Value("${app.apis.student-service.baseurl}")
   private String studentServiceBaseUrl;
 
   private List<Submission> executeApiCall(String apiPath) {
-    return parseSubmissions(studentServiceWebClient.get()
+    return parseSubmissions(webClient.get()
         .uri(studentServiceBaseUrl + apiPath)
         .exchangeToMono(clientResponse ->
             clientResponse.bodyToMono(StudentServiceSubmissionResponse.class)).block().getData());

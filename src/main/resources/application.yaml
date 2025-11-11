@@ -46,6 +46,10 @@ app:
       baseurl: https://bitfrost.sau-portal.de/api/v1/messages/publish
       secret: ${BITFROST_TOPIC_LECTURER_SECRET}
       tag: ExaGrad-Lecturer-Service
+    auth:
+      url: https://keycloak.sau-portal.de/realms/sau/protocol/openid-connect/token
+      client-id: team-12
+      client-secret: ${CLIENT_SECRET}
   cors:
     allowed-origins:
       - http://localhost:5173

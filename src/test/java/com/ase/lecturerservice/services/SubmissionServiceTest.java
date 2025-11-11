@@ -53,7 +53,7 @@ public class SubmissionServiceTest {
 
     WebClient webClient = WebClient.create();
     ReflectionTestUtils.setField(submissionService, "studentServiceBaseUrl", studentServiceBaseUrl);
-    ReflectionTestUtils.setField(submissionService, "studentServiceWebClient", webClient);
+    ReflectionTestUtils.setField(submissionService, "webClient", webClient);
   }
 
   @Test
