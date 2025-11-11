@@ -126,8 +126,8 @@ public class FeedbackControllerTest {
 
     Feedback mockSavedFeedback = Feedback.builder().uuid(UUID.randomUUID().toString()).build();
     when(feedbackService.saveFeedback(any(FeedbackRequest.class), any(MultipartFile[].class)))
-    .thenReturn(mockSavedFeedback);
-            mockMvc.perform(
+        .thenReturn(mockSavedFeedback);
+    mockMvc.perform(
             post("/api/v1/feedback")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(feedbackJson))

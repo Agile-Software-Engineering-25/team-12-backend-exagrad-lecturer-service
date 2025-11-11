@@ -95,8 +95,8 @@ public class FeedbackService {
           savedDocuments.add(feedbackDocumentMapper.toReference(savedDocument));
 
           log.info(
-            "Uploaded {} files associated with feedback UUID: {}",
-            files.length,
+              "Uploaded {} files associated with feedback UUID: {}",
+              files.length,
                     savedFeedback.getUuid());
           savedFeedback.setFileReferences(savedDocuments);
 
