@@ -1,0 +1,49 @@
+package com.ase.lecturerservice.components;
+
+import java.time.Instant;
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
+import lombok.RequiredArgsConstructor;
+import reactor.core.publisher.Mono;
+
+@Component
+@RequiredArgsConstructor
+public class TokenManager {
+  @Qualifier("tokenWebClient")
+  private final WebClient tokenWebClient;
+  private String accessToken;
+  private Instant expiryTime = Instant.EPOCH;
+  @Value("${app.apis.auth.url}")
+  private String tokenUrl;
+  @Value("${app.apis.auth.client-id}")
+  private String clientId;
+  @Value("${app.apis.auth.client-secret}")
+  private String clientSecret;
+
+  public synchronized Mono<String> getAccessToken() {
+    if (accessToken == null || Instant.now().isAfter(expiryTime.minusSeconds(30))) {
+      return refreshToken();
+    }
+    return Mono.just(accessToken);
+  }
+
+  private Mono<String> refreshToken() {
+    return tokenWebClient.post()
+        .uri(tokenUrl)
+        .header("Content-Type", "application/x-www-form-urlencoded")
+        .bodyValue("grant_type=client_credentials"
+            + "&client_id="+ clientId
+            + "&client_secret="+ clientSecret)
+        .retrieve()
+        .bodyToMono(Map.class)
+        .map(response -> {
+          this.accessToken = (String) response.get("access_token");
+          int expiresIn = (int) response.get("expires_in");
+          this.expiryTime = Instant.now().plusSeconds(expiresIn);
+          return this.accessToken;
+        });
+  }
+}

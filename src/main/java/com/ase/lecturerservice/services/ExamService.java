@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 public class ExamService {
-  private final WebClient examServiceWebClient = WebClient.create();
+  private final WebClient webClient;
   private final ObjectMapper objectMapper;
   @Value("${app.apis.exam-service.baseurl}")
   private String examServiceBaseUrl;
@@ -87,7 +87,7 @@ public class ExamService {
   private <T> List<T> fetchListFromApi(String apiPath, Class<T> responseType) {
     try {
       List<T> responseDtos =
-          examServiceWebClient.get()
+          webClient.get()
               .uri(apiPath)
               .retrieve()
               .onStatus(
