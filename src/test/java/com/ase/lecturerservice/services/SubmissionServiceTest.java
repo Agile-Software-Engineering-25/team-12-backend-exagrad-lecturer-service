@@ -18,7 +18,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.ase.lecturerservice.MockValues;
 import com.ase.lecturerservice.entities.Submission;
 import com.ase.lecturerservice.entities.user.Lecturer;
-import com.ase.lecturerservice.entities.user.UserType;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -40,7 +39,6 @@ public class SubmissionServiceTest {
     lecturer = Lecturer.builder()
         .uuid(MockValues.UuidMocks.LECTURER_UUID.getValue())
         .email("lecturer@example.com")
-        .type(UserType.LECTURER)
         .firstName("John")
         .lastName("Doe")
         .build();
