@@ -1,5 +1,6 @@
 package com.ase.lecturerservice.services;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import reactor.util.retry.Retry;
 
 @Slf4j
 @Service
@@ -34,7 +36,8 @@ public class ExamService {
   private String courseServiceBaseUrl;
   @Value("${app.apis.student-data-service.baseurl}")
   private String studentDataServiceBaseUrl;
-
+  private static final int TIMEOUT_DURATION = 30;
+  private static final int RETRYS = 3;
 
   public List<Exam> getExamsByLecturer(String lecturerUuid) {
     validateLecturerUuid(lecturerUuid);
@@ -87,20 +90,20 @@ public class ExamService {
 
   private <T> List<T> fetchListFromApi(String apiPath, Class<T> responseType) {
     try {
-      List<T> responseDtos =
-          webClient.get()
-              .uri(apiPath)
-              .retrieve()
-              .onStatus(
-                  httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
-                  clientResponse -> clientResponse.bodyToMono(String.class)
-                      .map(body -> new ResponseStatusException(
-                          clientResponse.statusCode(),
-                          "Api call failed: " + body)))
-              .bodyToFlux(responseType)
-              .collectList()
-              .block();
-      return responseDtos != null ? responseDtos : Collections.emptyList();
+      return webClient.get()
+          .uri(apiPath)
+          .retrieve()
+          .onStatus(
+              httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
+              clientResponse -> clientResponse.bodyToMono(String.class)
+                  .map(body -> new ResponseStatusException(
+                      clientResponse.statusCode(),
+                      "Api call failed: " + body)))
+          .bodyToFlux(responseType)
+          .timeout(Duration.ofSeconds(TIMEOUT_DURATION))
+          .retryWhen(Retry.backoff(RETRYS, Duration.ofSeconds(1)))
+          .collectList()
+          .block();
     }
     catch (Exception e) {
       log.error("Failed to fetch data from {}: {}", apiPath, e.getMessage(), e);
