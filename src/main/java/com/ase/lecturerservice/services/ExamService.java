@@ -17,6 +17,7 @@ import com.ase.lecturerservice.dtos.ExamServiceExamResponse;
 import com.ase.lecturerservice.dtos.StudentDataResponse;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.user.Student;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -117,12 +118,12 @@ public class ExamService {
     List<StudentDataResponse.StudentDto> allStudents = getAllStudentsDetails();
     Map<String, StudentDataResponse.StudentDto> studentMap = createStudentMap(allStudents);
 
-    log.debug("Populate exams with {} students", allStudents.size());
+    log.info("Populate exams with {} students", allStudents.size());
 
     for (Exam exam : exams) {
       List<Student> studentsForExam = getStudentsForExam(exam.getUuid(), studentMap);
       exam.setAssignedStudents(studentsForExam);
-      log.debug("Exam {} assigned to {} students", exam.getUuid(),
+      log.info("Exam {} assigned to {} students", exam.getUuid(),
           exam.getAssignedStudents().size());
     }
 
@@ -194,7 +195,10 @@ public class ExamService {
                                            Map<String, StudentDataResponse.StudentDto> studentMap) {
     try {
       String url = examServiceBaseUrl + "/api/students/exam/" + examUuid;
-      List<String> studentsIds = fetchListFromApi(url, String.class);
+      String rawStudentIds = fetchListFromApi(url, String.class).getFirst();
+      List<String> studentsIds =
+          objectMapper.readValue(rawStudentIds, new TypeReference<List<String>>() {
+          });
 
       return studentsIds.stream()
           .map(studentMap::get)
@@ -210,7 +214,7 @@ public class ExamService {
 
   private List<StudentDataResponse.StudentDto> getAllStudentsDetails() {
     try {
-      String url = studentDataServiceBaseUrl + "/api/student";
+      String url = studentDataServiceBaseUrl + "/users?userType=student";
       return fetchListFromApi(url, StudentDataResponse.StudentDto.class);
     }
     catch (Exception e) {
