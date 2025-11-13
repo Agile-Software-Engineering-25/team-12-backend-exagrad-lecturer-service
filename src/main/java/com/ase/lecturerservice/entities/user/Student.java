@@ -1,5 +1,6 @@
 package com.ase.lecturerservice.entities.user;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,9 +12,8 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class Student extends UserEntity {
-
+public class Student {
+  @JsonAlias("id")
+  private String uuid;
   private String matriculationNumber;
-
-  private UserType type = UserType.STUDENT;
 }
