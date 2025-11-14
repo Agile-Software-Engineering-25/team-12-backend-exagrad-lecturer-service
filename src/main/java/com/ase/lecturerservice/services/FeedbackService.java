@@ -190,9 +190,10 @@ public class FeedbackService {
             : NotificationServiceNotificationPayload.NotificationType.Warning)
         .notifyType(NotificationServiceNotificationPayload.NotifyType.All)
         .title(passed ? "Klausur Bestanden!" : "Klausurergebnisse")
-        .message(message.replaceAll("\\{examName}", exam.getName())
-            .replaceAll("\\{points}", String.valueOf(feedback.getPoints()))
-            .replaceAll("\\{grade}", String.valueOf(feedback.getGrade()))
+        .message(message
+            .replace("{examName}", exam.getName())
+            .replace("{points}", String.valueOf(feedback.getPoints()))
+            .replace("{grade}", String.valueOf(feedback.getGrade()))
         ).build());
   }
 }
