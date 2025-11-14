@@ -25,7 +25,8 @@ public class NotificationService {
           .retrieve()
           .toBodilessEntity()
           .block();
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       log.error("Failed to send notification to Notification Service: {}", e.getMessage(), e);
     }
   }
