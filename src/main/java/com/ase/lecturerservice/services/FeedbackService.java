@@ -78,7 +78,7 @@ public class FeedbackService {
     Feedback feedbackEntity = feedbackMapper.toEntity(feedback);
     feedbackEntity.setGradedAt(LocalDate.now());
     Feedback savedFeedback = feedbackRepository.save(feedbackEntity);
-    
+
     log.info("Saving grade with UUID: {} for lecturer: {}",
         savedFeedback.getUuid(), feedback.getLecturerUuid());
 
@@ -100,7 +100,7 @@ public class FeedbackService {
                     savedFeedback.getUuid());
           savedFeedback.setFileReferences(savedDocuments);
 
-        } 
+        }
         catch (IOException e) {
           log.error("Failed to upload file for feedback {}", savedFeedback.getUuid(), e);
           throw new RuntimeException("File upload failed.", e);
@@ -110,28 +110,63 @@ public class FeedbackService {
     return savedFeedback;
   }
 
-  public Feedback updateFeedback(String uuid, Feedback updateFeedback) {
+  public Feedback updateFeedback(
+      String uuid,
+      Feedback updateFeedback,
+      MultipartFile[] files
+  ) {
     Feedback existing = feedbackRepository.findById(uuid)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Feedback not found"));
+        .orElseThrow(() ->
+            new ResponseStatusException(HttpStatus.NOT_FOUND, "Feedback not found"));
 
     existing.setComment(updateFeedback.getComment());
     existing.setPoints(updateFeedback.getPoints());
     existing.setGrade(updateFeedback.getGrade());
-   // TODO: change this to new filereference procedure 
-   // (send new files to service and return filereference for repo)
-   // existing.setFileReference(updateFeedback.getFileReferences());
     existing.setGradedAt(LocalDate.now());
 
-    log.info("Feedback {} was successfully edited by Lecturer {} "
-            + "(Student {}, Points: {}, Grade: {})",
+    log.info("Updating Feedback {} by Lecturer {} (Student {}, Points: {}, Grade: {})",
         uuid,
         existing.getLecturerUuid(),
         existing.getStudentUuid(),
-        existing.getPoints(),
-        existing.getGrade());
+        updateFeedback.getPoints(),
+        updateFeedback.getGrade()
+    );
+    List<FileReference> updatedReferences = new ArrayList<>();
+    if (existing.getFileReferences() != null) {
+      updatedReferences.addAll(existing.getFileReferences());
+    }
+    if (files != null && files.length > 0) {
+      log.info("Updating feedback: uploading {} new files for UUID {}", files.length, uuid);
 
-    return feedbackRepository.save(existing);
+      for (MultipartFile file : files) {
+        try {
+          FeedbackDocumentRequest metadata =
+              new FeedbackDocumentRequest(
+                  uuid,
+                  existing.getLecturerUuid()
+              );
+          FeedbackDocument savedDocument =
+              feedbackDocumentService.uploadFeedbackDocument(file, metadata);
+          FileReference reference =
+              feedbackDocumentMapper.toReference(savedDocument);
+          updatedReferences.add(reference);
+          log.info("Uploaded file '{}' for feedback {}", file.getOriginalFilename(), uuid);
+        }
+        catch (IOException e) {
+          log.error("Failed to upload file for feedback {}", uuid, e);
+          throw new RuntimeException("File upload failed.", e);
+        }
+      }
+    }
+    existing.setFileReferences(updatedReferences);
+    Feedback saved = feedbackRepository.save(existing);
+
+    log.info("Successfully updated Feedback {} with {} file references",
+        saved.getUuid(), updatedReferences.size());
+
+    return saved;
   }
+
 
   public void submitFeedback(List<Feedback> feedbacks) {
     log.info("submitting feedbacks to the examination office");

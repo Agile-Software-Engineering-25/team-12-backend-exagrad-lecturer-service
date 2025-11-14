@@ -45,12 +45,13 @@ public class FeedbackController {
     }
   }
 
-  @PutMapping("/{uuid}")
+  @PutMapping(value = "/{uuid}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
   public ResponseEntity<Feedback> updateFeedback(
       @PathVariable String uuid,
-      @RequestBody Feedback updateFeedback
+      @RequestPart(value = "files", required = false) MultipartFile[] files,
+      @RequestPart Feedback updateFeedback
   ) {
-    return ResponseEntity.ok(feedbackService.updateFeedback(uuid, updateFeedback));
+    return ResponseEntity.ok(feedbackService.updateFeedback(uuid, updateFeedback, files));
   }
 
   @PostMapping("/submit")
