@@ -42,7 +42,7 @@ public class FeedbackService {
   private final BitfrostService bitfrostService;
   private final NotificationService notificationService;
   @Value("${app.grade-threshold:4.0}")
-  private float gradeThreshold = 4.0f;
+  private float gradeThreshold;
 
   @EventListener(ApplicationReadyEvent.class)
   public void instantiateDummies() {
@@ -112,7 +112,8 @@ public class FeedbackService {
               savedFeedback.getUuid());
           savedFeedback.setFileReferences(savedDocuments);
 
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
           log.error("Failed to upload file for feedback {}", savedFeedback.getUuid(), e);
           throw new RuntimeException("File upload failed.", e);
         }
@@ -172,16 +173,20 @@ public class FeedbackService {
   }
 
   public void sendFeedbackReceivedNotification(StudentExamStateDto studentExamStateDto) {
-    ExamServiceExamResponse.ExamServiceExamDto exam = examService.getExam(studentExamStateDto.getExamUuid());
-    Feedback feedback = feedbackRepository.findByStudentUuid(studentExamStateDto.getStudentUuid())
+    ExamServiceExamResponse.ExamServiceExamDto exam = examService
+        .getExam(studentExamStateDto.getExamUuid());
+    Feedback feedback = feedbackRepository
+        .findByStudentUuid(studentExamStateDto.getStudentUuid())
         .stream()
         .filter(f ->
             f.getExamUuid().equals(studentExamStateDto.getExamUuid()))
         .findFirst()
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Feedback not found"));
+        .orElseThrow(() ->
+            new ResponseStatusException(HttpStatus.NOT_FOUND, "Feedback not found"));
     boolean passed = feedback.getGrade() <= gradeThreshold;
     String message = passed
-        ? "Herzlichen Glückwunsch. Du hast die Klausur \"{examName}\" mit {points} ({grade}) bestanden!"
+        ? "Herzlichen Glückwunsch. "
+        + "Du hast die Klausur \"{examName}\" mit {points} ({grade}) bestanden!"
         : "Du bist in der Klausur \"{examName}\" leider mit {points} ({grade}) durchgefallen.";
     notificationService.sendNotification(NotificationServiceNotificationPayload.builder()
         .users(List.of(studentExamStateDto.getStudentUuid()))
