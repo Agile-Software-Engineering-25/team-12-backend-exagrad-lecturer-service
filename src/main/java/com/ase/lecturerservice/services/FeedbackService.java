@@ -42,7 +42,7 @@ public class FeedbackService {
   private final BitfrostService bitfrostService;
   private final NotificationService notificationService;
   @Value("${app.grade-threshold:4.0}")
-  private final float gradeThreshold = 4.0f;
+  private float gradeThreshold = 4.0f;
 
   @EventListener(ApplicationReadyEvent.class)
   public void instantiateDummies() {
