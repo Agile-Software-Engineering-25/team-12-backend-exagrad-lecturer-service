@@ -18,11 +18,15 @@ public class NotificationService {
   private String notificationServiceBaseUrl;
 
   public void sendNotification(NotificationServiceNotificationPayload payload) {
-    webClient.post()
-        .uri(notificationServiceBaseUrl + "/notifications")
-        .bodyValue(payload)
-        .retrieve()
-        .toBodilessEntity()
-        .block();
+    try {
+      webClient.post()
+          .uri(notificationServiceBaseUrl + "/notifications")
+          .bodyValue(payload)
+          .retrieve()
+          .toBodilessEntity()
+          .block();
+    } catch (Exception e) {
+      log.error("Failed to send notification to Notification Service: {}", e.getMessage(), e);
+    }
   }
 }
