@@ -173,6 +173,7 @@ public class FeedbackService {
   public void sendFeedbackReceivedNotification(StudentExamStateDto studentExamStateDto) {
     log.info("Sending feedback received notification for student {} and exam {}", studentExamStateDto.getStudentUuid(), studentExamStateDto.getExamUuid());
     Exam exam = examService.getExam(studentExamStateDto.getExamUuid());
+    log.info("Exam: {}", exam);
     Feedback feedback = feedbackRepository.findByStudentUuid(studentExamStateDto.getStudentUuid())
         .stream()
         .filter(f ->
