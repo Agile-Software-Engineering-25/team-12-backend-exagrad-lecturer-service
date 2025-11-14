@@ -154,12 +154,12 @@ public class FeedbackService {
     feedbackRepository.saveAll(mappedFeedbacks);
   }
 
-  public void updateFeedbackStatus(StudentExamStateDto studentExamStateDto) {
+  public void updateFeedbackStatus(StudentExamStateDto studentExamStateDto, PublishStatus status) {
     List<Feedback> updatedFeebacks = feedbackRepository.findAll()
         .stream()
         .filter(feedback -> feedback.getStudentUuid().equals(studentExamStateDto.getStudentUuid())
             && feedback.getExamUuid().equals(studentExamStateDto.getExamUuid()))
-        .peek(feedback -> feedback.setPublishStatus(studentExamStateDto.getPublishStatus()))
+        .peek(feedback -> feedback.setPublishStatus(status))
         .toList();
 
     feedbackRepository.saveAll(updatedFeebacks);
