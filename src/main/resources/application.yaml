@@ -34,6 +34,8 @@ minio-connection:
   secretKey: my-secret-key
 app:
   apis:
+    notification-service:
+      baseurl: https://sau-portal.de/notification-service/api/v1
     student-service:
       baseurl: https://sau-portal.de/api/v1/exagrad/student
     exam-service:
