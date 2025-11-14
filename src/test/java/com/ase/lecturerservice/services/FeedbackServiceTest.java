@@ -31,7 +31,6 @@ import com.ase.lecturerservice.mappers.FeedbackMapper;
 import com.ase.lecturerservice.repositories.FeedbackRepository;
 
 
-
 @ExtendWith(MockitoExtension.class)
 public class FeedbackServiceTest {
   private static final LocalDate DATE =
@@ -94,7 +93,7 @@ public class FeedbackServiceTest {
     feedback3.setExamUuid("exam-3");
     feedback3.setStudentUuid("student-3");
     feedback3.setPublishStatus(PublishStatus.PUBLISHED);
-    
+
     response1 = new FeedbackResponse();
     response1.setExamUuid("exam-1");
     response1.setStudentUuid("student-1");
@@ -110,17 +109,17 @@ public class FeedbackServiceTest {
     dto = new StudentExamStateDto();
     dto.setStudentUuid("student-1");
     dto.setExamUuid("exam-1");
-    dto.setPublishStatus(PublishStatus.APPROVED);
+    dto.setState(StudentExamStateDto.FeedbackAcceptanceState.EXAM_ACCEPTED);
 
     dto2 = new StudentExamStateDto();
     dto2.setStudentUuid("student-2");
     dto2.setExamUuid("exam-2");
-    dto2.setPublishStatus(PublishStatus.REJECTED);
+    dto2.setState(StudentExamStateDto.FeedbackAcceptanceState.EXAM_REJECTED);
 
     dto3 = new StudentExamStateDto();
     dto3.setStudentUuid("Test");
     dto3.setExamUuid("Test");
-    dto3.setPublishStatus(PublishStatus.PUBLISHED);
+    dto3.setState(StudentExamStateDto.FeedbackAcceptanceState.EXAM_ACCEPTED);
   }
 
   @Test
@@ -194,7 +193,7 @@ public class FeedbackServiceTest {
   void shouldUpdateFeedbackStatusToApproved() {
     when(feedbackRepository.findAll()).thenReturn(List.of(feedback1, feedback2));
 
-    feedbackService.updateFeedbackStatus(dto);
+    feedbackService.updateFeedbackStatus(dto, PublishStatus.APPROVED);
 
     ArgumentCaptor<List<Feedback>> captor = ArgumentCaptor.forClass(List.class);
     verify(feedbackRepository).saveAll(captor.capture());
@@ -208,7 +207,7 @@ public class FeedbackServiceTest {
   void shouldUpdateFeedbackStatusToRejected() {
     when(feedbackRepository.findAll()).thenReturn(List.of(feedback1, feedback2));
 
-    feedbackService.updateFeedbackStatus(dto2);
+    feedbackService.updateFeedbackStatus(dto2, PublishStatus.REJECTED);
 
     ArgumentCaptor<List<Feedback>> captor = ArgumentCaptor.forClass(List.class);
     verify(feedbackRepository).saveAll(captor.capture());
@@ -222,7 +221,7 @@ public class FeedbackServiceTest {
   void shouldNotUpdateFeedbackStatus() {
     when(feedbackRepository.findAll()).thenReturn(List.of(feedback1, feedback2));
 
-    feedbackService.updateFeedbackStatus(dto3);
+    feedbackService.updateFeedbackStatus(dto3, PublishStatus.APPROVED);
 
     ArgumentCaptor<List<Feedback>> captor = ArgumentCaptor.forClass(List.class);
     verify(feedbackRepository).saveAll(captor.capture());

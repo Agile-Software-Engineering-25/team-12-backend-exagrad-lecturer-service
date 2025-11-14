@@ -22,6 +22,7 @@ import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.Feedback;
 import com.ase.lecturerservice.entities.FeedbackDocument;
 import com.ase.lecturerservice.entities.FileReference;
+import com.ase.lecturerservice.entities.PublishStatus;
 import com.ase.lecturerservice.mappers.FeedbackDocumentMapper;
 import com.ase.lecturerservice.mappers.FeedbackMapper;
 import com.ase.lecturerservice.repositories.FeedbackRepository;
@@ -68,6 +69,11 @@ public class FeedbackService {
         .toList();
   }
 
+  public FeedbackResponse convertFeedbackToFeedbackResponse(Feedback feedback) {
+    return feedbackMapper.toResponse(feedback,
+        feedbackDocumentService.getDocumentsByFeedbackId(feedback.getUuid()));
+  }
+
   public List<Feedback> getFeedbackForExam(String examUuid) {
     return feedbackRepository.findByExamUuid(examUuid);
   }
@@ -99,7 +105,7 @@ public class FeedbackService {
           log.info(
               "Uploaded {} files associated with feedback UUID: {}",
               files.length,
-                    savedFeedback.getUuid());
+              savedFeedback.getUuid());
           savedFeedback.setFileReferences(savedDocuments);
           feedbackRepository.save(savedFeedback);
 
@@ -126,6 +132,7 @@ public class FeedbackService {
     existing.setComment(updateFeedback.getComment());
     existing.setPoints(updateFeedback.getPoints());
     existing.setGrade(updateFeedback.getGrade());
+    existing.setPublishStatus(PublishStatus.UNPUBLISHED);
     existing.setGradedAt(LocalDate.now());
 
     log.info("Updating Feedback {} by Lecturer {} (Student {}, Points: {}, Grade: {})",
@@ -200,15 +207,25 @@ public class FeedbackService {
 
   public void submitFeedback(List<Feedback> feedbacks) {
     log.info("submitting feedbacks to the examination office");
-    bitfrostService.sendRequest("feedbacks:submit", feedbacks);
+    List<Feedback> mappedFeedbacks = feedbacks.stream()
+        .map(feedback -> {
+          Feedback fb = feedbackRepository.findById(feedback.getUuid())
+              .orElseThrow(() -> new ResponseStatusException(
+                  HttpStatus.NOT_FOUND, "Feedback not found: " + feedback.getUuid()));
+          fb.setPublishStatus(PublishStatus.PUBLISHED);
+          return fb;
+        })
+        .toList();
+    bitfrostService.sendRequest("feedbacks:submit", mappedFeedbacks);
+    feedbackRepository.saveAll(mappedFeedbacks);
   }
 
-  public void updateFeedbackStatus(StudentExamStateDto studentExamStateDto) {
+  public void updateFeedbackStatus(StudentExamStateDto studentExamStateDto, PublishStatus status) {
     List<Feedback> updatedFeebacks = feedbackRepository.findAll()
         .stream()
         .filter(feedback -> feedback.getStudentUuid().equals(studentExamStateDto.getStudentUuid())
             && feedback.getExamUuid().equals(studentExamStateDto.getExamUuid()))
-        .peek(feedback -> feedback.setPublishStatus(studentExamStateDto.getPublishStatus()))
+        .peek(feedback -> feedback.setPublishStatus(status))
         .toList();
 
     feedbackRepository.saveAll(updatedFeebacks);
