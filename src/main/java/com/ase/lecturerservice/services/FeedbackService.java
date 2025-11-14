@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import com.ase.lecturerservice.dtos.ExamServiceExamResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -171,9 +172,7 @@ public class FeedbackService {
   }
 
   public void sendFeedbackReceivedNotification(StudentExamStateDto studentExamStateDto) {
-    log.info("Sending feedback received notification for student {} and exam {}", studentExamStateDto.getStudentUuid(), studentExamStateDto.getExamUuid());
-    Exam exam = examService.getExam(studentExamStateDto.getExamUuid());
-    log.info("Exam: {}", exam);
+    ExamServiceExamResponse.ExamServiceExamDto exam = examService.getExam(studentExamStateDto.getExamUuid());
     Feedback feedback = feedbackRepository.findByStudentUuid(studentExamStateDto.getStudentUuid())
         .stream()
         .filter(f ->
@@ -192,7 +191,7 @@ public class FeedbackService {
         .notifyType(NotificationServiceNotificationPayload.NotifyType.All)
         .title(passed ? "Klausur Bestanden!" : "Klausurergebnisse")
         .message(message
-            .replace("{examName}", exam.getName())
+            .replace("{examName}", exam.getTitle())
             .replace("{points}", String.valueOf(feedback.getPoints()))
             .replace("{grade}", String.valueOf(feedback.getGrade()))
         ).build());
