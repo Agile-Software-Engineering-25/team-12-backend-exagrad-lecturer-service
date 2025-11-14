@@ -111,8 +111,7 @@ public class FeedbackService {
               savedFeedback.getUuid());
           savedFeedback.setFileReferences(savedDocuments);
 
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
           log.error("Failed to upload file for feedback {}", savedFeedback.getUuid(), e);
           throw new RuntimeException("File upload failed.", e);
         }
@@ -172,6 +171,7 @@ public class FeedbackService {
   }
 
   public void sendFeedbackReceivedNotification(StudentExamStateDto studentExamStateDto) {
+    log.info("Sending feedback received notification for student {} and exam {}", studentExamStateDto.getStudentUuid(), studentExamStateDto.getExamUuid());
     Exam exam = examService.getExam(studentExamStateDto.getExamUuid());
     Feedback feedback = feedbackRepository.findByStudentUuid(studentExamStateDto.getStudentUuid())
         .stream()
@@ -181,7 +181,7 @@ public class FeedbackService {
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Feedback not found"));
     boolean passed = feedback.getGrade() <= gradeThreshold;
     String message = passed
-        ? "Herzlichen Glückwunsch. Du hast die Klausur {examName} mit {points} ({grade}) bestanden!"
+        ? "Herzlichen Glückwunsch. Du hast die Klausur \"{examName}\" mit {points} ({grade}) bestanden!"
         : "Du bist in der Klausur {examName} mit {points} ({grade}) durchgefallen.";
     notificationService.sendNotification(NotificationServiceNotificationPayload.builder()
         .users(List.of(studentExamStateDto.getStudentUuid()))
