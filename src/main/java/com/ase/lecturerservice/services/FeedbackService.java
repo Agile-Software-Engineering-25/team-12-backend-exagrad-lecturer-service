@@ -20,6 +20,7 @@ import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.Feedback;
 import com.ase.lecturerservice.entities.FeedbackDocument;
 import com.ase.lecturerservice.entities.FileReference;
+import com.ase.lecturerservice.entities.PublishStatus;
 import com.ase.lecturerservice.mappers.FeedbackDocumentMapper;
 import com.ase.lecturerservice.mappers.FeedbackMapper;
 import com.ase.lecturerservice.repositories.FeedbackRepository;
@@ -78,7 +79,7 @@ public class FeedbackService {
     Feedback feedbackEntity = feedbackMapper.toEntity(feedback);
     feedbackEntity.setGradedAt(LocalDate.now());
     Feedback savedFeedback = feedbackRepository.save(feedbackEntity);
-    
+
     log.info("Saving grade with UUID: {} for lecturer: {}",
         savedFeedback.getUuid(), feedback.getLecturerUuid());
 
@@ -97,10 +98,10 @@ public class FeedbackService {
           log.info(
               "Uploaded {} files associated with feedback UUID: {}",
               files.length,
-                    savedFeedback.getUuid());
+              savedFeedback.getUuid());
           savedFeedback.setFileReferences(savedDocuments);
 
-        } 
+        }
         catch (IOException e) {
           log.error("Failed to upload file for feedback {}", savedFeedback.getUuid(), e);
           throw new RuntimeException("File upload failed.", e);
@@ -117,9 +118,9 @@ public class FeedbackService {
     existing.setComment(updateFeedback.getComment());
     existing.setPoints(updateFeedback.getPoints());
     existing.setGrade(updateFeedback.getGrade());
-   // TODO: change this to new filereference procedure 
-   // (send new files to service and return filereference for repo)
-   // existing.setFileReference(updateFeedback.getFileReferences());
+    // TODO: change this to new filereference procedure
+    // (send new files to service and return filereference for repo)
+    // existing.setFileReference(updateFeedback.getFileReferences());
     existing.setGradedAt(LocalDate.now());
 
     log.info("Feedback {} was successfully edited by Lecturer {} "
@@ -135,7 +136,17 @@ public class FeedbackService {
 
   public void submitFeedback(List<Feedback> feedbacks) {
     log.info("submitting feedbacks to the examination office");
-    bitfrostService.sendRequest("feedbacks:submit", feedbacks);
+    List<Feedback> mappedFeedbacks = feedbacks.stream()
+        .map(feedback -> {
+          Feedback fb = feedbackRepository.findById(feedback.getUuid())
+              .orElseThrow(() -> new ResponseStatusException(
+                  HttpStatus.NOT_FOUND, "Feedback not found: " + feedback.getUuid()));
+          fb.setPublishStatus(PublishStatus.PUBLISHED);
+          return fb;
+        })
+        .toList();
+    bitfrostService.sendRequest("feedbacks:submit", mappedFeedbacks);
+    feedbackRepository.saveAll(mappedFeedbacks);
   }
 
   public void updateFeedbackStatus(StudentExamStateDto studentExamStateDto) {
