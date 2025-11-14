@@ -222,4 +222,17 @@ public class ExamService {
       return Collections.emptyList();
     }
   }
+
+  public Exam getExam(String examUuid) {
+    return webClient.get().uri(examServiceBaseUrl + "/api/exams/" + examUuid)
+        .retrieve()
+        .onStatus(
+            httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
+            clientResponse -> clientResponse.bodyToMono(String.class)
+                .map(body -> new ResponseStatusException(
+                    clientResponse.statusCode(),
+                    "Api call failed: " + body)))
+        .bodyToMono(Exam.class)
+        .block();
+  }
 }

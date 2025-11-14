@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.ase.lecturerservice.dtos.FeedbackDocumentRequest;
 import com.ase.lecturerservice.dtos.FeedbackRequest;
 import com.ase.lecturerservice.dtos.FeedbackResponse;
+import com.ase.lecturerservice.dtos.NotificationServiceNotificationPayload;
 import com.ase.lecturerservice.dtos.StudentExamStateDto;
 import com.ase.lecturerservice.entities.Exam;
 import com.ase.lecturerservice.entities.Feedback;
@@ -37,6 +39,9 @@ public class FeedbackService {
   private final FeedbackDocumentMapper feedbackDocumentMapper;
   private final ExamService examService;
   private final BitfrostService bitfrostService;
+  private final NotificationService notificationService;
+  @Value("${app.grade-threshold:4.0}")
+  private final float gradeThreshold = 4.0f;
 
   @EventListener(ApplicationReadyEvent.class)
   public void instantiateDummies() {
@@ -106,8 +111,7 @@ public class FeedbackService {
               savedFeedback.getUuid());
           savedFeedback.setFileReferences(savedDocuments);
 
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
           log.error("Failed to upload file for feedback {}", savedFeedback.getUuid(), e);
           throw new RuntimeException("File upload failed.", e);
         }
@@ -164,5 +168,29 @@ public class FeedbackService {
         .toList();
 
     feedbackRepository.saveAll(updatedFeebacks);
+  }
+
+  public void sendFeedbackReceivedNotification(StudentExamStateDto studentExamStateDto) {
+    Exam exam = examService.getExam(studentExamStateDto.getExamUuid());
+    Feedback feedback = feedbackRepository.findByStudentUuid(studentExamStateDto.getStudentUuid())
+        .stream()
+        .filter(f ->
+            f.getExamUuid().equals(studentExamStateDto.getExamUuid()))
+        .findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Feedback not found"));
+    boolean passed = feedback.getGrade() <= gradeThreshold;
+    String message = passed
+        ? "Herzlichen Glückwunsch. Du hast die Klausur {examName} mit {points} ({grade}) bestanden!"
+        : "Du bist in der Klausur {examName} mit {points} ({grade}) durchgefallen.";
+    notificationService.sendNotification(NotificationServiceNotificationPayload.builder()
+        .users(List.of(studentExamStateDto.getStudentUuid()))
+        .notificationType(passed
+            ? NotificationServiceNotificationPayload.NotificationType.Congratulation
+            : NotificationServiceNotificationPayload.NotificationType.Warning)
+        .notifyType(NotificationServiceNotificationPayload.NotifyType.All)
+        .title(passed ? "Klausur Bestanden!" : "Klausurergebnisse")
+        .message(message.replaceAll("\\{examName}", exam.getName())
+            .replaceAll("\\{points}", String.valueOf(feedback.getPoints()))
+            .replaceAll("\\{grade}", String.valueOf(feedback.getGrade()))
+        ).build());
   }
 }
