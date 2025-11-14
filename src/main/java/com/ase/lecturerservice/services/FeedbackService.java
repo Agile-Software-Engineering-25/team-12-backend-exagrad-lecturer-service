@@ -177,8 +177,7 @@ public class FeedbackService {
         .stream()
         .filter(f ->
             f.getExamUuid().equals(studentExamStateDto.getExamUuid()))
-        .findFirst()
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Feedback not found"));
+        .findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Feedback not found"));
     boolean passed = feedback.getGrade() <= gradeThreshold;
     String message = passed
         ? "Herzlichen Glückwunsch. Du hast die Klausur {examName} mit {points} ({grade}) bestanden!"
