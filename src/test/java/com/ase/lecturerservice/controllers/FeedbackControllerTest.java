@@ -99,7 +99,7 @@ public class FeedbackControllerTest {
 
     MockMultipartFile testFile =
         new MockMultipartFile(
-            "files", 
+            "files",
             "testfile.pdf",
             "application/pdf",
             fileContent
@@ -112,7 +112,9 @@ public class FeedbackControllerTest {
             "application/json",
             feedbackJson.getBytes(StandardCharsets.UTF_8));
 
-    Feedback mockSavedFeedback = Feedback.builder().uuid(UUID.randomUUID().toString()).build();
+    FeedbackResponse mockSavedFeedback = FeedbackResponse.builder()
+        .uuid(UUID.randomUUID().toString())
+        .build();
     when(feedbackService.saveFeedback(any(FeedbackRequest.class), any(MultipartFile[].class)))
         .thenReturn(mockSavedFeedback);
     mockMvc.perform(

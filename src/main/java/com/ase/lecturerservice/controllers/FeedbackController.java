@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import com.ase.lecturerservice.dtos.FeedbackDocumentResponse;
 import com.ase.lecturerservice.dtos.FeedbackRequest;
 import com.ase.lecturerservice.dtos.FeedbackResponse;
 import com.ase.lecturerservice.entities.Feedback;
@@ -34,7 +35,7 @@ public class FeedbackController {
   }
 
   @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-  public ResponseEntity<Feedback> saveFeedback(
+  public ResponseEntity<FeedbackResponse> saveFeedback(
       @RequestParam(value = "files", required = false) MultipartFile[] files,
       @RequestPart("feedbackData") FeedbackRequest feedbackData) {
     try {
@@ -46,12 +47,13 @@ public class FeedbackController {
   }
 
   @PutMapping(value = "/{uuid}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-  public ResponseEntity<Feedback> updateFeedback(
+  public ResponseEntity<FeedbackResponse> updateFeedback(
       @PathVariable String uuid,
       @RequestPart(value = "files", required = false) MultipartFile[] files,
+      @RequestPart(value = "oldFiles", required = false) FeedbackDocumentResponse[] oldFiles,
       @RequestPart Feedback updateFeedback
   ) {
-    return ResponseEntity.ok(feedbackService.updateFeedback(uuid, updateFeedback, files));
+    return ResponseEntity.ok(feedbackService.updateFeedback(uuid, updateFeedback, files, oldFiles));
   }
 
   @PostMapping("/submit")

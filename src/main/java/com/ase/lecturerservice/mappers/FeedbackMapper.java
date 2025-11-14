@@ -2,15 +2,16 @@ package com.ase.lecturerservice.mappers;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import com.ase.lecturerservice.dtos.FeedbackDocumentResponse;
 import com.ase.lecturerservice.dtos.FeedbackRequest;
 import com.ase.lecturerservice.dtos.FeedbackResponse;
 import com.ase.lecturerservice.entities.Feedback;
+import com.ase.lecturerservice.entities.FileReference;
 
 @Component
 public class FeedbackMapper {
-
 
   public Feedback toEntity(FeedbackRequest feedbackRequest) {
     if (feedbackRequest == null) {
@@ -55,6 +56,24 @@ public class FeedbackMapper {
   }
 
   public FeedbackResponse toResponse(Feedback feedback) {
-    return toResponse(feedback, Collections.emptyList());
+    if (feedback == null) {
+      return null;
+    }
+
+    List<FeedbackDocumentResponse> fileReferences =
+        feedback.getFileReferences() == null
+            ? Collections.emptyList()
+            : feedback.getFileReferences().stream()
+            .map(this::mapFileReferenceToResponse)
+            .collect(Collectors.toList());
+
+    return toResponse(feedback, fileReferences);
+  }
+
+  private FeedbackDocumentResponse mapFileReferenceToResponse(FileReference fileReference) {
+    FeedbackDocumentResponse response = new FeedbackDocumentResponse();
+    response.setUuid(fileReference.getFileUuid());
+    response.setFileName(fileReference.getFileName());
+    return response;
   }
 }

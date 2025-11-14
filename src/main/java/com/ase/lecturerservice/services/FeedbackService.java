@@ -3,6 +3,7 @@ package com.ase.lecturerservice.services;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import com.ase.lecturerservice.dtos.FeedbackDocumentRequest;
+import com.ase.lecturerservice.dtos.FeedbackDocumentResponse;
 import com.ase.lecturerservice.dtos.FeedbackRequest;
 import com.ase.lecturerservice.dtos.FeedbackResponse;
 import com.ase.lecturerservice.dtos.StudentExamStateDto;
@@ -74,7 +76,7 @@ public class FeedbackService {
     return feedbackRepository.findByStudentUuid(studentUuid);
   }
 
-  public Feedback saveFeedback(FeedbackRequest feedback, MultipartFile[] files) {
+  public FeedbackResponse saveFeedback(FeedbackRequest feedback, MultipartFile[] files) {
     Feedback feedbackEntity = feedbackMapper.toEntity(feedback);
     feedbackEntity.setGradedAt(LocalDate.now());
     Feedback savedFeedback = feedbackRepository.save(feedbackEntity);
@@ -99,6 +101,7 @@ public class FeedbackService {
               files.length,
                     savedFeedback.getUuid());
           savedFeedback.setFileReferences(savedDocuments);
+          feedbackRepository.save(savedFeedback);
 
         }
         catch (IOException e) {
@@ -107,13 +110,14 @@ public class FeedbackService {
         }
       }
     }
-    return savedFeedback;
+    return feedbackMapper.toResponse(savedFeedback);
   }
 
-  public Feedback updateFeedback(
+  public FeedbackResponse updateFeedback(
       String uuid,
       Feedback updateFeedback,
-      MultipartFile[] files
+      MultipartFile[] files,
+      FeedbackDocumentResponse[] oldFiles
   ) {
     Feedback existing = feedbackRepository.findById(uuid)
         .orElseThrow(() ->
@@ -131,10 +135,36 @@ public class FeedbackService {
         updateFeedback.getPoints(),
         updateFeedback.getGrade()
     );
+
+    Set<String> oldFileUuids = new HashSet<>();
+    if (oldFiles != null) {
+      for (FeedbackDocumentResponse oldFile : oldFiles) {
+        String fileUuid = oldFile.getUuid();
+        if (fileUuid != null) {
+          oldFileUuids.add(fileUuid);
+        }
+      }
+    }
+
     List<FileReference> updatedReferences = new ArrayList<>();
     if (existing.getFileReferences() != null) {
-      updatedReferences.addAll(existing.getFileReferences());
+      for (FileReference ref : existing.getFileReferences()) {
+        if (oldFileUuids.contains(ref.getFileUuid())) {
+          updatedReferences.add(ref);
+        }
+        else {
+          log.info("Deleting file reference {} for feedback {}", ref.getFileUuid(), uuid);
+          try {
+            feedbackDocumentService.deleteFeedbackDocument(ref.getFileUuid());
+            log.info("Successfully deleted file {}", ref.getFileUuid());
+          }
+          catch (Exception e) {
+            log.error("Failed to delete file {} for feedback {}", ref.getFileUuid(), uuid, e);
+          }
+        }
+      }
     }
+
     if (files != null && files.length > 0) {
       log.info("Updating feedback: uploading {} new files for UUID {}", files.length, uuid);
 
@@ -158,15 +188,15 @@ public class FeedbackService {
         }
       }
     }
+
     existing.setFileReferences(updatedReferences);
     Feedback saved = feedbackRepository.save(existing);
 
     log.info("Successfully updated Feedback {} with {} file references",
         saved.getUuid(), updatedReferences.size());
 
-    return saved;
+    return feedbackMapper.toResponse(saved);
   }
-
 
   public void submitFeedback(List<Feedback> feedbacks) {
     log.info("submitting feedbacks to the examination office");
