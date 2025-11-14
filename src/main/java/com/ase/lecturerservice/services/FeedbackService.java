@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import com.ase.lecturerservice.dtos.ExamServiceExamResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -14,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import com.ase.lecturerservice.dtos.ExamServiceExamResponse;
 import com.ase.lecturerservice.dtos.FeedbackDocumentRequest;
 import com.ase.lecturerservice.dtos.FeedbackRequest;
 import com.ase.lecturerservice.dtos.FeedbackResponse;
@@ -182,7 +182,7 @@ public class FeedbackService {
     boolean passed = feedback.getGrade() <= gradeThreshold;
     String message = passed
         ? "Herzlichen Glückwunsch. Du hast die Klausur \"{examName}\" mit {points} ({grade}) bestanden!"
-        : "Du bist in der Klausur {examName} mit {points} ({grade}) durchgefallen.";
+        : "Du bist in der Klausur \"{examName}\" leider mit {points} ({grade}) durchgefallen.";
     notificationService.sendNotification(NotificationServiceNotificationPayload.builder()
         .users(List.of(studentExamStateDto.getStudentUuid()))
         .notificationType(passed
