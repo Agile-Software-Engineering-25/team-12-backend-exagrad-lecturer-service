@@ -67,6 +67,11 @@ public class FeedbackService {
         .toList();
   }
 
+  public FeedbackResponse convertFeedbackToFeedbackResponse(Feedback feedback) {
+    return feedbackMapper.toResponse(feedback,
+        feedbackDocumentService.getDocumentsByFeedbackId(feedback.getUuid()));
+  }
+
   public List<Feedback> getFeedbackForExam(String examUuid) {
     return feedbackRepository.findByExamUuid(examUuid);
   }

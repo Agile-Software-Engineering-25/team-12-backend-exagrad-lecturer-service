@@ -2,6 +2,7 @@ package com.ase.lecturerservice.controllers;
 
 import static com.ase.lecturerservice.controllers.BaseController.BASE_PATH;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,15 @@ public class FeedbackController {
   public ResponseEntity<List<FeedbackResponse>> getFeedbacksForLecturer(
       @PathVariable String lecturerUuid) {
     return ResponseEntity.ok(feedbackService.getFeedbackForLecturer(lecturerUuid));
+  }
+
+  @GetMapping("/for-exam/{examUuid}")
+  public ResponseEntity<List<FeedbackResponse>> getFeedbacksForExam(@PathVariable String examUuid) {
+    return ResponseEntity.ok(
+        feedbackService.getFeedbackForExam(examUuid)
+            .stream()
+            .map(feedbackService::convertFeedbackToFeedbackResponse)
+            .collect(Collectors.toList()));
   }
 
   @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
