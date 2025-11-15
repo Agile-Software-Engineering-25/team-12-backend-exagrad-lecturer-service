@@ -12,3 +12,4 @@ public class MinioConnectionProperties {
   private String accessKey;
   private String secretKey;
 }
+

@@ -28,10 +28,9 @@ management:
       probes:
         enabled: true
 minio-connection:
-  # TODO: updated these configs if more information from the responsible team are gained
-  endpoint: http://80.158.79.52:9000
-  accessKey: my-access-key
-  secretKey: my-secret-key
+  endpoint: ${MINIO_ENDPOINT:my-custom-endpoint}
+  access-key: ${MINIO_ACCESS_KEY:my-access-key}
+  secret-key: ${MINIO_SECRET_KEY:my-secret-key}
 app:
   apis:
     student-service:
@@ -49,7 +48,7 @@ app:
     auth:
       url: https://keycloak.sau-portal.de/realms/sau/protocol/openid-connect/token
       client-id: team-12
-      client-secret: ${CLIENT_SECRET}
+      client-secret: ${CLIENT_SECRET:client-secret}
   cors:
     allowed-origins:
       - http://localhost:5173
