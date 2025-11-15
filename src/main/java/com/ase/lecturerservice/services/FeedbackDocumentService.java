@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.time.Year;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import com.ase.lecturerservice.config.StorageProperties;
 import com.ase.lecturerservice.dtos.FeedbackDocumentRequest;
 import com.ase.lecturerservice.dtos.FeedbackDocumentResponse;
@@ -58,7 +60,7 @@ public class FeedbackDocumentService {
     return convertToResponseWithUrls(documents);
   }
 
-  public List<FeedbackDocumentResponse> getDocumentsByDocumentId(UUID docId) {
+  public List<FeedbackDocumentResponse> getDocumentsByDocumentId(String docId) {
     return feedbackDocumentRepository
         .findById(docId)
         .map(doc -> convertToResponseWithUrls(List.of(doc)))
@@ -83,5 +85,21 @@ public class FeedbackDocumentService {
     String year = String.valueOf(Year.now().getValue());
     String unique = UUID.randomUUID().toString();
     return "feedback-documents/" + year + "/" + unique + "-" + originalFilename;
+  }
+
+  public void deleteFeedbackDocument(String documentUuid) {
+    log.info("Attempting to delete feedback document with UUID: {}", documentUuid);
+
+    FeedbackDocument document = feedbackDocumentRepository.findById(documentUuid)
+        .orElseThrow(() -> {
+          log.error("Feedback document not found: {}", documentUuid);
+          return new ResponseStatusException(
+              HttpStatus.NOT_FOUND,
+              "Feedback document not found"
+          );
+        });
+
+    feedbackDocumentRepository.delete(document);
+    log.info("Successfully deleted feedback document {} from database", documentUuid);
   }
 }
