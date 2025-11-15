@@ -15,7 +15,7 @@ public class FeedbackDocumentMapper {
 
   public FeedbackDocumentResponse toResponse(FeedbackDocument entity, String downloadUrl) {
     return FeedbackDocumentResponse.builder()
-        .uuid(entity.getUuid())
+        .uuid(entity.getId())
         .feedbackId(entity.getFeedbackId())
         .lecturerId(entity.getLecturerId())
         .uploadDate(entity.getUploadDate().atZone(appZoneId))
@@ -26,7 +26,7 @@ public class FeedbackDocumentMapper {
 
   public FileReference toReference(FeedbackDocument entity) {
     return FileReference.builder()
-        .fileUuid(entity.getUuid())
+        .fileUuid(entity.getId())
         .fileName(entity.getFileName())
         .build();
   }
