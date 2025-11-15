@@ -22,6 +22,7 @@ public class EventController {
   private void feedbackApprovedCallback(@RequestBody StudentExamStateDto studentExamStateDto) {
     log.info("Feedbacks has been approved: {}", studentExamStateDto.toString());
     feedbackService.updateFeedbackStatus(studentExamStateDto, PublishStatus.APPROVED);
+    feedbackService.sendFeedbackReceivedNotification(studentExamStateDto);
   }
 
   @PostMapping("/feedback/rejected")

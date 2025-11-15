@@ -1,10 +1,8 @@
 package com.ase.lecturerservice.dtos;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class StudentExamStateDto {
   private String studentUuid;
   private String examUuid;
