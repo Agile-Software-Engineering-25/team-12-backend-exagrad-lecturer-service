@@ -18,3 +18,4 @@ public class FeedbackDocumentResponse {
   private String downloadUrl;
   private String fileName;
 }
+

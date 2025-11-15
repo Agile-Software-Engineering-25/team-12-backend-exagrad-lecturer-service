@@ -78,9 +78,12 @@ public class FeedbackService {
     return feedbackRepository.findByExamUuid(examUuid);
   }
 
-  public List<Feedback> getFeedbackForStudent(String studentUuid) {
-    return feedbackRepository.findByStudentUuid(studentUuid);
-  }
+  public List<FeedbackResponse> getFeedbackForStudent(String studentUuid) {
+    return feedbackRepository.findByStudentUuid(studentUuid)
+        .stream()
+        .map(this::convertFeedbackToFeedbackResponse)
+        .toList();
+    }
 
   public FeedbackResponse saveFeedback(FeedbackRequest feedback, MultipartFile[] files) {
     Feedback feedbackEntity = feedbackMapper.toEntity(feedback);
