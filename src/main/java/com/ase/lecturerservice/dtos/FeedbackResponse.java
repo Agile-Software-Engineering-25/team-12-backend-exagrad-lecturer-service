@@ -14,9 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class FeedbackResponse {
-
   private String uuid;
-
   private LocalDate gradedAt;
   private String examUuid;
   private String lecturerUuid;
@@ -30,3 +28,4 @@ public class FeedbackResponse {
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private List<FeedbackDocumentResponse> fileReference;
 }
+

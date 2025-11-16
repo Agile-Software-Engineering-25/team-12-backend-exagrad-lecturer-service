@@ -61,7 +61,7 @@ public class MinioService {
           bucketName,
           objectKey,
           size);
-    } 
+    }
     catch (Exception e) {
       log.error(
           "Failed to upload file to MinIO: bucket={}, key={}", bucketName, objectKey, e);
@@ -109,7 +109,7 @@ public class MinioService {
           expiry,
           timeUnit.name().toLowerCase());
       return url;
-    } 
+    }
     catch (Exception e) {
       log.error(
           "Failed to generate presigned URL: bucket={}, key={}",
@@ -136,7 +136,7 @@ public class MinioService {
           "Successfully deleted file from MinIO: bucket={}, key={}",
           bucketName,
           objectKey);
-    } 
+    }
     catch (Exception e) {
       log.error(
           "Failed to delete file from MinIO: bucket={}, key={}",
@@ -159,7 +159,7 @@ public class MinioService {
       minioClient.statObject(
           StatObjectArgs.builder().bucket(bucketName).object(objectKey).build());
       return true;
-    } 
+    }
     catch (Exception e) {
       log.debug(
           "File does not exist or is inaccessible: bucket={}, key={}",

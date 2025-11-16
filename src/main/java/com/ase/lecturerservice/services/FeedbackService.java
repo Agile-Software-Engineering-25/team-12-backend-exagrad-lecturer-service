@@ -3,6 +3,7 @@ package com.ase.lecturerservice.services;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import com.ase.lecturerservice.dtos.ExamServiceExamResponse;
 import com.ase.lecturerservice.dtos.FeedbackDocumentRequest;
+import com.ase.lecturerservice.dtos.FeedbackDocumentResponse;
 import com.ase.lecturerservice.dtos.FeedbackRequest;
 import com.ase.lecturerservice.dtos.FeedbackResponse;
 import com.ase.lecturerservice.dtos.NotificationServiceNotificationPayload;
@@ -82,11 +84,14 @@ public class FeedbackService {
     return feedbackRepository.findByExamUuid(examUuid);
   }
 
-  public List<Feedback> getFeedbackForStudent(String studentUuid) {
-    return feedbackRepository.findByStudentUuid(studentUuid);
+  public List<FeedbackResponse> getFeedbackForStudent(String studentUuid) {
+    return feedbackRepository.findByStudentUuid(studentUuid)
+        .stream()
+        .map(this::convertFeedbackToFeedbackResponse)
+        .toList();
   }
 
-  public Feedback saveFeedback(FeedbackRequest feedback, MultipartFile[] files) {
+  public FeedbackResponse saveFeedback(FeedbackRequest feedback, MultipartFile[] files) {
     Feedback feedbackEntity = feedbackMapper.toEntity(feedback);
     feedbackEntity.setGradedAt(LocalDate.now());
     Feedback savedFeedback = feedbackRepository.save(feedbackEntity);
@@ -111,6 +116,7 @@ public class FeedbackService {
               files.length,
               savedFeedback.getUuid());
           savedFeedback.setFileReferences(savedDocuments);
+          feedbackRepository.save(savedFeedback);
 
         }
         catch (IOException e) {
@@ -119,31 +125,93 @@ public class FeedbackService {
         }
       }
     }
-    return savedFeedback;
+    return feedbackMapper.toResponse(savedFeedback);
   }
 
-  public Feedback updateFeedback(String uuid, Feedback updateFeedback) {
+  public FeedbackResponse updateFeedback(
+      String uuid,
+      Feedback updateFeedback,
+      MultipartFile[] files,
+      FeedbackDocumentResponse[] oldFiles
+  ) {
     Feedback existing = feedbackRepository.findById(uuid)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Feedback not found"));
+        .orElseThrow(() ->
+            new ResponseStatusException(HttpStatus.NOT_FOUND, "Feedback not found"));
 
     existing.setComment(updateFeedback.getComment());
     existing.setPoints(updateFeedback.getPoints());
     existing.setGrade(updateFeedback.getGrade());
     existing.setPublishStatus(PublishStatus.UNPUBLISHED);
-    // TODO: change this to new filereference procedure
-    // (send new files to service and return filereference for repo)
-    // existing.setFileReference(updateFeedback.getFileReferences());
     existing.setGradedAt(LocalDate.now());
 
-    log.info("Feedback {} was successfully edited by Lecturer {} "
-            + "(Student {}, Points: {}, Grade: {})",
+    log.info("Updating Feedback {} by Lecturer {} (Student {}, Points: {}, Grade: {})",
         uuid,
         existing.getLecturerUuid(),
         existing.getStudentUuid(),
-        existing.getPoints(),
-        existing.getGrade());
+        updateFeedback.getPoints(),
+        updateFeedback.getGrade()
+    );
 
-    return feedbackRepository.save(existing);
+    Set<String> oldFileUuids = new HashSet<>();
+    if (oldFiles != null) {
+      for (FeedbackDocumentResponse oldFile : oldFiles) {
+        String fileUuid = oldFile.getUuid();
+        if (fileUuid != null) {
+          oldFileUuids.add(fileUuid);
+        }
+      }
+    }
+
+    List<FileReference> updatedReferences = new ArrayList<>();
+    if (existing.getFileReferences() != null) {
+      for (FileReference ref : existing.getFileReferences()) {
+        if (oldFileUuids.contains(ref.getFileUuid())) {
+          updatedReferences.add(ref);
+        }
+        else {
+          log.info("Deleting file reference {} for feedback {}", ref.getFileUuid(), uuid);
+          try {
+            feedbackDocumentService.deleteFeedbackDocument(ref.getFileUuid());
+            log.info("Successfully deleted file {}", ref.getFileUuid());
+          }
+          catch (Exception e) {
+            log.error("Failed to delete file {} for feedback {}", ref.getFileUuid(), uuid, e);
+          }
+        }
+      }
+    }
+
+    if (files != null && files.length > 0) {
+      log.info("Updating feedback: uploading {} new files for UUID {}", files.length, uuid);
+
+      for (MultipartFile file : files) {
+        try {
+          FeedbackDocumentRequest metadata =
+              new FeedbackDocumentRequest(
+                  uuid,
+                  existing.getLecturerUuid()
+              );
+          FeedbackDocument savedDocument =
+              feedbackDocumentService.uploadFeedbackDocument(file, metadata);
+          FileReference reference =
+              feedbackDocumentMapper.toReference(savedDocument);
+          updatedReferences.add(reference);
+          log.info("Uploaded file '{}' for feedback {}", file.getOriginalFilename(), uuid);
+        }
+        catch (IOException e) {
+          log.error("Failed to upload file for feedback {}", uuid, e);
+          throw new RuntimeException("File upload failed.", e);
+        }
+      }
+    }
+
+    existing.setFileReferences(updatedReferences);
+    Feedback saved = feedbackRepository.save(existing);
+
+    log.info("Successfully updated Feedback {} with {} file references",
+        saved.getUuid(), updatedReferences.size());
+
+    return feedbackMapper.toResponse(saved);
   }
 
   public void submitFeedback(List<Feedback> feedbacks) {

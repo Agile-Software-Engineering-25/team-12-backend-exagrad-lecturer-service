@@ -220,4 +220,17 @@ public class ExamService {
         .bodyToMono(ExamServiceExamResponse.ExamServiceExamDto.class)
         .block();
   }
+
+  public ExamServiceExamResponse.ExamServiceExamDto getExam(String examUuid) {
+    return webClient.get().uri(examServiceBaseUrl + "/api/exams/" + examUuid)
+        .retrieve()
+        .onStatus(
+            httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
+            clientResponse -> clientResponse.bodyToMono(String.class)
+                .map(body -> new ResponseStatusException(
+                    clientResponse.statusCode(),
+                    "Api call failed: " + body)))
+        .bodyToMono(ExamServiceExamResponse.ExamServiceExamDto.class)
+        .block();
+  }
 }
