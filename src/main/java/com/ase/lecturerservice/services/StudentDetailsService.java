@@ -28,7 +28,8 @@ public class StudentDetailsService {
     try {
       String url = studentDataServiceBaseUrl + "/users?userType=student";
       this.cachedStudents = fetchListFromApi(url, StudentDataResponse.StudentDto.class);
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       log.error("Failed to fetch students details: {}", e.getMessage());
     }
   }
@@ -56,7 +57,8 @@ public class StudentDetailsService {
               .collectList()
               .block();
       return responseDtos != null ? responseDtos : Collections.emptyList();
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       log.error("Failed to fetch data from {}: {}", apiPath, e.getMessage(), e);
       throw new ResponseStatusException(
           HttpStatus.SERVICE_UNAVAILABLE,

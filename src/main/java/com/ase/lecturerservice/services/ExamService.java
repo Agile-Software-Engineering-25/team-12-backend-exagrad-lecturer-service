@@ -99,7 +99,8 @@ public class ExamService {
               .collectList()
               .block();
       return responseDtos != null ? responseDtos : Collections.emptyList();
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       log.error("Failed to fetch data from {}: {}", apiPath, e.getMessage(), e);
       throw new ResponseStatusException(
           HttpStatus.SERVICE_UNAVAILABLE,
@@ -112,7 +113,8 @@ public class ExamService {
       return exams;
     }
 
-    List<StudentDataResponse.StudentDto> allStudents = studentDetailsService.getAllStudentsDetails();
+    List<StudentDataResponse.StudentDto> allStudents = studentDetailsService
+        .getAllStudentsDetails();
     Map<String, StudentDataResponse.StudentDto> studentMap = createStudentMap(allStudents);
 
     log.info("Populate exams with {} students", allStudents.size());
@@ -202,7 +204,8 @@ public class ExamService {
           .filter(Objects::nonNull)
           .map(studentDto -> objectMapper.convertValue(studentDto, Student.class))
           .toList();
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       log.error("Failed to fetch data from {}: {}", examUuid, e.getMessage(), e);
       return Collections.emptyList();
     }
@@ -221,16 +224,4 @@ public class ExamService {
         .block();
   }
 
-  public ExamServiceExamResponse.ExamServiceExamDto getExam(String examUuid) {
-    return webClient.get().uri(examServiceBaseUrl + "/api/exams/" + examUuid)
-        .retrieve()
-        .onStatus(
-            httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
-            clientResponse -> clientResponse.bodyToMono(String.class)
-                .map(body -> new ResponseStatusException(
-                    clientResponse.statusCode(),
-                    "Api call failed: " + body)))
-        .bodyToMono(ExamServiceExamResponse.ExamServiceExamDto.class)
-        .block();
-  }
 }
