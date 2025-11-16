@@ -28,13 +28,11 @@ import lombok.extern.slf4j.Slf4j;
 public class ExamService {
   private final WebClient webClient;
   private final ObjectMapper objectMapper;
+  private final StudentDetailsService studentDetailsService;
   @Value("${app.apis.exam-service.baseurl}")
   private String examServiceBaseUrl;
   @Value("${app.apis.courses-service.baseurl}")
   private String courseServiceBaseUrl;
-  @Value("${app.apis.student-data-service.baseurl}")
-  private String studentDataServiceBaseUrl;
-
 
   public List<Exam> getExamsByLecturer(String lecturerUuid) {
     validateLecturerUuid(lecturerUuid);
@@ -101,8 +99,7 @@ public class ExamService {
               .collectList()
               .block();
       return responseDtos != null ? responseDtos : Collections.emptyList();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       log.error("Failed to fetch data from {}: {}", apiPath, e.getMessage(), e);
       throw new ResponseStatusException(
           HttpStatus.SERVICE_UNAVAILABLE,
@@ -115,17 +112,17 @@ public class ExamService {
       return exams;
     }
 
-    List<StudentDataResponse.StudentDto> allStudents = getAllStudentsDetails();
+    List<StudentDataResponse.StudentDto> allStudents = studentDetailsService.getAllStudentsDetails();
     Map<String, StudentDataResponse.StudentDto> studentMap = createStudentMap(allStudents);
 
     log.info("Populate exams with {} students", allStudents.size());
 
-    for (Exam exam : exams) {
+    exams.parallelStream().forEach(exam -> {
       List<Student> studentsForExam = getStudentsForExam(exam.getUuid(), studentMap);
       exam.setAssignedStudents(studentsForExam);
       log.info("Exam {} assigned to {} students", exam.getUuid(),
           exam.getAssignedStudents().size());
-    }
+    });
 
     return exams;
   }
@@ -205,20 +202,8 @@ public class ExamService {
           .filter(Objects::nonNull)
           .map(studentDto -> objectMapper.convertValue(studentDto, Student.class))
           .toList();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       log.error("Failed to fetch data from {}: {}", examUuid, e.getMessage(), e);
-      return Collections.emptyList();
-    }
-  }
-
-  private List<StudentDataResponse.StudentDto> getAllStudentsDetails() {
-    try {
-      String url = studentDataServiceBaseUrl + "/users?userType=student";
-      return fetchListFromApi(url, StudentDataResponse.StudentDto.class);
-    }
-    catch (Exception e) {
-      log.error("Failed to fetch students details: {}", e.getMessage());
       return Collections.emptyList();
     }
   }
